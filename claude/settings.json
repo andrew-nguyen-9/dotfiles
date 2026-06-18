@@ -1,0 +1,83 @@
+{
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "explanatory-output-style@claude-plugins-official": true,
+    "learning-output-style@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "compound-engineering@compound-engineering-plugin": true,
+    "ralph-skills@ralph-marketplace": true
+  },
+  "extraKnownMarketplaces": {
+    "compound-engineering-plugin": {
+      "source": {
+        "source": "github",
+        "repo": "EveryInc/compound-engineering-plugin"
+      }
+    },
+    "ralph-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "snarktank/ralph"
+      }
+    }
+  },
+  "theme": "dark",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      },
+      {
+        "_gstack_source": "plan-tune-cathedral",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/andrewnguyen/.claude/skills/gstack/hosts/claude/hooks/question-preference-hook",
+            "timeout": 5
+          }
+        ],
+        "matcher": "(AskUserQuestion|mcp__.*__AskUserQuestion)"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "_gstack_source": "plan-tune-cathedral",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/andrewnguyen/.claude/skills/gstack/hosts/claude/hooks/question-log-hook",
+            "timeout": 5
+          }
+        ],
+        "matcher": "(AskUserQuestion|mcp__.*__AskUserQuestion)"
+      },
+      {
+        "_gstack_source": "auq-error-fallback",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/andrewnguyen/.claude/skills/gstack/hosts/claude/hooks/auq-error-fallback-hook",
+            "timeout": 5
+          }
+        ],
+        "matcher": "(AskUserQuestion|mcp__.*__AskUserQuestion)"
+      }
+    ]
+  }
+}
