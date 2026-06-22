@@ -44,6 +44,10 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"/Users/andrew/.claude/plugins/cache/ponytail/ponytail/4.7.0/hooks/ponytail-statusline.sh\""
+  },
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
@@ -77,7 +81,9 @@
     "hookify@claude-plugins-official": true,
     "plugin-dev@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
-    "sourcegraph@claude-plugins-official": true
+    "sourcegraph@claude-plugins-official": true,
+    "caveman@caveman": true,
+    "ponytail@ponytail": true
   },
   "extraKnownMarketplaces": {
     "compound-engineering-plugin": {
@@ -91,7 +97,20 @@
         "source": "github",
         "repo": "snarktank/ralph"
       }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
     }
   },
-  "theme": "dark"
+  "theme": "dark",
+  "model": "opus"
 }
