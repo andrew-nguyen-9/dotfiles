@@ -35,8 +35,11 @@ Then formulae (exact `brew leaves` from old machine):
 
 ```sh
 brew install bat coreutils curl eza ffmpeg fzf gh git htop imagemagick \
-  jq make node ollama pipx python@3.12 ripgrep tesseract tldr tmux tree wget zoxide zsh
+  jq make node ollama pipx python@3.12 ripgrep tesseract tldr tmux tree wget zoxide zsh \
+  uv git-lfs
 ```
+
+(`uv` provides `uvx` — required by the serena Claude Code MCP plugin. `git-lfs` for the gitconfig lfs filters.)
 
 No casks were installed via brew — apps below were installed manually. Optional: switch to casks (`brew install --cask ...`) for easier future updates.
 
@@ -57,9 +60,10 @@ Already default (`/bin/zsh`). Config comes from dotfiles (step 5). For reference
 | python | 3.14 (system) + 3.12 (brew) | brew python@3.12; 3.14 was default — install via brew if needed |
 | pipx | — | brew (above), then `pipx ensurepath` |
 | rust | 1.96 | `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \| sh` (gives cargo, clippy, rustfmt, rust-analyzer) |
-| gh   | 2.93 | brew (above), then `gh auth login` |
+| gh   | 2.93 | brew (above), then `gh auth login` (scopes: repo, read:org, gist) |
+| uv   | 0.11 | brew (above) — provides `uvx`, needed by serena MCP plugin |
 
-Not installed (skip unless needed): pnpm, yarn, go, docker, uv, java.
+Not installed (skip unless needed): pnpm, yarn, go, docker, java.
 
 ## 5. dotfiles repo (the important part)
 
@@ -79,6 +83,14 @@ ln -sf ~/Documents/GitHub/dotfiles/claude/settings.json ~/.claude/settings.json
 # zshrc, zprofile, gitconfig, hammerspoon, karabiner — symlink from repo to ~ as stored there
 ```
 
+**Critical:** `claude/settings.json` is symlinked into `~/.claude/`, and the Claude Code runtime rewrites it on launch (key reorder). That makes the tracked file perpetually dirty and blocks every `git pull --rebase` with "you have unstaged changes." After cloning, tell git to ignore that churn:
+
+```sh
+git -C ~/Documents/GitHub/dotfiles update-index --skip-worktree claude/settings.json
+```
+
+(`--skip-worktree` is per-clone, not stored in the repo — must re-run on every fresh machine. To intentionally commit a real settings change later: `--no-skip-worktree`, commit, then re-set it.)
+
 Check the repo for a bootstrap/install script; if none, symlink `.zshrc`, `.zprofile`, `.gitconfig` manually from the repo.
 
 `.gitconfig` essentials (already in repo): user `Andrew`, email `rzzp5q7pxm@privaterelay.appleid.com`, git-lfs filters. Install lfs: `brew install git-lfs && git lfs install`.
@@ -92,7 +104,46 @@ Custom binary at `~/.local/bin/rtk` (v0.42.4) — NOT from brew or crates.io. So
 - [ ] ⚠️ Name collision: do NOT install reachingforthejack/rtk (Rust Type Kit) — different tool.
 - [ ] Claude Code hook auto-rewrites commands to `rtk ...`; hook config lives in dotfiles `claude/settings.json`.
 
-## 7. Applications (installed manually — re-download)
+## 7. Claude Code — MCP plugins & auth
+
+Plugins are configured in `claude/settings.json` (in the dotfiles repo). After clone, each needs setup:
+
+- [ ] **serena** — launches via `uvx --from git+https://github.com/oraios/serena serena start-mcp-server`. Needs `uv` (step 2/4). Pre-warm so first connect isn't a multi-minute build: `uvx --from git+https://github.com/oraios/serena serena --help`. Then `/plugin` → reconnect, or restart Claude Code.
+- [ ] **github** — auths via a **PAT in an env var**, not OAuth. The plugin sends `Authorization: Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}`; if unset → HTTP 400. Wire it from gh's own token (machine-local, NOT in the dotfiles repo):
+  ```sh
+  cd ~/.claude && TOK=$(gh auth token) && \
+    jq --arg t "$TOK" '.env.GITHUB_PERSONAL_ACCESS_TOKEN=$t' settings.local.json > .sl.tmp && mv .sl.tmp settings.local.json
+  ```
+  Env vars load at Claude Code startup → **restart the app** (a `/mcp` reconnect alone won't pick it up). If the token is later revoked/rotated, re-run the snippet.
+- [ ] **vercel** — OAuth. Run `/mcp` → vercel → Authenticate. **The default browser is Zen, whose tracking/cookie blocking makes Vercel's consent page throw "configuration error with this app."** Do the OAuth in Chrome: copy the auth URL into Chrome, or temporarily set Chrome as default web browser, authenticate, switch back.
+
+Verify all: `claude mcp list` → serena / github / vercel all ✔ Connected.
+
+## 8. Git commit signing (Verified badge)
+
+SSH signing (git ≥ 2.34). No auth/signing key exists on a fresh machine — generate one:
+
+```sh
+ssh-keygen -t ed25519 -C "git signing key (andrew)" -f ~/.ssh/id_ed25519_signing -N ""
+
+git config --global gpg.format ssh
+git config --global user.signingkey ~/.ssh/id_ed25519_signing.pub
+git config --global commit.gpgsign true
+git config --global tag.gpgsign true
+# GitHub noreply email — always verified-eligible, hides real address, still maps to the account
+git config --global user.email "284437207+andrew-nguyen-9@users.noreply.github.com"
+# local verification
+printf '%s namespaces="git" %s\n' "284437207+andrew-nguyen-9@users.noreply.github.com" "$(cat ~/.ssh/id_ed25519_signing.pub)" > ~/.ssh/allowed_signers
+git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+```
+
+Then register the **public** key on GitHub: https://github.com/settings/ssh/new → Key type = **Signing Key** → paste `~/.ssh/id_ed25519_signing.pub`.
+
+- Add via the web UI, **not** `gh ssh-key add` — that needs the `admin:ssh_signing_key` scope and `gh auth refresh` can rotate the token the github MCP plugin (§7) depends on.
+- Verify: `git log --show-signature -1` shows "Good signature"; pushed commits show **Verified** on GitHub.
+- Note: the email above differs from the gitconfig's privaterelay address. To keep privaterelay instead, add+verify it on GitHub first, else commits show Unverified. Old commits stay unverified (don't rewrite history).
+
+## 9. Applications (installed manually — re-download)
 
 **Dev:**
 - [ ] Visual Studio Code — restore extensions (step 8)
@@ -113,7 +164,7 @@ Custom binary at `~/.local/bin/rtk` (v0.42.4) — NOT from brew or crates.io. So
 
 > After install, grant macOS permissions: System Settings > Privacy & Security > Accessibility (Rectangle, Hammerspoon, Karabiner), Input Monitoring (Karabiner), Full Disk (Defender if required).
 
-## 8. VS Code extensions
+## 10. VS Code extensions
 
 ```sh
 for ext in andrepimenta.claude-code-chat anthropic.claude-code beardedbear.beardedtheme \
@@ -134,13 +185,16 @@ for ext in andrepimenta.claude-code-chat anthropic.claude-code beardedbear.beard
 
 (Note: Docker extensions assume Docker installed — not on old machine. Install Docker Desktop or skip those.)
 
-## 9. Verify
+## 11. Verify
 
-- [ ] `brew leaves` matches step 2 list
-- [ ] `git config user.email` → privaterelay address; `git lfs version` works
+- [ ] `brew leaves` matches step 2 list; `uv --version` + `uvx --version` work
+- [ ] `git config user.email` → noreply address; `git lfs version` works
 - [ ] `node -v`, `bun -v`, `rustc --version`, `gh auth status`
 - [ ] `rtk --version` + `rtk gain`
 - [ ] `ls -la ~/.claude/*.md ~/.claude/settings.json` all show symlinks into dotfiles
+- [ ] `git -C ~/Documents/GitHub/dotfiles ls-files -v claude/settings.json` shows `S` (skip-worktree set); `git pull --rebase` doesn't error
+- [ ] `claude mcp list` → serena / github / vercel all ✔ Connected
+- [ ] `git log --show-signature -1` → "Good signature"; new pushed commit shows Verified on GitHub
 - [ ] Karabiner remaps active; Rectangle shortcuts work; Hammerspoon loaded
 - [ ] VS Code: `code --list-extensions | wc -l` ≈ 40
 
@@ -148,5 +202,5 @@ for ext in andrepimenta.claude-code-chat anthropic.claude-code beardedbear.beard
 
 ### Gaps to resolve before relying on this
 - **RTK source location** — find where the binary is built from. Single biggest unknown.
-- **SSH keys** — confirm agent provider holds them; this machine has no on-disk keypair.
-- **dotfiles bootstrap** — check if repo has an install script; if not, document exact symlink targets for `.zshrc`/`.zprofile`/`.gitconfig`/hammerspoon/karabiner.
+- **SSH auth key** — only a *signing* key is covered (§8). No auth key on disk (push is HTTPS + gh token). Generate/restore one if you need SSH git/remote auth.
+- **dotfiles bootstrap** — no install script in repo yet. A `bootstrap.sh` should: symlink `.zshrc`/`.zprofile`/`.gitconfig`/claude/hammerspoon/karabiner, run the §5 `--skip-worktree`, wire the §7 github token, and run §8 signing setup.
