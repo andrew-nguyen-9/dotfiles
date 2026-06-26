@@ -116,8 +116,22 @@ Plugins are configured in `claude/settings.json` (in the dotfiles repo). After c
   ```
   Env vars load at Claude Code startup → **restart the app** (a `/mcp` reconnect alone won't pick it up). If the token is later revoked/rotated, re-run the snippet.
 - [ ] **vercel** — OAuth. Run `/mcp` → vercel → Authenticate. **The default browser is Zen, whose tracking/cookie blocking makes Vercel's consent page throw "configuration error with this app."** Do the OAuth in Chrome: copy the auth URL into Chrome, or temporarily set Chrome as default web browser, authenticate, switch back.
+- [ ] **xcodebuild** (XcodeBuildMCP) — Mac/iOS app dev. NOT a marketplace plugin; a user-scope MCP server in `~/.claude.json` (so not reproduced by cloning dotfiles — re-add manually):
+  ```sh
+  claude mcp add -s user xcodebuild -- npx -y xcodebuildmcp@latest mcp
+  ```
+  Note the trailing `mcp` subcommand — without it the server just prints usage and "Failed to connect." Requires **full Xcode.app** (App Store), not just Command Line Tools: `sudo xcode-select -s /Applications/Xcode.app`. Connects on Claude Code restart. Build/simulator/device tools need Xcode; project discovery/scaffolding don't.
 
-Verify all: `claude mcp list` → serena / github / vercel all ✔ Connected.
+Verify all: `claude mcp list` → serena / github / vercel / xcodebuild all ✔ Connected.
+
+**Per-project MCP (not global — add inside the repo that uses it):**
+- **dbt** — for repos with dbt pipelines (trivia-generator, music-festival-analyzer). Adding globally = a server that fails every session with no project dir, so scope it to the repo:
+  ```sh
+  cd <dbt-repo> && claude mcp add -s project dbt \
+    -e DBT_PROJECT_DIR="$PWD" -e DBT_PATH="$(which dbt)" \
+    -- uvx dbt-mcp
+  ```
+  Needs `dbt` installed in that repo. Writes to the repo's `.mcp.json` (committed with the project, not dotfiles).
 
 ## 8. Git commit signing (Verified badge)
 
@@ -193,7 +207,7 @@ for ext in andrepimenta.claude-code-chat anthropic.claude-code beardedbear.beard
 - [ ] `rtk --version` + `rtk gain`
 - [ ] `ls -la ~/.claude/*.md ~/.claude/settings.json` all show symlinks into dotfiles
 - [ ] `git -C ~/Documents/GitHub/dotfiles ls-files -v claude/settings.json` shows `S` (skip-worktree set); `git pull --rebase` doesn't error
-- [ ] `claude mcp list` → serena / github / vercel all ✔ Connected
+- [ ] `claude mcp list` → serena / github / vercel / xcodebuild all ✔ Connected (xcodebuild needs Xcode.app)
 - [ ] `git log --show-signature -1` → "Good signature"; new pushed commit shows Verified on GitHub
 - [ ] Karabiner remaps active; Rectangle shortcuts work; Hammerspoon loaded
 - [ ] VS Code: `code --list-extensions | wc -l` ≈ 40
