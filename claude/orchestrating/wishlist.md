@@ -3,10 +3,11 @@
 Fill the **WISHLIST** and **PROJECT** sections below, then in a **fresh Claude Code chat opened in your target repo** either paste this whole file or type:
 `Read ~/.claude/orchestrating/wishlist.md and run it.`
 
-The chat first **routes** your ask to the right strategy — you don't choose:
+The chat first **routes** your ask to the right weight — you don't choose:
 
-- **Big** — multiple genuinely independent epics / shared scaffolding / multi-day → `orchestrator.md` (4-session multi-agent pipeline).
-- **Small–medium** — feature, bugfix, refactor, coupled steps that fit ~one session → `lite.md` (single-session, same efficiency discipline). **Most asks land here.**
+- **Lite** — one feature / bugfix / refactor, sequential → `lite.md`. **Most asks.**
+- **Medium** — a handful of units (~2–6), some deps, ~one session → `medium.md` (plan + bounded parallel agents).
+- **Big** — many independent epics / shared scaffolding / multi-day → `orchestrator.md` (4-session pipeline).
 
 ---
 
@@ -14,15 +15,17 @@ The chat first **routes** your ask to the right strategy — you don't choose:
 
 ```
 Activate /caveman:caveman ultra + /ponytail:ponytail ultra + RTK + Serena. Output styles off.
-Glance at the repo (structure / README / build files — a quick scan, not a deep index) and read the WISHLIST below. Then ROUTE:
+Glance at the repo (structure / README / build files — a quick scan, not a deep index) and read the WISHLIST below. Then ROUTE by size:
 
-- BIG — multiple genuinely independent epics, shared scaffolding, multi-day, worth ~15× multi-agent fan-out
-    → Read ~/.claude/orchestrating/orchestrator.md and run Session A — Intake.
-- SMALL–MEDIUM — single feature / bugfix / refactor / coupled steps that fit ~one session
+- LITE — single feature / bugfix / refactor, one sequential pass
     → Read ~/.claude/orchestrating/lite.md and run it.
+- MEDIUM — a handful of units (~2-6) with some deps/structure, fits ~one session, benefits from a plan + maybe 2-4 parallel build agents
+    → Read ~/.claude/orchestrating/medium.md and run it.
+- BIG — many genuinely independent epics, shared scaffolding, multi-day, worth ~15× fan-out
+    → Read ~/.claude/orchestrating/orchestrator.md and run Session A — Intake.
 
 State the chosen route + a one-line why before starting.
-Borderline → default to lite (cheap to escalate mid-task; expensive to over-build a small ask).
+Borderline → pick the lighter tier (cheap to escalate mid-task; expensive to over-build).
 ```
 
 ---

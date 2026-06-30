@@ -4,7 +4,7 @@ Multi-agent orchestrator run as **four chat sessions** (A→B→C→D). Each ses
 
 This file is a **template** (lives in dotfiles at `~/.claude/orchestrating/orchestrator.md`, alongside `wishlist.md` — the fill-in bootstrap). Session A copies it into the target project with the [Swap per project](#swap-per-project) blanks filled. Everything downstream reads the **project copy**, never the template.
 
-**When to use** — this 4-session, ~15× fan-out pays off only for a wishlist big enough to warrant it: multiple genuinely independent epics, shared scaffolding, multi-day. A few coupled changes → use **`lite.md`** (single-session, same efficiency discipline, none of this overhead). The router in `wishlist.md` picks between them; decide *before* starting A.
+**When to use** — big asks only: many genuinely independent epics, shared scaffolding, multi-day, worth ~15× fan-out. Smaller → `lite.md` (one pass) or `medium.md` (plan + bounded fan-out). The `wishlist.md` router picks; this file assumes it chose orchestrator.
 
 ## How to run
 

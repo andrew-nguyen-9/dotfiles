@@ -2,7 +2,7 @@
 
 For asks not worth the 4-session orchestrator (`orchestrator.md`): **one chat, one agent**, the same efficiency + correctness discipline at task scale. Most asks land here.
 
-**Routed here from `wishlist.md`.** If mid-task it turns out big (many genuinely independent units, multi-day, shared-scaffolding conflicts), stop, save what you have, and switch to `orchestrator.md` Session A — don't grind a big job through this path.
+**Routed here from `wishlist.md`.** If mid-task it grows past one sequential pass, escalate: a handful of units needing a plan + parallel work → `medium.md`; many independent units / multi-day / context won't fit → `orchestrator.md` Session A. Save what you have first; don't grind a bigger job through this path.
 
 ## Activate
 
