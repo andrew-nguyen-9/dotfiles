@@ -35,6 +35,19 @@ else
   echo "bun: already installed ($(bun --version))"
 fi
 
+# Install rtk (Rust Token Killer) — drives the Bash hook in settings.json
+# Source: https://github.com/rtk-ai/rtk
+if ! command -v rtk &>/dev/null; then
+  echo "Installing rtk..."
+  if command -v brew &>/dev/null; then
+    brew install rtk
+  else
+    curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+  fi
+else
+  echo "rtk: already installed ($(rtk --version 2>/dev/null))"
+fi
+
 # Clone gstack skill
 GSTACK_DIR="$CLAUDE_DIR/skills/gstack"
 if [ -d "$GSTACK_DIR" ]; then

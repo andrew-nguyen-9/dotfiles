@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/andrew/.claude/skills/gstack/hosts/claude/hooks/question-preference-hook",
+            "command": "$HOME/.claude/skills/gstack/hosts/claude/hooks/question-preference-hook",
             "timeout": 5
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/andrew/.claude/skills/gstack/hosts/claude/hooks/question-log-hook",
+            "command": "$HOME/.claude/skills/gstack/hosts/claude/hooks/question-log-hook",
             "timeout": 5
           }
         ]
@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/andrew/.claude/skills/gstack/hosts/claude/hooks/auq-error-fallback-hook",
+            "command": "$HOME/.claude/skills/gstack/hosts/claude/hooks/auq-error-fallback-hook",
             "timeout": 5
           }
         ]
@@ -47,7 +47,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash \"/Users/andrew/.claude/plugins/cache/ponytail/ponytail/4.7.0/hooks/ponytail-statusline.sh\""
+    "command": "s=$(ls -t $HOME/.claude/plugins/cache/ponytail/ponytail/*/hooks/ponytail-statusline.sh 2>/dev/null | head -1); [ -n \"$s\" ] && bash \"$s\""
   },
   "enabledPlugins": {
     "typescript-lsp@claude-plugins-official": true,

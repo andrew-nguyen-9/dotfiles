@@ -30,9 +30,6 @@ Always safe to start lighter; escalate on discovery. Borderline → lighter tier
 
 ## Fresh machine
 
-Clone dotfiles → run `install.sh` (symlinks this folder + `settings.json`, which *declares* every plugin the strategies use — caveman, ponytail, serena, superpowers, ralph — so Claude Code installs them on startup). Two manual steps remain:
+Clone dotfiles → run `install.sh`: symlinks this folder + `settings.json` (which *declares* every plugin — caveman, ponytail, serena, superpowers, ralph — so Claude Code installs them on startup) and installs `rtk` (via brew, or its install script). `settings.json` hook/statusline paths use `$HOME`, so they survive any username. Should be turnkey across laptops.
 
-1. **`rtk` binary** on PATH (custom build — see `REQUIREMENTS.md` §6). Missing → the RTK shell-savings hook no-ops.
-2. **`settings.json` has absolute `/Users/<name>/` paths** (runtime-written): the gstack question hooks + statusline break if your username differs.
-
-The strategies still run without either — caveman/ponytail/serena come from plugins; you only lose RTK savings + those hooks.
+One residual: `settings.json` is runtime-written, so a session *could* re-bake absolute `/Users/<name>/` paths over the `$HOME` ones — if hooks/statusline break later, re-check that.

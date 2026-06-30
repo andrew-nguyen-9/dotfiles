@@ -97,10 +97,10 @@ Check the repo for a bootstrap/install script; if none, symlink `.zshrc`, `.zpro
 
 ## 6. RTK (Rust Token Killer)
 
-Custom binary at `~/.local/bin/rtk` (v0.42.4) — NOT from brew or crates.io. Source unknown to this audit.
+Source: **https://github.com/rtk-ai/rtk** (Rust Token Killer). `claude/install.sh` installs it.
 
-- [ ] Locate the rtk source repo / release. Build or copy binary to `~/.local/bin/rtk`.
-- [ ] Verify: `rtk --version` → `rtk 0.42.4`, and `rtk gain` works (not "command not found").
+- [ ] `brew install rtk` (recommended). Fallback: `curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh` (lands in `~/.local/bin` — add to PATH) or `cargo install --git https://github.com/rtk-ai/rtk`.
+- [ ] Verify: `rtk --version` and `rtk gain` works (not "command not found").
 - [ ] ⚠️ Name collision: do NOT install reachingforthejack/rtk (Rust Type Kit) — different tool.
 - [ ] Claude Code hook auto-rewrites commands to `rtk ...`; hook config lives in dotfiles `claude/settings.json`.
 
