@@ -8,14 +8,14 @@ echo "Setting up Claude Code dotfiles..."
 
 mkdir -p "$CLAUDE_DIR"
 
-# Symlink config files
-for file in settings.json CLAUDE.md RTK.md; do
+# Symlink config files + the orchestrating/ folder
+for file in settings.json CLAUDE.md RTK.md orchestrating; do
   target="$CLAUDE_DIR/$file"
   source="$DOTFILES_DIR/$file"
   if [ -L "$target" ]; then
     echo "  $file: symlink already exists, skipping"
-  elif [ -f "$target" ]; then
-    echo "  $file: backing up existing file to $target.bak"
+  elif [ -e "$target" ]; then
+    echo "  $file: backing up existing to $target.bak"
     mv "$target" "$target.bak"
     ln -s "$source" "$target"
     echo "  $file: symlinked"
