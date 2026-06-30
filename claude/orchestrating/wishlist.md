@@ -1,7 +1,6 @@
 # Wishlist + router
 
-Fill the **WISHLIST** and **PROJECT** sections below, then in a **fresh Claude Code chat opened in your target repo** either paste this whole file or type:
-`Read ~/.claude/orchestrating/wishlist.md and run it.`
+This is a **template** — don't fill it in place (it's your symlinked dotfiles). Either **copy it into your target repo** (`cp ~/.claude/orchestrating/wishlist.md ./wishlist.md`), fill it there, and tell a fresh chat `read ./wishlist.md and run it`; **or** paste the template into a fresh chat and fill the **WISHLIST** inline. Open the chat **in the target repo**.
 
 The chat first **routes** your ask to the right weight — you don't choose:
 

@@ -28,6 +28,11 @@ Always safe to start lighter; escalate on discovery. Borderline → lighter tier
 
 `/caveman:caveman ultra` + `/ponytail:ponytail ultra` + RTK + Serena/LSP, output styles off; **think ∝ blast radius**; **DoD gate** (build + test + lint green before "done"); diff edits over rewrites; dedicated search tools; no AI attribution.
 
-## Install
+## Fresh machine
 
-`install.sh` symlinks this folder to `~/.claude/orchestrating/`. RTK needs its shell hook installed; caveman/ponytail activate when the chat invokes the skills — on a bare machine the pipeline still runs, minus those savings.
+Clone dotfiles → run `install.sh` (symlinks this folder + `settings.json`, which *declares* every plugin the strategies use — caveman, ponytail, serena, superpowers, ralph — so Claude Code installs them on startup). Two manual steps remain:
+
+1. **`rtk` binary** on PATH (custom build — see `REQUIREMENTS.md` §6). Missing → the RTK shell-savings hook no-ops.
+2. **`settings.json` has absolute `/Users/<name>/` paths** (runtime-written): the gstack question hooks + statusline break if your username differs.
+
+The strategies still run without either — caveman/ponytail/serena come from plugins; you only lose RTK savings + those hooks.
