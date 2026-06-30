@@ -21,10 +21,12 @@ For asks not worth the 4-session orchestrator (`orchestrator.md`): **one chat, o
 
 ## Efficiency reflexes (single-session subset of `orchestrator.md` §Efficiency)
 
+- **Dedicated tools first** — Grep/Glob/Read (+ Serena/LSP) for code search and reads (token-optimized, no shell); reserve bash `grep`/`jq`/`head` for filtering command *output*.
 - **Load less** — partial reads (`offset`/`limit`) or symbolic nav over full files; hold paths/symbols, fetch on demand (JIT).
-- **Parallel** — fire independent reads/greps/bash in one message; don't serialize.
+- **Parallel** — fire independent reads/searches/bash in one message; don't serialize.
 - **Don't re-read** — the harness tracks file state after an edit; no verify-read.
-- **Bash/git/gh hygiene** — `grep`/`jq`/`head` to filter at source; exit codes over parsing prose; `git --stat`/`--name-only`, `commit -q`; `gh --json … --jq …`.
+- **Multi-step → todo list** (TaskCreate) so you don't lose the thread or redo steps.
+- **git/gh hygiene** — exit codes over parsing prose; `git --stat`/`--name-only`, `commit -q`; `gh --json … --jq …`.
 - **Caching is automatic in-session** — keep stable context early, volatile late; don't thrash unrelated files mid-task.
 
 Need the full treatment of any reflex → `orchestrator.md` §Efficiency layer (load only if you actually need it).

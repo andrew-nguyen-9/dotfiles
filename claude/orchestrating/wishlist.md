@@ -14,7 +14,7 @@ The chat first **routes** your ask to the right strategy — you don't choose:
 
 ```
 Activate /caveman:caveman ultra + /ponytail:ponytail ultra + RTK + Serena. Output styles off.
-Survey the repo (structure / README / build files; Serena overview if brownfield) and read the WISHLIST below. Then ROUTE:
+Glance at the repo (structure / README / build files — a quick scan, not a deep index) and read the WISHLIST below. Then ROUTE:
 
 - BIG — multiple genuinely independent epics, shared scaffolding, multi-day, worth ~15× multi-agent fan-out
     → Read ~/.claude/orchestrating/orchestrator.md and run Session A — Intake.
