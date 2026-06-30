@@ -159,7 +159,6 @@ Two 2026 ceilings: **5-hour rolling window** (resets +300 min from first prompt)
 - **Wave-pace to one rolling window** (foundation → feature waves); `.done.md` between waves so a reset loses nothing. Weekly cap = spread big runs across days.
 - **No surge pricing** — peak = global **529 overload**, not cost. Schedule big independent waves off-peak (ScheduleWakeup/cron); set `fallbackModel` (≤3), exp backoff 30s → failover, stop after ~3×529. Batch API for latency-tolerant units (eval/doc/non-interactive) = flat 50% off.
 - **Usage tracker as a PreToolUse hook** (`ccusage --once --output json`, 0 model tokens): **≥98% (exit 10) → handoff + clean stop**; limit-hit (11) → resume at reset; time-to-limit < wave est → finish in-flight unit, don't start next.
-- **Ensure subagents work in isolated worktrees to avoid checkout conflicts.**
 
 **Handoff file — clean stop at ≥98%** (don't grind to a hard freeze): finish or roll back the in-flight unit, write `handoff.md`, end session, schedule a wakeup for the reset. A fresh session resumes off the file (idempotent units make this safe).
 ```
@@ -195,6 +194,7 @@ Each dispatch carries: brief path + upstream .done.md paths. Nothing else.
 - **DoD gate** — `<build>`+`<test>`+`<lint>` green before `.done.md` (`verification-before-completion`: evidence before done).
 - **ponytail ladder** — exists? stdlib? native? one line? Ship minimum. Mark shortcuts `// ponytail:`. **TDD** for non-trivial logic.
 - **Branch/commit** — one branch per unit `<prefix>/<unit>` off the current `integration` (Model); commit on DoD-green only; no AI attribution.
+- **Ensure subagents work in isolated worktrees to avoid checkout conflicts.**
 - **Secrets** — never commit; pull from `<secrets location>`; none in briefs/notes.
 
 ## Enforcement via hooks (0 model tokens — shell, fires free)
