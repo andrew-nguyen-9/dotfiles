@@ -18,7 +18,7 @@ Between `lite.md` (one sequential pass) and `orchestrator.md` (4 chats, multi-da
 
 ## Efficiency
 
-Same reflexes as `lite.md` §Efficiency (dedicated tools, load less, parallel, don't re-read, todo for multi-step, git/gh hygiene). The one extra rule, because you're fanning out: **subagent returns ≤2 lines, structured — never let a build/grep dump into the main chat.**
+Same reflexes as `lite.md` §Efficiency (dedicated tools, load less, parallel, don't re-read, todo for multi-step, git/gh hygiene). The one extra rule, because you're fanning out: **subagent returns ≤2 lines, structured — never let a build/grep dump into the main chat.** Ensure subagents work in isolated worktrees to avoid checkout conflicts.
 
 ## Why it's its own tier
 
