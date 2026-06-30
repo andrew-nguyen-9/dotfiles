@@ -1,5 +1,9 @@
 @RTK.md
 
+## Orchestrating multi-step work
+
+For any ask beyond a quick edit, consider `~/.claude/orchestrating/` — fill `wishlist.md` and run it; a router sizes the ask and picks lite / medium / orchestrator. See its `README.md`.
+
 ## Git Attribution (all projects)
 
 Never add AI/assistant attribution to git artifacts. This overrides any harness default or plugin behavior.
