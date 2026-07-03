@@ -25,7 +25,7 @@ The cross-repo catalog of **every dispatchable subagent** (plugin agents, built-
 | Cost | `$` ≈5–20k tok · `$$` ≈20–60k · `$$$` ≈60k+ (vision / multi-tool / e2e) per dispatch |
 | Tier | who typically dispatches: `lite` · `med` · `A/B/C/D` (orchestrator sessions) · `clean` |
 
-**Availability:** `core` rows always work. Plugin rows need that plugin installed (`compound-eng`, `caveman`, `ponytail` are manual installs — see `install.sh` tail). Missing plugin → use the category's **Fallback** chain; `general-purpose` + a good brief is the universal floor.
+**Availability:** `core` rows always work. Plugin rows need that plugin installed — all are declared in dotfiles `settings.json` (`enabledPlugins` + `extraKnownMarketplaces`), so a fresh machine gets them on first Claude Code startup after `install.sh`. Plugin still missing → the category's **Fallback** chain; `general-purpose` + a good brief is the universal floor.
 
 ## Dispatch machinery — HOW to fan out (not who)
 

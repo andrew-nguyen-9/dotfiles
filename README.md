@@ -19,4 +19,4 @@ cd dotfiles/claude && ./install.sh
 | `karabiner/` | Karabiner-Elements key remaps |
 | `docs/requirements.md` | Full fresh-macOS setup checklist (apps, tools, backups) |
 
-`install.sh` symlinks the `claude/` config into `~/.claude/`, installs `rtk` + `bun` + the gstack skill, and installs Claude Code plugins. Paths use `$HOME` throughout — portable across machines and usernames.
+`install.sh` symlinks the `claude/` config into `~/.claude/` (including `claude/agents/` → `~/.claude/agents-docs/`) and installs `rtk` + `bun` + the gstack skill. Plugins are declared in `settings.json` (`enabledPlugins` + `extraKnownMarketplaces`) — Claude Code installs them on first startup. Paths use `$HOME` throughout — portable across machines and usernames.

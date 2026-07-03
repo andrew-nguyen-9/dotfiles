@@ -76,39 +76,13 @@ else
   echo "gstack: installed"
 fi
 
-# Install plugins via npx claude-plugins
+# Plugins: settings.json (symlinked above) is the single source of truth.
+# enabledPlugins declares every plugin; extraKnownMarketplaces declares the
+# custom marketplaces (compound-engineering, ralph, caveman, ponytail).
+# Claude Code reads both on startup and installs what's missing.
 echo ""
-echo "Installing plugins..."
-echo "  (Run these in Claude Code if npx approach fails)"
+echo "Plugins are declared in settings.json (enabledPlugins + extraKnownMarketplaces)."
+echo "Claude Code installs them on first startup."
+echo "If any plugin is missing later: /plugin install <name>@<marketplace> in Claude Code."
 echo ""
-
-PLUGINS=(
-  "typescript-lsp@claude-plugins-official"
-  "playwright@claude-plugins-official"
-  "code-review@claude-plugins-official"
-  "security-guidance@claude-plugins-official"
-  "pr-review-toolkit@claude-plugins-official"
-  "commit-commands@claude-plugins-official"
-  "code-simplifier@claude-plugins-official"
-  "context7@claude-plugins-official"
-  "claude-md-management@claude-plugins-official"
-  "explanatory-output-style@claude-plugins-official"
-  "learning-output-style@claude-plugins-official"
-  "frontend-design@claude-plugins-official"
-  "claude-code-setup@claude-plugins-official"
-  "feature-dev@claude-plugins-official"
-)
-
-for plugin in "${PLUGINS[@]}"; do
-  npx claude-plugins install "$plugin" && echo "  $plugin: installed" || echo "  $plugin: FAILED (install manually with /plugin install $plugin)"
-done
-
-# Custom marketplace plugins (need marketplace add first)
-echo ""
-echo "Custom marketplace plugins require manual setup in Claude Code:"
-echo "  /plugin marketplace add EveryInc/compound-engineering-plugin"
-echo "  /plugin install compound-engineering@compound-engineering-plugin"
-echo "  /plugin marketplace add snarktank/ralph"
-echo "  /plugin install ralph-skills@ralph-marketplace"
-echo ""
-echo "Done! Run /reload-plugins in Claude Code to apply."
+echo "Done! Start Claude Code to finish plugin installation."
