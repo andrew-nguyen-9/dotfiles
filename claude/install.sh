@@ -25,6 +25,22 @@ for file in settings.json CLAUDE.md RTK.md orchestrating cleaning; do
   fi
 done
 
+# Symlink the agents catalog to a NON-colliding name:
+# ~/.claude/agents/ is Claude Code's live agent-definition dir; these are docs.
+target="$CLAUDE_DIR/agents-docs"
+source="$DOTFILES_DIR/agents"
+if [ -L "$target" ]; then
+  echo "  agents-docs: symlink already exists, skipping"
+elif [ -e "$target" ]; then
+  echo "  agents-docs: backing up existing to $target.bak"
+  mv "$target" "$target.bak"
+  ln -s "$source" "$target"
+  echo "  agents-docs: symlinked"
+else
+  ln -s "$source" "$target"
+  echo "  agents-docs: symlinked"
+fi
+
 # Install bun (required by gstack)
 if ! command -v bun &>/dev/null; then
   echo "Installing bun..."

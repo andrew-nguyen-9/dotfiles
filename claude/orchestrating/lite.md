@@ -14,7 +14,7 @@ For asks not worth the 4-session orchestrator (`orchestrator.md`): **one chat, o
 2. **Scope.** Ask only if genuinely ambiguous — one batched round of multiple-choice (AskUserQuestion); else state your assumption and proceed.
 3. **Brainstorm** only if creative / multiple valid approaches (`superpowers:brainstorming`); skip for mechanical work.
 4. **Think ∝ blast radius.** `ultrathink` the one load-bearing design decision; none on mechanical edits.
-5. **Offload heavy search.** Dispatch a **read-only subagent (Explore)** for broad fan-out exploration so grep/file dumps stay out of your window — it returns conclusions, not dumps. Never fork. (The one orchestrator trick worth it at small scale.)
+5. **Offload heavy search.** Dispatch a **read-only subagent (Explore)** for broad fan-out exploration so grep/file dumps stay out of your window — it returns conclusions, not dumps. Never fork. (The one orchestrator trick worth it at small scale.) Agent type: pick via the `~/.claude/agents-docs/README.md` tree — load only the one category file.
 6. **Implement.** ponytail ladder (reuse > stdlib > native > one line); **diff edits, not rewrites**; TDD for non-trivial logic; mark deliberate shortcuts `// ponytail:`.
 7. **Verify — non-negotiable.** DoD gate: build + test + lint green before claiming done (`verification-before-completion`: evidence, not assertion). Don't trust your own "should work" — run it.
 8. **Land.** One branch; `commit -q`, no AI attribution; PR only if asked. Then print the cleaning kickoff for a fresh chat: `Read ~/.claude/cleaning/README.md and run it.`

@@ -15,6 +15,6 @@ Doc sprawl, stray files, naming drift, stale plans, docs refresh — **fits one 
    - **move** — root `.md` → `docs/` (root whitelist only), loose tests → tests dir, loose scripts → `scripts/` (`git mv`, ref-check first)
    - **merge** — overlapping docs → one canonical file; unique content preserved, duplicates die
    - **rename** — → `structure.md` §naming (`git mv`; docs only, never code files)
-4. **Docs refresh.** README + CLAUDE.md/AGENTS.md + core docs: verify claims against code (serena `get_symbols_overview`, package manifests, build/scripts). Patch stale sections; big drift → flag in summary, don't rewrite the voice. Merged docs get one coherence pass.
+4. **Docs refresh.** README + CLAUDE.md/AGENTS.md + core docs: verify claims against code (serena `get_symbols_overview`, package manifests, build/scripts). Patch stale sections; big drift → flag in summary, don't rewrite the voice. Merged docs get one coherence pass. Agents catalog (`~/.claude/agents-docs/`): verify + consolidate per `README.md` §Invariants 6.
 5. **Verify.** DoD: build + test + lint green. Grep old paths for dangling links/imports — zero hits.
 6. **Land.** `chore:` commits per op type, `-q` + caveman summary: moved/merged/deleted/renamed counts + flags.
