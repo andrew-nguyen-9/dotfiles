@@ -45,7 +45,7 @@ Paths below are relative to `.orchestrator/`. When a kickoff says "read `./spec.
 ## Model — terms used throughout
 
 - **Wave** — a batch of units with no unmet deps, dispatched together. Foundation wave first; feature waves after its `.done.md` lands.
-- **Dispatch** — C launches a **fresh subagent** per unit (general-purpose or a project-specific type). **Never fork** — a fork inherits C's context, defeating the thin window.
+- **Dispatch** — C launches a **fresh subagent** per unit; the type comes from the task's `agent` field in `prd.json` (picked by B from the **agents catalog** `~/.claude/agents-docs/` — category docs + role dispatch snippets, loaded JIT). **Never fork** — a fork inherits C's context, defeating the thin window.
 - **Integration model (default = local-branch-merge, no PRs needed).** A long-lived `integration` branch starts at `main`. **Each unit branches `<prefix>/<unit>` off the *current* `integration`** — so upstream *code* (not just `.done.md` notes) is already present for dependents. As a wave's units pass DoD, the integration subagent merges them into `integration` in dep order and runs full regression *there* (C holds only pass/fail, never the build output); the **next wave branches off the updated `integration`**. D fast-forwards `main` to the final green `integration`. Set `PR` in returns to null. Assumes the run owns `main` (freeze other merges, or rebase `integration` before the final ff). *PR-based variant:* agents open a PR per unit, C's integration agent uses `gh` to assemble, D merges PRs — pick one model project-wide, don't mix.
 
 ## Thinking budget — reason ∝ blast radius
@@ -113,7 +113,8 @@ Read spec.md ONCE. Detail to disk only. End by printing the Session C kickoff pr
 All design lives here so C stays empty. Read `spec.md` ONCE → artifacts; never re-read it.
 
 - **Plan & split** — `superpowers:writing-plans` → units (epic/feature/module/endpoint per project). `ralph-skills:prd` → `ralph` → `prd.json` (machine task list).
-  - **Minimal schema C reads:** each task `{id, brief (path), deps [ids], effort}`. Ralph's output is a superset — fine as long as those fields exist.
+  - **Minimal schema C reads:** each task `{id, brief (path), deps [ids], effort, agent}`. Ralph's output is a superset — fine as long as those fields exist.
+  - **`agent` (required)** — B picks each unit's type from the catalog: `~/.claude/agents-docs/README.md` task-verb tree → load **only** the matching category file. No specialist fits → `general-purpose` (a good brief beats a mis-fit specialist). Missing plugin → the category's Fallback chain.
   - **Requires** the `ralph-loop` + `ralph-skills` + `superpowers` plugins (C drives `ralph-loop` on `prd.json`). Check at the start of B — missing → **fallback**: hand-write `prd.json` to the schema above; in C, dispatch units yourself in dep order with `dispatching-parallel-agents` (no ralph-loop). Same artifacts, manual driver.
 - **Briefs** — `briefs/<unit>.md`, standalone. *Standalone test:* an agent given only its brief can finish. Needs the spec → brief is incomplete; fix it. **Smallest high-signal set** — a fat brief is *less* accurate (irrelevant context worsens hallucination) and costlier. Goldilocks: not brittle over-spec, not vague under-spec. **High-fan-out briefs → ultrathink** (Thinking budget); leaf briefs, normal effort.
 - **Dependency map** — the one genuinely project-specific artifact; write it to `depmap.md` (the table below), since C reads it cold. Wrong edge → dependent runs blind. Unsure → **add the edge** (extra path is cheap; stale build is not).
@@ -186,6 +187,7 @@ ralph-loop:ralph-loop on prd.json
 Each dispatch carries: brief path + upstream .done.md paths. Nothing else.
 ```
 
+- **Agent choice is B's** — dispatch each task's `agent` from `prd.json` verbatim, using the catalog's role snippets (`~/.claude/agents-docs/` — unit-builder, integration-agent, blind-judge) where they exist; missing/unknown type → `general-purpose` + note it in `progress.md`. C never browses the catalog beyond the one needed category file.
 - **Over-decomposition guard** — ~15× cost is worth it *only* for truly independent units. A coupled cluster (B needs A mid-task) is cheaper as **one sequential agent** than N coordinating ones. Fan out independent; collapse coupled.
 - **Right-size effort/model per unit** — `thinking:{type:adaptive}` + `output_config:{effort}` (not fixed `budget_tokens`); Haiku trivial → Sonnet default → Opus hard. Enforced by `$CLAUDE_EFFORT` hooks.
 
@@ -229,7 +231,8 @@ C's notes are **claims, not gospel** — verify load-bearing ones against commit
    blockers: <unit: reason>     branches→PRs: <unit → PR>     savings: rtk gain
    ```
    **Partial-release policy** (decided in A, per unit): blocked unit → *ship-without* (drop + log) or *block-release* (hold version).
-5. **Clean** — end by printing the cleaning kickoff for a fresh chat: `Read ~/.claude/cleaning/README.md and run it.` (resets spent `.orchestrator/`, merged branches, junk; refreshes docs).
+5. **Catalog update** — the agents catalog (`~/.claude/agents-docs/`) is living; this cycle feeds it: agent type/role used that has no row → add its row to the right category file; an agent surprised (wrong tier, bad returns, cost blowout, unexpectedly great fit) → one dated line under that category's `## Lessons`; catalog vs actually-available agent types drifted (plugin renamed/removed) → flag in the report. Rows stay one line; restructuring is cleaning's job, not D's.
+6. **Clean** — end by printing the cleaning kickoff for a fresh chat: `Read ~/.claude/cleaning/README.md and run it.` (resets spent `.orchestrator/`, merged branches, junk; refreshes docs + the agents catalog).
 
 ---
 
