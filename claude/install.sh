@@ -8,8 +8,8 @@ echo "Setting up Claude Code dotfiles..."
 
 mkdir -p "$CLAUDE_DIR"
 
-# Symlink config files + the orchestrating/ folder
-for file in settings.json CLAUDE.md RTK.md orchestrating; do
+# Symlink config files + the orchestrating/ + cleaning/ folders
+for file in settings.json CLAUDE.md RTK.md orchestrating cleaning; do
   target="$CLAUDE_DIR/$file"
   source="$DOTFILES_DIR/$file"
   if [ -L "$target" ]; then

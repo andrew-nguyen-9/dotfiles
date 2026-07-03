@@ -229,6 +229,7 @@ C's notes are **claims, not gospel** — verify load-bearing ones against commit
    blockers: <unit: reason>     branches→PRs: <unit → PR>     savings: rtk gain
    ```
    **Partial-release policy** (decided in A, per unit): blocked unit → *ship-without* (drop + log) or *block-release* (hold version).
+5. **Clean** — end by printing the cleaning kickoff for a fresh chat: `Read ~/.claude/cleaning/README.md and run it.` (resets spent `.orchestrator/`, merged branches, junk; refreshes docs).
 
 ---
 
