@@ -14,7 +14,7 @@ Between `lite.md` (one sequential pass) and `orchestrator.md` (4 chats, multi-da
 2. **Plan.** Write a short plan — units + order + deps + the one load-bearing design call. **`ultrathink` that design call** (blast radius); none on mechanical work. Keep the plan in-chat (or a single `plan.md`) — no `prd.json` / `depmap` / per-unit briefs.
 3. **Dispatch.** Genuinely independent units → **fresh build subagents in parallel** (2–4; never fork), each returns a **≤2-line structured note** (never a build dump). Coupled units → do them sequentially yourself. Main chat holds only the small plan + statuses.
 4. **Integrate.** One feature branch; bring the unit work together, resolve conflicts, run the **full build + test + lint on the combined result** (not just per-unit). `think hard` only if a cross-unit break appears.
-5. **Verify + land.** DoD green (`verification-before-completion`: evidence, not assertion). `commit -q`, no AI attribution; PR only if asked.
+5. **Verify + land.** DoD green (`verification-before-completion`: evidence, not assertion). `commit -q`, no AI attribution; PR only if asked. Then print the cleaning kickoff for a fresh chat: `Read ~/.claude/cleaning/README.md and run it.`
 
 ## Efficiency
 

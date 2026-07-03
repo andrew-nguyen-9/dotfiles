@@ -23,6 +23,7 @@ Always safe to start lighter; escalate on discovery. Borderline → lighter tier
 - `wishlist.md` — entry point + router (the file you edit)
 - `lite.md` / `medium.md` / `orchestrator.md` — the three strategies
 - `.orchestrator/` — runtime state, **big tier only**, created in the *target repo* (spec, briefs, notes, handoff)
+- `~/.claude/cleaning/` — sibling system: post-cycle repo reset + docs refresh (every tier's land step prints its kickoff)
 
 ## Shared discipline (every tier)
 
