@@ -27,7 +27,7 @@ Build your unit per your agent definition. DoD commands + branch prefix: repo CL
 Unit: read .orchestrator/briefs/<unit>.md; upstream notes: <paths|none>.
 ```
 
-Non-def executors (`general-purpose`, etc.): B pastes the dispatch skeleton from orchestrator.md §Efficiency into the dispatch at write time — **inline rules only, never a §-path ref** (an agent told to "obey orchestrator.md §X" loads the whole 36K template; the Efficiency layer bans exactly that).
+Non-def executors (`general-purpose`, etc.): B pastes the dispatch skeleton from efficiency.md into the dispatch at write time — **inline rules only, never a §-path ref** (an agent told to "obey orchestrator.md §X" loads the whole 36K template; the Efficiency layer bans exactly that).
 
 ## Lessons
 

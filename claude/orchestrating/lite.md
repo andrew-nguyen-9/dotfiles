@@ -19,7 +19,7 @@ For asks not worth the 4-session orchestrator (`orchestrator.md`): **one chat, o
 7. **Verify — non-negotiable.** DoD gate: build + test + lint green before claiming done (`verification-before-completion`: evidence, not assertion). Don't trust your own "should work" — run it. **Flaky/intermittent bug:** one green run proves nothing stochastic — the gate is N repeated runs (loop the test ~10×, or the CI rerun) all green. **No toolchain / docs-only / research ask:** the gate becomes the smallest runnable check that fails if you're wrong (assert-style script, links resolve, claims match code) + note it in the summary — never invent a fake green. **Research/recommendation ask:** factual claims cited + verified; the recommendation itself is judgment, not gate-able — say so, don't fake a green on it.
 8. **Land.** One branch; trust-boundary diff (auth/input/secrets) → dispatch the matching security reviewer (`agents-docs/security/`) on it before landing. `commit -q`, no AI attribution; PR only if asked. Then print the cleaning kickoff for a fresh chat: `Read ~/.claude/cleaning/README.md and run it.`
 
-## Efficiency reflexes (single-session subset of `orchestrator.md` §Efficiency)
+## Efficiency reflexes (single-session subset of `efficiency.md`)
 
 - **Dedicated tools first** — Grep/Glob/Read (+ Serena/LSP) for code search and reads (token-optimized, no shell); reserve bash `grep`/`jq`/`head` for filtering command *output*.
 - **Load less** — partial reads (`offset`/`limit`) or symbolic nav over full files; hold paths/symbols, fetch on demand (JIT).
@@ -29,4 +29,4 @@ For asks not worth the 4-session orchestrator (`orchestrator.md`): **one chat, o
 - **git/gh hygiene** — exit codes over parsing prose; `git --stat`/`--name-only`, `commit -q`; `gh --json … --jq …`.
 - **Caching is automatic in-session** — keep stable context early, volatile late; don't thrash unrelated files mid-task.
 
-Need the full treatment of any reflex → `orchestrator.md` §Efficiency layer (load only if you actually need it).
+Need the full treatment of any reflex → `~/.claude/orchestrating/efficiency.md` (load only if you actually need it).

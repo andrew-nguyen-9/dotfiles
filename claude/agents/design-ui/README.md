@@ -10,13 +10,13 @@ Visual verification and iteration. **Heaviest agents in the catalog** — vision
 | ce-design-iterator | compound-eng | N screenshot→analyze→improve cycles when design isn't landing after 1–2 attempts (not: first attempt) | all (+vision) | default | $$$ | iterated UI | C |
 | ce-figma-design-sync | compound-eng | detect + fix diffs between implementation and Figma spec, iteratively | all (+vision) | default | $$$ | synced UI | C |
 
-All ce-* rows are compound-eng = core set (globally enabled), not stack plugins needing a per-project enable.
+All ce-* rows are compound-eng = per-project enable (global-`false`): enable `compound-engineering` in the repo's `.claude/settings.json`, else use the Fallback chain.
 
 ## Fallback
 
 `general-purpose` + Playwright/chrome-devtools MCP + the `frontend-design` / `ce-frontend-design` skill lens. QA-shaped visual work: gstack `qa` / `design-review` skills. **Hard dependency:** vision needs a browser MCP (Playwright/chrome-devtools) live — MCPs off, no floor is vision-capable: `general-purpose` reads rendered output/DOM only, no pixel check — flag the gap to the user, never claim visual verification.
 
-## Efficiency notes (the $$$ tamers — orchestrator.md §Efficiency §4)
+## Efficiency notes (the $$$ tamers — efficiency.md §4)
 
 - **Snapshot-default, vision per-task**: a11y snapshot (500–5k tok) over screenshots (10k–50k); screenshot only when judging *pixels*, not structure.
 - `includeSnapshot:false` on non-interacting calls; `browser_evaluate` to extract fields, not the whole tree.

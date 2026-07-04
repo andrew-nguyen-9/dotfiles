@@ -1,6 +1,6 @@
 # review-code/ — judge written code
 
-Diff/branch/PR reviewers. **Review the branch diff only** (`git diff main...<branch>`), never the whole tree; findings confidence-gated; deterministic tests stay the DoD gate — reviewers supplement, never replace (orchestrator.md §Safeguards).
+Diff/branch/PR reviewers. **Review the branch diff only** (`git diff main...<branch>`), never the whole tree; findings confidence-gated; deterministic tests stay the DoD gate — reviewers supplement, never replace (efficiency.md §Safeguards).
 
 **Machinery note:** `compound-engineering:ce-code-review` skill orchestrates the ce-* persona roster itself (tier selection + dedup); `/code-review` and `pr-review-toolkit:review-pr` likewise bundle. Prefer one bundle over hand-picking personas unless you need a single lens.
 
@@ -49,7 +49,7 @@ Diff/branch/PR reviewers. **Review the branch diff only** (`git diff main...<bra
 
 | Agent | Source | Use when | Returns | Tier |
 |-------|--------|----------|---------|------|
-| blind-judge | role (orchestrator.md §Safeguards) | producer-blind verdict where judgment matters; criteria hidden from producer | verdict JSON | C, D |
+| blind-judge | role (efficiency.md §Safeguards) | producer-blind verdict where judgment matters; criteria hidden from producer | verdict JSON | C, D |
 | ce-pr-comment-resolver | compound-eng | evaluate + fix PR review threads (via `ce-resolve-pr-feedback` skill) | fix summaries + replies | D |
 
 ## Dispatch — blind-judge (real agent def; rubric + return schema baked in — NO snippet)

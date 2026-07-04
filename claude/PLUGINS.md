@@ -4,7 +4,7 @@
 
 ## Global core (always on — the orchestrating system's dependencies)
 
-caveman · ponytail · serena · superpowers · ralph-loop · ralph-skills · hookify · code-review · pr-review-toolkit · commit-commands · compound-engineering · context7
+caveman · ponytail · serena · superpowers · hookify · code-review · commit-commands · context7
 
 ## Per-project enable
 
@@ -30,6 +30,9 @@ Stack packs:
 | Trust-boundary work | `security-guidance` |
 | Claude tooling (plugins/skills/SDK) | `plugin-dev`, `agent-sdk-dev`, `skill-creator` |
 | Heavy GitHub API use | `github` (default: `gh` CLI, no plugin) |
+| Compound-eng / PR-review / Ralph work | `compound-engineering`, `pr-review-toolkit`, `ralph-loop`, `ralph-skills` — enable in repos that lean on ce-* personas, the PR-review bundle, or the Ralph wave driver |
 | One-off needs | `feature-dev`, `code-simplifier`, `claude-md-management`, `claude-code-setup` — enable for the session, disable after |
+
+**Why these four are per-project, not core:** every enabled plugin's agent + skill descriptions load into EVERY session, including each subagent dispatch. These four are the heaviest (~6–9k tokens/dispatch) and are dispatch-time tools you reach for in specific repos, not every-session dependencies — so they earn their keep only where actually used. `ralph-loop`+`ralph-skills` are also the orchestrator big-tier wave driver (with `superpowers`): enable them in big-tier repos, or use `session-b.md`'s documented manual fallback (hand-written `prd.json` + `dispatching-parallel-agents`).
 
 Orchestrator Session A: when the stack is known, write the project `.claude/settings.json` enablement as part of setup (it's a durable blank, like CLAUDE.md).

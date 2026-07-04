@@ -28,7 +28,7 @@ Read-only fan-out: locate code, map structure, gather external grounding. Explor
 ## Efficiency notes
 
 - Brief explorers to return **refs not bodies** (paths/symbols/queries); the dispatcher fetches JIT.
-- Web-facing agents: pre-strip pages to markdown (~94% fewer tok) — orchestrator.md §Efficiency §4.
+- Web-facing agents: pre-strip pages to markdown (~94% fewer tok) — efficiency.md §4.
 - One Explore with "very thorough" usually beats 3 narrow dispatches — batch the questions.
 
 ## Lessons

@@ -20,7 +20,7 @@ Agents that build/validate/explain the Claude Code setup: plugins, skills, hooks
 
 ## Efficiency notes
 
-- Deterministic rules → hookify hooks, not prompt lines (0 model tokens; orchestrator.md §Enforcement) — `conversation-analyzer` finds candidates after a messy run.
+- Deterministic rules → hookify hooks, not prompt lines (0 model tokens; session-c.md §Enforcement via hooks) — `conversation-analyzer` finds candidates after a messy run.
 - This catalog itself is meta: update via the contract in [../README.md](../README.md) §Update contract.
 
 ## Lessons

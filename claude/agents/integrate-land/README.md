@@ -26,7 +26,7 @@ DoD commands: repo CLAUDE.md. Wave 1: also audit foundation .done.md verified: c
 
 - C holds pass/fail only — build logs die in the agent.
 - D's land = fast-forward `main` to the already-green `integration`; no re-merge, no re-regression.
-- Git hygiene per orchestrator.md §Efficiency §3: `-q`, `--porcelain`, `--stat`, `--no-pager`.
+- Git hygiene per efficiency.md §3: `-q`, `--porcelain`, `--stat`, `--no-pager`.
 
 ## Lessons
 

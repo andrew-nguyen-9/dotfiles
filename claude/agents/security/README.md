@@ -4,7 +4,7 @@ Dispatch whenever a diff or plan touches a **trust boundary**: auth/authz, user 
 
 Security findings are the one place caveman drops (Auto-Clarity): reports stay complete, plain prose.
 
-All ce-* rows are compound-eng = core set (globally enabled), not stack plugins needing a per-project enable.
+All ce-* rows are compound-eng = per-project enable (global-`false`): enable `compound-engineering` in the repo's `.claude/settings.json`, else use the Fallback chain.
 
 ## Agents
 
@@ -21,7 +21,7 @@ All ce-* rows are compound-eng = core set (globally enabled), not stack plugins 
 ## Efficiency notes
 
 - Scope to **changed files at trust boundaries**, not the whole repo — `git diff --name-only` first, filter, then dispatch.
-- Secrets rule is standing (orchestrator.md §Standing constraints): never in briefs, notes, or returns — reviewer confirms none leaked into artifacts.
+- Secrets rule is standing (session-c.md §Standing constraints): never in briefs, notes, or returns — reviewer confirms none leaked into artifacts.
 
 ## Lessons
 
