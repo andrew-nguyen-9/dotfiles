@@ -43,7 +43,8 @@ State the chosen route + a one-line why. Borderline → lighter tier (cheap to e
 3. **Ref-check before delete/move.** Code: serena `find_referencing_symbols` / grep imports — zero refs required. Docs: grep for links to the old path.
 4. **DoD after moves.** Build + test + lint green before the final commit — moves and renames break imports and links.
 5. **Land.** `chore:` commits per op type, `-q`, no AI attribution + caveman chat summary (moved/merged/deleted/renamed/pruned counts, notable paths, flags).
-6. **Docs refresh** runs whenever medium/deep runs: verify README/CLAUDE.md/core-doc claims against actual code, patch stale sections. Also the global **agents catalog** (`~/.claude/agents-docs/` — symlinked, so any repo's run may touch it): verify rows vs installed plugins, fold sprawled `## Lessons` one-liners into table rows, prune dead agents.
+6. **Template/config repos are exempt from structure.md** — dotfiles and any repo whose *content is itself the machinery* (templates, catalogs, hook scripts): never migrate them toward the docs/ template, never junk-table their template files (a root `wishlist.md` here IS the template, not residue). Flag drift only; the four ops still apply to genuine junk (.DS_Store, build artifacts).
+7. **Docs refresh** runs whenever medium/deep runs: verify README/CLAUDE.md/core-doc claims against actual code, patch stale sections. Also the global **agents catalog** (`~/.claude/agents-docs/` — symlinked, so any repo's run may touch it): verify rows vs installed plugins, fold sprawled `## Lessons` one-liners into table rows, prune dead agents.
 
 ## Files
 

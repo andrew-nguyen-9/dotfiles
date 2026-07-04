@@ -6,7 +6,7 @@ Executors. Default is **general-purpose + a good brief** — the brief, not the 
 
 | Agent | Source | Use when / (not:) | Tools | Effort | Cost | Returns | Tier |
 |-------|--------|-------------------|-------|--------|------|---------|------|
-| unit-builder | role (orchestrator.md §C) | the standard C dispatch: one unit off brief + upstream `.done.md` paths (not: coupled clusters — collapse to one sequential agent) | all | adaptive | $$–$$$ | Invariant-2 JSON + `.done.md` | C |
+| unit-builder | agent-def (`~/.claude/agents/`) | the standard C dispatch: one unit off brief + upstream `.done.md` paths (not: coupled clusters — collapse to one sequential agent) | def allowlist (core + serena) | adaptive | $$–$$$ | def JSON + `.done.md` (def is canonical) | C |
 | general-purpose | core | default executor for any bounded task | all | adaptive | $$ | as contract | all |
 | cavecrew-builder | caveman | surgical 1–2 file edit: typo, single-fn rewrite, mechanical rename (not: 3+ files — hard-refuses; new features) | Read/Edit/Write/Grep/Glob | haiku-ok | $ | caveman diff receipt | lite, C |
 | claude | core | FleetView catch-all default (not: anything a specialist row covers) | all | default | $$ | — | — |
@@ -18,16 +18,16 @@ Executors. Default is **general-purpose + a good brief** — the brief, not the 
 
 `cavecrew-builder` → `general-purpose` with "≤2 files, diff-edit only" in the brief.
 
-## Dispatch snippet — unit-builder (C copies verbatim; keep the skeleton byte-identical across a wave — only the last line varies, so the prefix caches)
+## Dispatch — unit-builder (real agent def; contract + return schema baked in — NO snippet, NO role paste)
+
+The def (`~/.claude/agents/unit-builder.md`) is the single canonical contract. Dispatch prompt = two lines, byte-identical prefix across a wave (only the last line varies → prefix caches):
 
 ```
-You are unit-builder for one unit. Obey .orchestrator/orchestrator.md §Efficiency + §Standing constraints:
-caveman ultra + ponytail ultra + RTK + Serena, output styles off; isolated worktree;
-branch <prefix>/<unit> off current integration; TDD non-trivial logic; no AI attribution.
-DoD gate: <build>+<test>+<lint> green → write .orchestrator/<unit>.done.md (≤15 lines) → commit -q.
-Return ONLY JSON: {"id":"","status":"done|blocked","branch":"","PR":null,"note":"≤2 lines"}.
+Build your unit per your agent definition. DoD commands + branch prefix: repo CLAUDE.md (brief overrides via dod:).
 Unit: read .orchestrator/briefs/<unit>.md; upstream notes: <paths|none>.
 ```
+
+Non-def executors (`general-purpose`, etc.): B pastes the dispatch skeleton from orchestrator.md §Efficiency into the dispatch at write time — **inline rules only, never a §-path ref** (an agent told to "obey orchestrator.md §X" loads the whole 36K template; the Efficiency layer bans exactly that).
 
 ## Lessons
 

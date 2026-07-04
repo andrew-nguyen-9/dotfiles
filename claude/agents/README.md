@@ -60,7 +60,7 @@ Written by orchestrating/cleaning cycles, not by hand:
    - used an agent type/role not in the catalog → add its row to the right category file
    - an agent surprised (wrong tier, bad returns, cost blowout, great fit) → one dated line under that category's `## Lessons`
    - diff catalog vs actually-available agent types → flag drift (renamed/removed plugins) in the D report
-2. **Cleaning docs-refresh (medium/deep)** — verify rows against installed plugins, fold sprawled Lessons into table rows, prune dead agents. **Prune only plugin-sourced rows whose plugin is gone — `core` and `role` rows are never pruned for availability** (a role row D added last cycle is not a dead plugin). Catalog is global (symlinked), so any repo's cleaning run may touch it.
+2. **Cleaning docs-refresh (medium/deep)** — verify rows against installed plugins, fold sprawled Lessons into table rows, prune dead agents. **Prune only plugin-sourced rows whose plugin is gone — `core`, `role`, and `agent-def` rows are never pruned for availability** (a role row D added last cycle is not a dead plugin). Catalog is global (symlinked into the dotfiles git repo), so any repo's cleaning run may touch it — **catalog edits leave dotfiles dirty; the editing run commits them there** (`chore:`, no attribution).
 3. Lite/medium tiers: hit a catalog gap mid-run → one Lessons line, don't restructure.
 
 Keep rows terse (one line each). A category file growing past ~100 lines = consolidate Lessons or split the table, not more prose.

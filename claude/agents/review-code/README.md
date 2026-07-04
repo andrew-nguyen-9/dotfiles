@@ -52,14 +52,9 @@ Diff/branch/PR reviewers. **Review the branch diff only** (`git diff main...<bra
 | blind-judge | role (orchestrator.md §Safeguards) | producer-blind verdict where judgment matters; criteria hidden from producer | verdict JSON | C, D |
 | ce-pr-comment-resolver | compound-eng | evaluate + fix PR review threads (via `ce-resolve-pr-feedback` skill) | fix summaries + replies | D |
 
-## Dispatch snippet — blind-judge
+## Dispatch — blind-judge (real agent def; rubric + return schema baked in — NO snippet)
 
-```
-Producer-blind judge. You did not write this code; criteria below were hidden from its author.
-Read the diff: git diff main...<branch> --stat, then hunks JIT. Judge vs: <acceptance criteria from brief>.
-Findings confidence-gated — report only what you'd stake a merge on (≤5, one line each).
-Return ONLY JSON: {"unit":"","verdict":"pass|fail","findings":[]}.
-```
+The def (`~/.claude/agents/blind-judge.md`) is canonical: 4-axis rubric (accuracy/completeness/spec-fit/quality), returns `{"unit","scores":{…},"unmet":[criteria],"note"}`. Dispatch carries ONLY the unit's acceptance criteria + branch/diff ref — never the producer's notes, reasoning, or `.done.md` (that's the blindness). Pass = no unmet criteria + no score ≤2; C/D applies that reading, the judge just scores.
 
 ## Fallback
 

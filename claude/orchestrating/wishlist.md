@@ -24,7 +24,7 @@ Glance at the repo (structure / README / build files — a quick scan, not a dee
 - BIG — many genuinely independent epics, shared scaffolding, multi-day, worth ~15× fan-out
     → Read ~/.claude/orchestrating/orchestrator.md and run Session A — Intake.
 
-State the chosen route + a one-line why before starting.
+State the chosen route + a one-line why before starting — the line MUST name the detected repo root + project identity as evidence (e.g. "LITE in ~/code/acme (acme-api, per package.json)"), so a wrong-repo run is visible even when the Repo hint says "current directory".
 Borderline → pick the lighter tier (cheap to escalate mid-task; expensive to over-build).
 ```
 

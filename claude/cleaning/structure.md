@@ -1,6 +1,11 @@
 # structure.md — cross-repo convention (canonical)
 
-The single source of truth every cleaning tier cleans *toward*. Repos migrate incrementally — never big-bang a green repo to match this.
+The single source of truth every cleaning tier cleans *toward*. Repos migrate incrementally — never big-bang a green repo to match this. Template/config repos (dotfiles): exempt — flag only (cleaning README Invariant 6).
+
+## Tiers — don't scaffold what the repo hasn't earned
+
+- **minimal** (default): `README.md` + `CLAUDE.md`. Cleaning never creates docs/ preemptively; README is the overview.
+- **full**: the docs/ template below. Graduate when: a big-tier orchestrator cycle lands (harvest needs destinations) · README outgrows ~100 lines · doc sprawl already exists and needs homes.
 
 ## Root whitelist
 
@@ -19,14 +24,31 @@ docs/
   design/             # design system, UX
 ```
 
-- Core files numbered kebab; add `05+` only if genuinely core. Small one-off notes (SPOTIFY.md, DNS-CAA.md style) merge into `04-operations.md`.
+- Core files numbered kebab; add `05+` only if genuinely core. Small one-off notes (SPOTIFY.md, DNS-CAA.md style) merge into `04-operations.md`. `01-overview.md` is **optional** — README covers it until it outgrows elevator-pitch size. `research/`, `design/`, `decisions/` created on first artifact, never empty.
 - **One live version.** No `docs/v1|v2|v3`, no `docs/archive/` — superseded content lives in git history.
 - `superpowers/`, `.orchestrator/`, tool scaffolding: never inside `docs/`.
-- **`02-architecture.md` is the canonical agent map** — orchestrator briefs path-ref it instead of re-describing the stack; keep it truthful (docs-refresh invariant). Greenfield orchestrator runs: the foundation unit seeds its skeleton.
+
+## 02-architecture.md skeleton — stable, addressable headings
+
+**The canonical agent map**: orchestrator briefs path-ref its *sections* (`02 §Map`, `02 §Ownership zones`) instead of re-describing the stack — stable headings are what make path-refs cheap. Greenfield: the foundation unit seeds exactly these headings; harvest and docs-refresh keep them truthful.
+
+```markdown
+## Stack            # one line, mirrors CLAUDE.md
+## Map              # modules, entry points, data flow — the brief path-ref target
+## Ownership zones  # dir → purpose + natural unit seams; B's depmap raw material,
+                    # updated from each cycle's depmap at harvest
+## Conventions      # patterns agents must follow
+## Gotchas          # dated lines: `YYYY-MM-DD <path/symbol>: <trap>` — cap ~20,
+                    # oldest-out; docs-refresh DROPS lines whose path/symbol is gone
+```
+
+## 04-operations.md skeleton
+
+`## Deploy` · `## Env & secrets` (detail — the *pointer* stays in CLAUDE.md) · `## Ops notes` (DNS, DKIM, keys-where). Harvested blocker env/infra facts land under `## Ops notes`.
 
 ## CLAUDE.md — per-repo spec (≤20 lines HARD cap; auto-loads every session, each line is forever-cost)
 
-The one file every session AND subagent gets free — the highest-leverage context slot. Durable orchestrator blanks live here (Session A reads first, patches after; filled blank = skipped scoping question).
+The one file every session AND subagent gets free — the highest-leverage context slot. Durable orchestrator blanks live here (Session A reads first, patches after; filled blank = skipped scoping question). **This file is the single GATE 1 source**: orchestrator dispatch prompts say "DoD per repo CLAUDE.md" and never duplicate the commands; C's GATE 1 = grep THIS file for unfilled `<…>` tokens + presence of the DoD/Secrets/Branches lines. Cap enforcement: cleaning docs-refresh compresses past 20 lines.
 
 ```markdown
 # <repo>
@@ -42,13 +64,17 @@ The one file every session AND subagent gets free — the highest-leverage conte
 
 ## Harvest table — run BEFORE deleting `.orchestrator/` (cleaning lite step 3)
 
-| Artifact | → Destination | Trigger |
-|---|---|---|
-| `spec.md` blocked / ship-without epics | `docs/03-roadmap.md` bullets | any epic unmet at land |
-| `*.done.md` `decided:` lines | `docs/decisions/YYYY-MM-DD-<cycle>.md` (ONE file per cycle) | any non-obvious decision |
-| `*.done.md` `gotchas:` lines | `docs/02-architecture.md` §Gotchas | any gotcha |
-| `blockers.md` env/infra/secrets facts | `docs/04-operations.md` | new ops fact |
-| briefs, depmap, progress, handoff, rest of spec | delete — git history | always |
+Every row names its **consumer** — a harvest destination nothing reads is ritual, not memory. Destination file missing → create it minimal from the templates above (never skip the harvest because the file doesn't exist).
+
+| Artifact | → Destination | Trigger | Consumer (next cycle) |
+|---|---|---|---|
+| `spec.md` blocked / ship-without epics | `docs/03-roadmap.md` bullets | any epic unmet at land | A step 0.5 reads roadmap into scoping |
+| `*.done.md` `decided:` lines | `docs/decisions/YYYY-MM-DD-<cycle>.md` (ONE file per cycle) | any non-obvious decision | A step 0.5 + B skim the latest file |
+| `*.done.md` `gotchas:` lines | `docs/02-architecture.md` §Gotchas (dated) | any gotcha | every brief that path-refs 02 |
+| `depmap.md` unit seams that worked | `docs/02-architecture.md` §Ownership zones | seams changed | B's next depmap |
+| wave-1 cost actuals (`ccusage` delta vs 15× prior) + process lessons (3×-stuck units, re-dispatch causes) | 2-line footer of the cycle's decisions file: `cost:` / `process:` | every cycle | next run's C pre-flight budget + B briefs |
+| `blockers.md` env/infra/secrets facts | `docs/04-operations.md` §Ops notes | new ops fact | C blockers check; ops asks |
+| briefs, depmap, progress, handoff, rest of spec | delete — git history | always | — |
 
 ## Naming
 
@@ -97,6 +123,7 @@ Better, once per machine: `git config --global core.excludesFile ~/.gitignore_gl
 | `wishlist.md` at repo root after its route landed | delete (template lives in dotfiles) |
 | `FILE_INDEX.md` / `REPO_MAP.md` manual indexes | delete (drift by design; serena + README cover it) |
 | `docs/vN/`, `docs/archive/` | collapse — latest live, rest to git history (deep tier) |
+| `02 §Gotchas` lines w/ dead path/symbol refs | delete at docs-refresh (fixed or stale) |
 | empty sibling repos / stray worktrees / built artifact next to its source (`x.skill` + `x/`) | **flag only**, user decides |
 
 ## Tool recipes

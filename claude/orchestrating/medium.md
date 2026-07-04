@@ -2,7 +2,7 @@
 
 Between `lite.md` (one sequential pass) and `orchestrator.md` (4 chats, multi-day): for an ask with **a handful of units (~2–6), some structure, fits ~one session** — worth a written plan and maybe a few parallel build agents, but NOT the orchestrator's session-splitting / disk-artifact / checkpoint overhead.
 
-**Routed here from `wishlist.md`.** Turns out trivial / single unit → drop to `lite.md`. Turns out many independent units, multi-day, or context won't fit one window → escalate to `orchestrator.md` Session A (your plan becomes its spec input).
+**Routed here from `wishlist.md`.** Arriving from a lite escalation: skip step 1 (already understood), lite's WIP branch = the feature branch. Turns out trivial / single unit → drop to `lite.md`. Turns out many independent units, multi-day, or context won't fit one window → escalate to `orchestrator.md` Session A — **escalation ritual:** await in-flight agent returns (dispatch nothing new), merge landed unit branches into the feature branch, write plan + unit statuses to `plan.md`, then print an A kickoff naming `plan.md` as wishlist input; the feature branch is A's brownfield starting state. **Stale `.orchestrator/` in the repo** → it silently activates the orch enforcement hooks on this session; print the cleaning kickoff and resolve first.
 
 ## Activate
 
@@ -12,9 +12,9 @@ Between `lite.md` (one sequential pass) and `orchestrator.md` (4 chats, multi-da
 
 1. **Understand.** Trace the real paths (Serena/LSP, not whole-file reads). Brownfield: read before you write. Greenfield/empty repo: skip tracing; first unit establishes the toolchain. Bug → root cause across all callers, not the symptom.
 2. **Plan.** Write a short plan — units + order + deps + the one load-bearing design call. **`ultrathink` that design call** (blast radius); none on mechanical work. Keep the plan in-chat (or a single `plan.md`) — no `prd.json` / `depmap` / per-unit briefs.
-3. **Dispatch.** Genuinely independent units → **fresh build subagents in parallel** (2–4; never fork), each returns a **≤2-line structured note** (never a build dump). Coupled units → do them sequentially yourself. Agent types via the `~/.claude/agents-docs/README.md` tree (load only the needed category file). Main chat holds only the small plan + statuses.
+3. **Dispatch.** Genuinely independent units → **fresh build subagents in parallel** (2–4; never fork), each returns a **≤2-line structured note** (never a build dump). Branching: parallel units get per-unit branches forked **off the feature branch**; units you do sequentially yourself commit **directly to the feature branch**. Coupled units → sequential, yourself. Agent types via the `~/.claude/agents-docs/README.md` tree (load only the needed category file). Main chat holds only the small plan + statuses.
 4. **Integrate.** One feature branch; bring the unit work together, resolve conflicts, run the **full build + test + lint on the combined result** (not just per-unit). `think hard` only if a cross-unit break appears.
-5. **Verify + land.** DoD green (`verification-before-completion`: evidence, not assertion). `commit -q`, no AI attribution; PR only if asked. Then print the cleaning kickoff for a fresh chat: `Read ~/.claude/cleaning/README.md and run it.`
+5. **Verify + land.** DoD green (`verification-before-completion`: evidence, not assertion). Research/docs-only units: gate = the smallest runnable check that fails if the work is wrong — never a fake build-green. `commit -q`, no AI attribution; PR only if asked. Then print the cleaning kickoff for a fresh chat: `Read ~/.claude/cleaning/README.md and run it.`
 
 ## Efficiency
 

@@ -32,6 +32,6 @@ Always safe to start lighter; escalate on discovery. Borderline → lighter tier
 
 ## Fresh machine
 
-Clone dotfiles → run `install.sh`: symlinks this folder, the agents catalog (`claude/agents/` → `~/.claude/agents-docs/` — NOT `~/.claude/agents/`, which is the live agent-defs dir), the enforcement hooks (`claude/hooks/` → `~/.claude/hooks/`), the real agent defs (`claude/agent-defs/*` → `~/.claude/agents/`) + `settings.json` (declares every plugin; core set enabled globally, stack plugins per-project — see `claude/PLUGINS.md`) and installs `rtk` + `ccusage`. `settings.json` hook/statusline paths use `$HOME`, so they survive any username. Should be turnkey across laptops.
+Clone dotfiles → run `install.sh`: symlinks this folder, the agents catalog (`claude/agents/` → `~/.claude/agents-docs/` — NOT `~/.claude/agents/`, which is the live agent-defs dir), the enforcement hooks (`claude/hooks/` → `~/.claude/hooks/`), the real agent defs (`claude/agent-defs/*` → `~/.claude/agents/`) + `settings.json` (declares every plugin; core set enabled globally, stack plugins per-project — see `claude/PLUGINS.md`) and installs `jq` (**load-bearing: every hook exits silently without it**) + `rtk` + `ccusage`. `settings.json` hook/statusline paths use `$HOME`, so they survive any username. Should be turnkey across laptops.
 
 One residual: `settings.json` is runtime-written, so a session *could* re-bake absolute `/Users/<name>/` paths over the `$HOME` ones — if hooks/statusline break later, re-check that.
