@@ -70,6 +70,19 @@ else
   echo "bun: already installed ($(bun --version))"
 fi
 
+# Install jq — EVERY enforcement hook gates on `command -v jq || exit 0`;
+# without it the whole hook layer is silently dead (stock macOS ships none).
+if ! command -v jq &>/dev/null; then
+  echo "Installing jq..."
+  if command -v brew &>/dev/null; then
+    brew install jq
+  else
+    echo "  WARNING: no brew and no jq — install jq manually or ALL claude hooks are inert."
+  fi
+else
+  echo "jq: already installed"
+fi
+
 # Install rtk (Rust Token Killer) — drives the Bash hook in settings.json
 # Source: https://github.com/rtk-ai/rtk
 if ! command -v rtk &>/dev/null; then

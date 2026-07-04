@@ -25,7 +25,7 @@ case "$tool" in
     ;;
   Bash)
     cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty')
-    if printf '%s' "$cmd" | grep -qE '(cat|less|more|head|tail|bat|strings|vi|vim|nano|open)[^|;&]*[[:space:]/]\.env(\.[a-z]+)?([[:space:]]|$)' \
+    if printf '%s' "$cmd" | grep -qE '(cat|less|more|head|tail|bat|strings|vi|vim|nano|open|grep|awk|sed|source|dd|od|xxd|base64)[^|;&]*[[:space:]/]\.env(\.[a-z]+)?([[:space:]|;&]|$)' \
        && ! printf '%s' "$cmd" | grep -qE '\.env\.(example|template|sample)'; then
       deny ".env target in: $cmd"
     fi

@@ -2,7 +2,7 @@
 # PostToolUse (Task|Agent) — return-contract cap.
 # A subagent return over 4000 chars violates the <=2-line contract; truncate it
 # before it floods the orchestrator window. Active ONLY with a live .orchestrator/.
-# Harmless no-op if the harness ignores updatedToolOutput.
+# updatedToolOutput replaces the tool result (supported per hooks docs) — live.
 set -u
 input=$(cat)
 

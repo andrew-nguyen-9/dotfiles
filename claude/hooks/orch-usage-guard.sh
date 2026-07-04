@@ -3,7 +3,9 @@
 # Blocks new subagent dispatch at >=98% of the 5h-window token limit so Session C
 # writes handoff.md and stops cleanly instead of grinding into a hard freeze.
 # Active ONLY in repos with a live .orchestrator/ dir. 0 model tokens.
-# Limit source: $ORCH_TOKEN_LIMIT, else the max totalTokens of any past ccusage block.
+# Limit source: $ORCH_TOKEN_LIMIT, else the max totalTokens of any COMPLETED
+# ccusage block (active excluded — else the heaviest-ever run becomes its own
+# limit and self-blocks at "100%"). No history and no env var → guard inactive.
 set -u
 input=$(cat)
 
@@ -16,7 +18,7 @@ dir=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 
 blocks=$(ccusage blocks -j 2>/dev/null) || exit 0
 active=$(printf '%s' "$blocks" | jq '[.blocks[] | select(.isActive == true)][0].totalTokens // 0')
-limit="${ORCH_TOKEN_LIMIT:-$(printf '%s' "$blocks" | jq '[.blocks[] | select(.isGap != true) | .totalTokens] | max // 0')}"
+limit="${ORCH_TOKEN_LIMIT:-$(printf '%s' "$blocks" | jq '[.blocks[] | select(.isGap != true and .isActive != true) | .totalTokens] | max // 0')}"
 
 [ "$limit" -gt 0 ] 2>/dev/null || exit 0
 pct=$(( active * 100 / limit ))
