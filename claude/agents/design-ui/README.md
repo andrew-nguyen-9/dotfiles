@@ -10,9 +10,11 @@ Visual verification and iteration. **Heaviest agents in the catalog** — vision
 | ce-design-iterator | compound-eng | N screenshot→analyze→improve cycles when design isn't landing after 1–2 attempts (not: first attempt) | all (+vision) | default | $$$ | iterated UI | C |
 | ce-figma-design-sync | compound-eng | detect + fix diffs between implementation and Figma spec, iteratively | all (+vision) | default | $$$ | synced UI | C |
 
+All ce-* rows are compound-eng = core set (globally enabled), not stack plugins needing a per-project enable.
+
 ## Fallback
 
-`general-purpose` + Playwright/chrome-devtools MCP + the `frontend-design` / `ce-frontend-design` skill lens. QA-shaped visual work: gstack `qa` / `design-review` skills.
+`general-purpose` + Playwright/chrome-devtools MCP + the `frontend-design` / `ce-frontend-design` skill lens. QA-shaped visual work: gstack `qa` / `design-review` skills. **Hard dependency:** vision needs a browser MCP (Playwright/chrome-devtools) live — MCPs off, no floor is vision-capable: `general-purpose` reads rendered output/DOM only, no pixel check — flag the gap to the user, never claim visual verification.
 
 ## Efficiency notes (the $$$ tamers — orchestrator.md §Efficiency §4)
 

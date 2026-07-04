@@ -4,8 +4,8 @@ The single source of truth every cleaning tier cleans *toward*. Repos migrate in
 
 ## Tiers — don't scaffold what the repo hasn't earned
 
-- **minimal** (default): `README.md` + `CLAUDE.md`. Cleaning never creates docs/ preemptively; README is the overview.
-- **full**: the docs/ template below. Graduate when: a big-tier orchestrator cycle lands (harvest needs destinations) · README outgrows ~100 lines · doc sprawl already exists and needs homes.
+- **minimal** (default): `README.md` + `CLAUDE.md`. Cleaning never creates docs/ *preemptively* — but harvest may create a destination file when real content demands it (content-driven, see §Harvest table); README is the overview.
+- **full**: the docs/ template below. Graduate when: a big-tier orchestrator cycle lands (harvest needs destinations) · big-tier greenfield at foundation-seed (first unit seeds docs/) · README outgrows ~100 lines · doc sprawl already exists and needs homes.
 
 ## Root whitelist
 
@@ -30,14 +30,15 @@ docs/
 
 ## 02-architecture.md skeleton — stable, addressable headings
 
-**The canonical agent map**: orchestrator briefs path-ref its *sections* (`02 §Map`, `02 §Ownership zones`) instead of re-describing the stack — stable headings are what make path-refs cheap. Greenfield: the foundation unit seeds exactly these headings; harvest and docs-refresh keep them truthful.
+**The canonical agent map**: orchestrator briefs path-ref its *sections* (`02 §Map`, `02 §Ownership zones`, `02 §Gotchas`) instead of re-describing the stack — stable headings are what make path-refs cheap. Greenfield: the foundation unit seeds exactly these headings; harvest and docs-refresh keep them truthful.
 
 ```markdown
-## Stack            # one line, mirrors CLAUDE.md
+## Stack → CLAUDE.md  # pointer only, don't dup the one-line stack
 ## Map              # modules, entry points, data flow — the brief path-ref target
 ## Ownership zones  # dir → purpose + natural unit seams; B's depmap raw material,
                     # updated from each cycle's depmap at harvest
-## Conventions      # patterns agents must follow
+## Test layout      # tests dir, run-one cmd, fixtures
+## Conventions      # patterns agents follow: error handling, API shape, naming
 ## Gotchas          # dated lines: `YYYY-MM-DD <path/symbol>: <trap>` — cap ~20,
                     # oldest-out; docs-refresh DROPS lines whose path/symbol is gone
 ```
@@ -48,32 +49,41 @@ docs/
 
 ## CLAUDE.md — per-repo spec (≤20 lines HARD cap; auto-loads every session, each line is forever-cost)
 
-The one file every session AND subagent gets free — the highest-leverage context slot. Durable orchestrator blanks live here (Session A reads first, patches after; filled blank = skipped scoping question). **This file is the single GATE 1 source**: orchestrator dispatch prompts say "DoD per repo CLAUDE.md" and never duplicate the commands; C's GATE 1 = grep THIS file for unfilled `<…>` tokens + presence of the DoD/Secrets/Branches lines. Cap enforcement: cleaning docs-refresh compresses past 20 lines.
+The one file every session AND subagent gets free — the highest-leverage context slot. Durable orchestrator blanks live here (Session A reads first, patches after; filled blank = skipped scoping question). **This file is the single GATE 1 source**: orchestrator dispatch prompts say "DoD per repo CLAUDE.md" and never duplicate the commands; C's GATE 1 = grep THIS file for unfilled `<…>` tokens + presence of the DoD/Secrets/Branches lines (minimal template lacks Branches — Session A adds it at big-tier start). Cap enforcement: cleaning docs-refresh compresses past 20 lines.
+
+**Minimal** (minimal-tier repo, no docs/ — 5–6 lines):
 
 ```markdown
 # <repo>
 
 - Stack: <langs / frameworks — one line>
-- Map: docs/02-architecture.md (read before coding)
-- Ops/env: docs/04-operations.md
+- Map: README.md#architecture (read before coding)
 - DoD: build `<cmd>` · test `<cmd>` · lint `<cmd>` — all green before "done"
+- Test-one: <single-file/case cmd>
 - Secrets: <location> — never commit
-- Branches: <prefix>/<unit>; no AI attribution in git artifacts
+```
+
+**Full** (docs/ graduated) adds — and repoints Map:
+
+```markdown
+- Map: docs/02-architecture.md (supersedes the README pointer)
+- Ops/env: docs/04-operations.md
+- Branches: <prefix>/<unit>
 - Must-not-touch: <paths / constraints, or "none">
 ```
 
 ## Harvest table — run BEFORE deleting `.orchestrator/` (cleaning lite step 3)
 
-Every row names its **consumer** — a harvest destination nothing reads is ritual, not memory. Destination file missing → create it minimal from the templates above (never skip the harvest because the file doesn't exist).
+`.orchestrator/` is gitignored but still on disk — harvest reads it before the delete pass. Every row names its **consumer** — a harvest destination nothing reads is ritual, not memory. Destination file missing → create it minimal from the templates above (this graduation is content-driven, not the preemptive-creation §Tiers forbids — never skip the harvest because the file doesn't exist).
 
 | Artifact | → Destination | Trigger | Consumer (next cycle) |
 |---|---|---|---|
 | `spec.md` blocked / ship-without epics | `docs/03-roadmap.md` bullets | any epic unmet at land | A step 0.5 reads roadmap into scoping |
-| `*.done.md` `decided:` lines | `docs/decisions/YYYY-MM-DD-<cycle>.md` (ONE file per cycle) | any non-obvious decision | A step 0.5 + B skim the latest file |
+| `*.done.md` `decided:` lines | `docs/decisions/YYYY-MM-DD-<cycle>.md` (ONE file per cycle) | any non-obvious decision | A step 0.5 skims the latest file |
 | `*.done.md` `gotchas:` lines | `docs/02-architecture.md` §Gotchas (dated) | any gotcha | every brief that path-refs 02 |
-| `depmap.md` unit seams that worked | `docs/02-architecture.md` §Ownership zones | seams changed | B's next depmap |
-| wave-1 cost actuals (`ccusage` delta vs 15× prior) + process lessons (3×-stuck units, re-dispatch causes) | 2-line footer of the cycle's decisions file: `cost:` / `process:` | every cycle | next run's C pre-flight budget + B briefs |
-| `blockers.md` env/infra/secrets facts | `docs/04-operations.md` §Ops notes | new ops fact | C blockers check; ops asks |
+| `depmap.md` unit seams that worked | `docs/02-architecture.md` §Ownership zones | seams changed | A step 0.5 (reads 02) |
+| wave-1 cost actuals (`ccusage` delta vs 15× prior) + process lessons (3×-stuck units, re-dispatch causes) | 2-line footer of the cycle's decisions file: `cost:` / `process:` | every cycle | A step 0.5 |
+| `blockers.md` env/infra/secrets facts | `docs/04-operations.md` §Ops notes | new ops fact | A step 0.5 (reads 04) |
 | briefs, depmap, progress, handoff, rest of spec | delete — git history | always | — |
 
 ## Naming

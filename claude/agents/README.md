@@ -16,6 +16,8 @@ The cross-repo catalog of **every dispatchable subagent** (plugin agents, built-
 - merge / regression / deploy / land → [integrate-land/](integrate-land/README.md)
 - tooling for Claude itself (plugins, skills, hooks, SDK) → [meta/](meta/README.md)
 
+**Multi-match precedence:** a unit matching build/ + security/ → build owns the unit, then dispatch the matching security reviewer on its diff (build first, review the result — not two owners).
+
 ## Column legend (all category tables)
 
 | Col | Values |
@@ -25,7 +27,7 @@ The cross-repo catalog of **every dispatchable subagent** (plugin agents, built-
 | Cost | `$` ≈5–20k tok · `$$` ≈20–60k · `$$$` ≈60k+ (vision / multi-tool / e2e) per dispatch |
 | Tier | who typically dispatches: `lite` · `med` · `A/B/C/D` (orchestrator sessions) · `clean` |
 
-**Availability:** `unit-builder` / `integration-agent` / `blind-judge` ship as REAL agent defs (dotfiles `claude/agent-defs/` → symlinked into `~/.claude/agents/` by install.sh) — dispatch by name; contract baked into the def, no per-dispatch prose needed. `core` rows always work. Plugin rows: the **core set** (caveman, ponytail, serena, superpowers, ralph, hookify, code-review, pr-toolkit, commit-commands, compound-eng, context7) is globally enabled; **stack plugins are global-`false`** and enabled per project via `.claude/settings.json` (see `~/.claude/PLUGINS.md`) — a stack-plugin row needs that project-level enable. Plugin still missing → the category's **Fallback** chain; `general-purpose` + a good brief is the universal floor.
+**Availability:** `unit-builder` / `integration-agent` / `blind-judge` ship as REAL agent defs (dotfiles `claude/agent-defs/` → symlinked into `~/.claude/agents/` by install.sh) — dispatch by name; contract baked into the def, no per-dispatch prose needed. `core` rows always work. Plugin rows: the **core set** (caveman, ponytail, serena, superpowers, ralph, hookify, code-review, pr-toolkit, commit-commands, compound-eng, context7) is globally enabled; **stack plugins are global-`false`** and enabled per project via `.claude/settings.json` (see `~/.claude/PLUGINS.md`) — a stack-plugin row needs that project-level enable. Plugin still missing → the category's **Fallback** chain; `general-purpose` + a good brief is the universal floor. **Pick-time stamp:** B stamps each unit's agent availability when it picks; C dispatches the name verbatim and the harness silently substitutes `general-purpose` for an unknown type (C can't detect the swap) — so B must never name an unavailable agent.
 
 ## Dispatch machinery — HOW to fan out (not who)
 

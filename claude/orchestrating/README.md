@@ -18,6 +18,8 @@ Always safe to start lighter; escalate on discovery. Borderline → lighter tier
 | **Medium** | `medium.md` | a handful of units (~2–6), some deps, ~1 session | 1 chat, plan + bounded parallel agents |
 | **Big** | `orchestrator.md` | many independent epics, shared scaffolding, multi-day | 4 chats, fan-out, disk artifacts, checkpoints |
 
+**Medium↔Big gate:** >6 independent units OR multi-day OR shared scaffolding → Big; else Medium (borderline stays Medium).
+
 ## Files
 
 - `wishlist.md` — entry point + router (the file you edit)

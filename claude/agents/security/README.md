@@ -4,6 +4,8 @@ Dispatch whenever a diff or plan touches a **trust boundary**: auth/authz, user 
 
 Security findings are the one place caveman drops (Auto-Clarity): reports stay complete, plain prose.
 
+All ce-* rows are compound-eng = core set (globally enabled), not stack plugins needing a per-project enable.
+
 ## Agents
 
 | Agent | Source | Use when / (not:) | Tools | Effort | Cost | Returns | Tier |
