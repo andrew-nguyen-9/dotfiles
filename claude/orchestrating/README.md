@@ -28,10 +28,10 @@ Always safe to start lighter; escalate on discovery. Borderline → lighter tier
 
 ## Shared discipline (every tier)
 
-`/caveman:caveman ultra` + `/ponytail:ponytail ultra` + RTK + Serena/LSP, output styles off; **think ∝ blast radius**; **DoD gate** (build + test + lint green before "done"); diff edits over rewrites; dedicated search tools; no AI attribution.
+`/caveman:caveman ultra` + `/ponytail:ponytail ultra` + RTK + Serena/LSP (unavailable → Grep/Read); **think ∝ blast radius**; **DoD gate** (build + test + lint green before "done"); diff edits over rewrites; dedicated search tools; no AI attribution. Output styles (`explanatory`/`learning`) are **user config a session can't switch** — dotfiles settings.json keeps both plugins `false`; don't re-enable.
 
 ## Fresh machine
 
-Clone dotfiles → run `install.sh`: symlinks this folder, the agents catalog (`claude/agents/` → `~/.claude/agents-docs/` — NOT `~/.claude/agents/`, which is the live agent-defs dir) + `settings.json` (which *declares* every plugin — caveman, ponytail, serena, superpowers, ralph — so Claude Code installs them on startup) and installs `rtk` (via brew, or its install script). `settings.json` hook/statusline paths use `$HOME`, so they survive any username. Should be turnkey across laptops.
+Clone dotfiles → run `install.sh`: symlinks this folder, the agents catalog (`claude/agents/` → `~/.claude/agents-docs/` — NOT `~/.claude/agents/`, which is the live agent-defs dir), the enforcement hooks (`claude/hooks/` → `~/.claude/hooks/`), the real agent defs (`claude/agent-defs/*` → `~/.claude/agents/`) + `settings.json` (declares every plugin; core set enabled globally, stack plugins per-project — see `claude/PLUGINS.md`) and installs `rtk` + `ccusage`. `settings.json` hook/statusline paths use `$HOME`, so they survive any username. Should be turnkey across laptops.
 
 One residual: `settings.json` is runtime-written, so a session *could* re-bake absolute `/Users/<name>/` paths over the `$HOME` ones — if hooks/statusline break later, re-check that.

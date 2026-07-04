@@ -13,10 +13,11 @@ The chat first **routes** your ask to the right weight — you don't choose:
 **INSTRUCTIONS TO CLAUDE — do not edit this block:**
 
 ```
-Activate /caveman:caveman ultra + /ponytail:ponytail ultra + RTK + Serena. Output styles off.
+Activate /caveman:caveman ultra + /ponytail:ponytail ultra + RTK + Serena. Any plugin/skill missing → proceed without it, note it once.
+CWD CHECK first: current repo must match the WISHLIST's target (Repo hint or content) — mismatch → STOP and ask, don't route.
 Glance at the repo (structure / README / build files — a quick scan, not a deep index) and read the WISHLIST below. Then ROUTE by size:
 
-- LITE — single feature / bugfix / refactor, one sequential pass
+- LITE — single feature / bugfix / refactor, one sequential pass (incl. research-only and docs-only asks — skip build-shaped steps)
     → Read ~/.claude/orchestrating/lite.md and run it.
 - MEDIUM — a handful of units (~2-6) with some deps/structure, fits ~one session, benefits from a plan + maybe 2-4 parallel build agents
     → Read ~/.claude/orchestrating/medium.md and run it.

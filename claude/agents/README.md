@@ -25,7 +25,7 @@ The cross-repo catalog of **every dispatchable subagent** (plugin agents, built-
 | Cost | `$` ≈5–20k tok · `$$` ≈20–60k · `$$$` ≈60k+ (vision / multi-tool / e2e) per dispatch |
 | Tier | who typically dispatches: `lite` · `med` · `A/B/C/D` (orchestrator sessions) · `clean` |
 
-**Availability:** `core` rows always work. Plugin rows need that plugin installed — all are declared in dotfiles `settings.json` (`enabledPlugins` + `extraKnownMarketplaces`), so a fresh machine gets them on first Claude Code startup after `install.sh`. Plugin still missing → the category's **Fallback** chain; `general-purpose` + a good brief is the universal floor.
+**Availability:** `unit-builder` / `integration-agent` / `blind-judge` ship as REAL agent defs (dotfiles `claude/agent-defs/` → symlinked into `~/.claude/agents/` by install.sh) — dispatch by name; contract baked into the def, no per-dispatch prose needed. `core` rows always work. Plugin rows: the **core set** (caveman, ponytail, serena, superpowers, ralph, hookify, code-review, pr-toolkit, commit-commands, compound-eng, context7) is globally enabled; **stack plugins are global-`false`** and enabled per project via `.claude/settings.json` (see `~/.claude/PLUGINS.md`) — a stack-plugin row needs that project-level enable. Plugin still missing → the category's **Fallback** chain; `general-purpose` + a good brief is the universal floor.
 
 ## Dispatch machinery — HOW to fan out (not who)
 
@@ -60,7 +60,7 @@ Written by orchestrating/cleaning cycles, not by hand:
    - used an agent type/role not in the catalog → add its row to the right category file
    - an agent surprised (wrong tier, bad returns, cost blowout, great fit) → one dated line under that category's `## Lessons`
    - diff catalog vs actually-available agent types → flag drift (renamed/removed plugins) in the D report
-2. **Cleaning docs-refresh (medium/deep)** — verify rows against installed plugins, fold sprawled Lessons into table rows, prune dead agents. Catalog is global (symlinked), so any repo's cleaning run may touch it.
+2. **Cleaning docs-refresh (medium/deep)** — verify rows against installed plugins, fold sprawled Lessons into table rows, prune dead agents. **Prune only plugin-sourced rows whose plugin is gone — `core` and `role` rows are never pruned for availability** (a role row D added last cycle is not a dead plugin). Catalog is global (symlinked), so any repo's cleaning run may touch it.
 3. Lite/medium tiers: hit a catalog gap mid-run → one Lessons line, don't restructure.
 
 Keep rows terse (one line each). A category file growing past ~100 lines = consolidate Lessons or split the table, not more prose.

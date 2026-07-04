@@ -22,6 +22,33 @@ docs/
 - Core files numbered kebab; add `05+` only if genuinely core. Small one-off notes (SPOTIFY.md, DNS-CAA.md style) merge into `04-operations.md`.
 - **One live version.** No `docs/v1|v2|v3`, no `docs/archive/` — superseded content lives in git history.
 - `superpowers/`, `.orchestrator/`, tool scaffolding: never inside `docs/`.
+- **`02-architecture.md` is the canonical agent map** — orchestrator briefs path-ref it instead of re-describing the stack; keep it truthful (docs-refresh invariant). Greenfield orchestrator runs: the foundation unit seeds its skeleton.
+
+## CLAUDE.md — per-repo spec (≤20 lines HARD cap; auto-loads every session, each line is forever-cost)
+
+The one file every session AND subagent gets free — the highest-leverage context slot. Durable orchestrator blanks live here (Session A reads first, patches after; filled blank = skipped scoping question).
+
+```markdown
+# <repo>
+
+- Stack: <langs / frameworks — one line>
+- Map: docs/02-architecture.md (read before coding)
+- Ops/env: docs/04-operations.md
+- DoD: build `<cmd>` · test `<cmd>` · lint `<cmd>` — all green before "done"
+- Secrets: <location> — never commit
+- Branches: <prefix>/<unit>; no AI attribution in git artifacts
+- Must-not-touch: <paths / constraints, or "none">
+```
+
+## Harvest table — run BEFORE deleting `.orchestrator/` (cleaning lite step 3)
+
+| Artifact | → Destination | Trigger |
+|---|---|---|
+| `spec.md` blocked / ship-without epics | `docs/03-roadmap.md` bullets | any epic unmet at land |
+| `*.done.md` `decided:` lines | `docs/decisions/YYYY-MM-DD-<cycle>.md` (ONE file per cycle) | any non-obvious decision |
+| `*.done.md` `gotchas:` lines | `docs/02-architecture.md` §Gotchas | any gotcha |
+| `blockers.md` env/infra/secrets facts | `docs/04-operations.md` | new ops fact |
+| briefs, depmap, progress, handoff, rest of spec | delete — git history | always |
 
 ## Naming
 
@@ -67,6 +94,7 @@ Better, once per machine: `git config --global core.excludesFile ~/.gitignore_gl
 | scratch/debug: `tmp.*`, `test2.*`, `*-old.*`, `*-backup.*`, `*.bak`, one-off debug scripts | delete |
 | `plan.md` / `NOTES.md` / `TODO.md` / session logs whose content shipped or died | delete (git keeps it) |
 | stray `handoff.md` / `progress.md` / `prd.json` outside `.orchestrator/` | delete after landed |
+| `wishlist.md` at repo root after its route landed | delete (template lives in dotfiles) |
 | `FILE_INDEX.md` / `REPO_MAP.md` manual indexes | delete (drift by design; serena + README cover it) |
 | `docs/vN/`, `docs/archive/` | collapse — latest live, rest to git history (deep tier) |
 | empty sibling repos / stray worktrees / built artifact next to its source (`x.skill` + `x/`) | **flag only**, user decides |
