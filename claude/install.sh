@@ -8,8 +8,8 @@ echo "Setting up Claude Code dotfiles..."
 
 mkdir -p "$CLAUDE_DIR"
 
-# Symlink config files + the orchestrating/ + cleaning/ folders
-for file in settings.json CLAUDE.md RTK.md orchestrating cleaning; do
+# Symlink config files + the orchestrating/ + cleaning/ + hooks/ folders
+for file in settings.json CLAUDE.md RTK.md orchestrating cleaning hooks; do
   target="$CLAUDE_DIR/$file"
   source="$DOTFILES_DIR/$file"
   if [ -L "$target" ]; then
@@ -41,6 +41,25 @@ else
   echo "  agents-docs: symlinked"
 fi
 
+# Symlink real agent defs (unit-builder, integration-agent, blind-judge)
+# into ~/.claude/agents/ — the LIVE agent-definition dir (file-level links;
+# the dir itself may hold the user's other agents).
+mkdir -p "$CLAUDE_DIR/agents"
+for def in "$DOTFILES_DIR"/agent-defs/*.md; do
+  name="$(basename "$def")"
+  target="$CLAUDE_DIR/agents/$name"
+  if [ -L "$target" ]; then
+    echo "  agents/$name: symlink already exists, skipping"
+  elif [ -e "$target" ]; then
+    echo "  agents/$name: exists (not a symlink), backing up to $target.bak"
+    mv "$target" "$target.bak"
+    ln -s "$def" "$target"
+  else
+    ln -s "$def" "$target"
+    echo "  agents/$name: symlinked"
+  fi
+done
+
 # Install bun (required by gstack)
 if ! command -v bun &>/dev/null; then
   echo "Installing bun..."
@@ -62,6 +81,14 @@ if ! command -v rtk &>/dev/null; then
   fi
 else
   echo "rtk: already installed ($(rtk --version 2>/dev/null))"
+fi
+
+# Install ccusage — orchestrator Session C reads budget via `ccusage blocks -j`
+if ! command -v ccusage &>/dev/null; then
+  echo "Installing ccusage..."
+  bun add -g ccusage
+else
+  echo "ccusage: already installed"
 fi
 
 # Clone gstack skill
