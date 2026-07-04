@@ -25,8 +25,8 @@ Stack packs:
 
 | Stack | Enable |
 |-------|--------|
-| TS/web | `typescript-lsp`, `playwright`; +`vercel` / `supabase` if deployed there; +`frontend-design`, `chrome-devtools-mcp` for UI work |
-| Python | `pyright-lsp`; +`data-engineering` for pipelines |
+| TS/web | `typescript-lsp`, `playwright`; +`vercel` / `supabase` if deployed there; +`frontend-design` for UI work; `chrome-devtools-mcp` UNINSTALLED (playwright covers it) |
+| Python | `pyright-lsp`; +`data-engineering` for pipelines (UNINSTALLED — reinstall when needed) |
 | Trust-boundary work | `security-guidance` |
 | Claude tooling (plugins/skills/SDK) | `plugin-dev`, `agent-sdk-dev`, `skill-creator` |
 | Heavy GitHub API use | `github` (default: `gh` CLI, no plugin) |
@@ -34,5 +34,7 @@ Stack packs:
 | One-off needs | `feature-dev`, `code-simplifier`, `claude-md-management`, `claude-code-setup` — enable for the session, disable after |
 
 **Why these four are per-project, not core:** every enabled plugin's agent + skill descriptions load into EVERY session, including each subagent dispatch. These four are the heaviest (~6–9k tokens/dispatch) and are dispatch-time tools you reach for in specific repos, not every-session dependencies — so they earn their keep only where actually used. `ralph-loop`+`ralph-skills` are also the orchestrator big-tier wave driver (with `superpowers`): enable them in big-tier repos, or use `session-b.md`'s documented manual fallback (hand-written `prd.json` + `dispatching-parallel-agents`).
+
+**Install vs enable — the leak:** skill descriptions inject per INSTALLED plugin, regardless of the `false` toggle (the toggle gates agents/MCP/hooks only). A disabled-but-installed skill pack costs its full skill surface every session — uninstall (`claude plugin uninstall <name>@<marketplace>`) is the only reclaim. Uninstalled 2026-07: `data-engineering` (~3.5k tok), `chrome-devtools-mcp` (~646). Gotcha: `claude plugin install` flips the settings.json key to `true` — reset stack plugins to `false` after any reinstall.
 
 Orchestrator Session A: when the stack is known, write the project `.claude/settings.json` enablement as part of setup (it's a durable blank, like CLAUDE.md).
