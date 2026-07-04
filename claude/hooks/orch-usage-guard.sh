@@ -14,7 +14,15 @@ command -v ccusage >/dev/null 2>&1 || exit 0
 
 dir=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 [ -n "$dir" ] || dir="${CLAUDE_PROJECT_DIR:-$PWD}"
-[ -d "$dir/.orchestrator" ] || exit 0
+# .orchestrator lives in the MAIN worktree; a subagent's cwd may be a linked
+# git-worktree that lacks it — fall back to the common dir's parent. git
+# absent/failing → fail-open (exit 0), unchanged from before.
+if [ ! -d "$dir/.orchestrator" ]; then
+  common=$(git -C "$dir" rev-parse --git-common-dir 2>/dev/null) || exit 0
+  [ -n "$common" ] || exit 0
+  case "$common" in /*) ;; *) common="$dir/$common" ;; esac
+  [ -d "$(dirname "$common")/.orchestrator" ] || exit 0
+fi
 
 blocks=$(ccusage blocks -j 2>/dev/null) || exit 0
 active=$(printf '%s' "$blocks" | jq '[.blocks[] | select(.isActive == true)][0].totalTokens // 0')
@@ -24,7 +32,7 @@ limit="${ORCH_TOKEN_LIMIT:-$(printf '%s' "$blocks" | jq '[.blocks[] | select(.is
 pct=$(( active * 100 / limit ))
 
 if [ "$pct" -ge 98 ]; then
-  echo "BUDGET GUARD: 5h window at ${pct}% (${active}/${limit} tokens). Do NOT dispatch. Disposition every in-flight unit, write .orchestrator/handoff.md, end the session; resume at window reset." >&2
+  echo "BUDGET GUARD: 5h window at ${pct}% (${active}/${limit} tokens). Do NOT dispatch. Disposition every in-flight unit, write .orchestrator/handoff.md, end the session; resume at window reset. (False positive from thin usage history / low derived ceiling? Override with ORCH_TOKEN_LIMIT=<tokens>.)" >&2
   exit 2
 fi
 exit 0

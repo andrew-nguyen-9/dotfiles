@@ -4,6 +4,8 @@ set -euo pipefail
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
+warn() { echo "  WARNING: $*" >&2; }
+
 echo "Setting up Claude Code dotfiles..."
 
 mkdir -p "$CLAUDE_DIR"
@@ -12,8 +14,13 @@ mkdir -p "$CLAUDE_DIR"
 for file in settings.json CLAUDE.md RTK.md orchestrating cleaning hooks; do
   target="$CLAUDE_DIR/$file"
   source="$DOTFILES_DIR/$file"
-  if [ -L "$target" ]; then
+  if [ -L "$target" ] && [ -e "$target" ]; then
     echo "  $file: symlink already exists, skipping"
+  elif [ -L "$target" ]; then
+    echo "  $file: broken symlink, re-linking"
+    rm -f "$target"
+    ln -s "$source" "$target"
+    echo "  $file: symlinked"
   elif [ -e "$target" ]; then
     echo "  $file: backing up existing to $target.bak"
     mv "$target" "$target.bak"
@@ -29,8 +36,13 @@ done
 # ~/.claude/agents/ is Claude Code's live agent-definition dir; these are docs.
 target="$CLAUDE_DIR/agents-docs"
 source="$DOTFILES_DIR/agents"
-if [ -L "$target" ]; then
+if [ -L "$target" ] && [ -e "$target" ]; then
   echo "  agents-docs: symlink already exists, skipping"
+elif [ -L "$target" ]; then
+  echo "  agents-docs: broken symlink, re-linking"
+  rm -f "$target"
+  ln -s "$source" "$target"
+  echo "  agents-docs: symlinked"
 elif [ -e "$target" ]; then
   echo "  agents-docs: backing up existing to $target.bak"
   mv "$target" "$target.bak"
@@ -46,10 +58,16 @@ fi
 # the dir itself may hold the user's other agents).
 mkdir -p "$CLAUDE_DIR/agents"
 for def in "$DOTFILES_DIR"/agent-defs/*.md; do
+  [ -e "$def" ] || continue  # empty dir: glob stays literal — don't link '*.md'
   name="$(basename "$def")"
   target="$CLAUDE_DIR/agents/$name"
-  if [ -L "$target" ]; then
+  if [ -L "$target" ] && [ -e "$target" ]; then
     echo "  agents/$name: symlink already exists, skipping"
+  elif [ -L "$target" ]; then
+    echo "  agents/$name: broken symlink, re-linking"
+    rm -f "$target"
+    ln -s "$def" "$target"
+    echo "  agents/$name: symlinked"
   elif [ -e "$target" ]; then
     echo "  agents/$name: exists (not a symlink), backing up to $target.bak"
     mv "$target" "$target.bak"
@@ -60,12 +78,18 @@ for def in "$DOTFILES_DIR"/agent-defs/*.md; do
   fi
 done
 
+# Network installs below must not abort the whole script under `set -e`:
+# each is wrapped so a failure warns and the next step still runs.
+
 # Install bun (required by gstack)
 if ! command -v bun &>/dev/null; then
   echo "Installing bun..."
-  curl -fsSL https://bun.sh/install | bash
-  export BUN_INSTALL="$HOME/.bun"
-  export PATH="$BUN_INSTALL/bin:$PATH"
+  if curl -fsSL https://bun.sh/install | bash; then
+    export BUN_INSTALL="$HOME/.bun"
+    export PATH="$BUN_INSTALL/bin:$PATH"
+  else
+    warn "bun install failed — install manually (https://bun.sh), then re-run."
+  fi
 else
   echo "bun: already installed ($(bun --version))"
 fi
@@ -75,9 +99,9 @@ fi
 if ! command -v jq &>/dev/null; then
   echo "Installing jq..."
   if command -v brew &>/dev/null; then
-    brew install jq
+    brew install jq || warn "jq install failed — install jq manually or ALL claude hooks are inert."
   else
-    echo "  WARNING: no brew and no jq — install jq manually or ALL claude hooks are inert."
+    warn "no brew and no jq — install jq manually or ALL claude hooks are inert."
   fi
 else
   echo "jq: already installed"
@@ -88,9 +112,10 @@ fi
 if ! command -v rtk &>/dev/null; then
   echo "Installing rtk..."
   if command -v brew &>/dev/null; then
-    brew install rtk
+    brew install rtk || warn "rtk install failed — install manually (https://github.com/rtk-ai/rtk)."
   else
-    curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+    curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh \
+      || warn "rtk install failed — install manually (https://github.com/rtk-ai/rtk)."
   fi
 else
   echo "rtk: already installed ($(rtk --version 2>/dev/null))"
@@ -99,7 +124,11 @@ fi
 # Install ccusage — orchestrator Session C reads budget via `ccusage blocks -j`
 if ! command -v ccusage &>/dev/null; then
   echo "Installing ccusage..."
-  bun add -g ccusage
+  if command -v bun &>/dev/null; then
+    bun add -g ccusage || warn "ccusage install failed — run 'bun add -g ccusage' manually."
+  else
+    warn "bun unavailable — run 'bun add -g ccusage' manually once bun is installed."
+  fi
 else
   echo "ccusage: already installed"
 fi
@@ -111,9 +140,12 @@ if [ -d "$GSTACK_DIR" ]; then
 else
   echo "Installing gstack skill..."
   mkdir -p "$CLAUDE_DIR/skills"
-  git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git "$GSTACK_DIR"
-  cd "$GSTACK_DIR" && ./setup
-  echo "gstack: installed"
+  if git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git "$GSTACK_DIR"; then
+    (cd "$GSTACK_DIR" && ./setup) || warn "gstack setup failed — run '$GSTACK_DIR/setup' manually."
+    echo "gstack: installed"
+  else
+    warn "gstack clone failed — clone https://github.com/garrytan/gstack.git to $GSTACK_DIR manually."
+  fi
 fi
 
 # Plugins: settings.json (symlinked above) is the single source of truth.

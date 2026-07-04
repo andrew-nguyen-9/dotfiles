@@ -10,7 +10,15 @@ command -v jq >/dev/null 2>&1 || exit 0
 
 dir=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 [ -n "$dir" ] || dir="${CLAUDE_PROJECT_DIR:-$PWD}"
-[ -d "$dir/.orchestrator" ] || exit 0
+# .orchestrator lives in the MAIN worktree; a subagent's cwd may be a linked
+# git-worktree that lacks it — fall back to the common dir's parent. git
+# absent/failing → fail-open (exit 0), unchanged from before.
+if [ ! -d "$dir/.orchestrator" ]; then
+  common=$(git -C "$dir" rev-parse --git-common-dir 2>/dev/null) || exit 0
+  [ -n "$common" ] || exit 0
+  case "$common" in /*) ;; *) common="$dir/$common" ;; esac
+  [ -d "$(dirname "$common")/.orchestrator" ] || exit 0
+fi
 
 # ponytail: 4000-char ceiling, not 2 lines — leaves room for legit review findings
 printf '%s' "$input" | jq -c '
