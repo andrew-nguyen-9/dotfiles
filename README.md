@@ -22,4 +22,8 @@ cd dotfiles/claude && ./install.sh
 | `karabiner/` | Karabiner-Elements key remaps |
 | `docs/requirements.md` | Full fresh-macOS setup checklist (apps, tools, backups) |
 
-`install.sh` symlinks the `claude/` config into `~/.claude/` (including `claude/agents/` → `~/.claude/agents-docs/`, `claude/hooks/` → `~/.claude/hooks/`, `claude/agent-defs/*` → `~/.claude/agents/`) and installs `rtk` + `bun` + `ccusage` + the gstack skill. Plugins are declared in `settings.json` (`enabledPlugins` + `extraKnownMarketplaces`): the core set is enabled globally; stack plugins are per-project — see `claude/PLUGINS.md`. Paths use `$HOME` throughout — portable across machines and usernames.
+`install.sh` symlinks the `claude/` config into `~/.claude/` (including `claude/agents/` → `~/.claude/agents-docs/`, `claude/hooks/` → `~/.claude/hooks/`, `claude/agent-defs/*` → `~/.claude/agents/`) and installs `jq` + `rtk` + `bun` + `ccusage` + the gstack skill. Plugins are declared in `settings.json` (`enabledPlugins` + `extraKnownMarketplaces`): the core set is enabled globally; stack plugins are per-project — see `claude/PLUGINS.md`. Paths use `$HOME` throughout — portable across machines and usernames.
+
+**`claude/settings.json` carries git skip-worktree** (Claude Code runtime-writes it; keeps the tree quiet). To commit a deliberate settings change: `git update-index --no-skip-worktree claude/settings.json` → commit → `git update-index --skip-worktree claude/settings.json`.
+
+**Skills note:** gstack's 56 per-skill wrappers live parked in `~/.claude/skills-parked/` (each is one `SKILL.md` symlink into the `~/.claude/skills/gstack/` clone) — auto-loading all of them costs ~15–25k tokens of skill descriptions in every session. Restore any one with `mv ~/.claude/skills-parked/<name> ~/.claude/skills/`; restore all with gstack's `./setup`.

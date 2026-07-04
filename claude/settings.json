@@ -153,6 +153,7 @@
       }
     }
   },
+  "outputStyle": "default",
   "skipWorkflowUsageWarning": true,
   "theme": "dark"
 }
