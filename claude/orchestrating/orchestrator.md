@@ -10,7 +10,7 @@ This file is a **template** (lives in dotfiles at `~/.claude/orchestrating/orche
 
 Each session is a **separate, fresh chat** — open a new chat, paste that session's kickoff prompt, let it run, copy the kickoff it prints at the end, open the next new chat. Don't run two sessions in one window: the whole point is that a cold session carries no prior context, so the window stays thin. **Session A is first — it has no upstream kickoff; start it with the bootstrap prompt in §Session A.** Resuming mid-session (e.g. C after a budget stop) = new chat reading `handoff.md`, not the kickoff.
 
-**Session read map (each session loads only its own file + shared spine sections):** A = this whole spine (it fills the blanks). B = `~/.claude/orchestrating/session-b.md` + spine §Tiers + §Invariants + §Thinking budget + §Swap. C = `~/.claude/orchestrating/session-c.md` + `~/.claude/orchestrating/efficiency.md` (skeleton) + the project copy's §Swap + §Model + §Invariants. D = `~/.claude/orchestrating/session-d.md` + `~/.claude/orchestrating/safeguards.md` + the project copy's §Swap (+ artifacts `depmap.md` + `progress.md` — fix-unit scoping + C's substitution/gap notes). Shared spine sections live in `.orchestrator/orchestrator.md` (the project copy, blanks filled).
+**Session read map (each session loads only its own file + shared spine sections):** A = this whole spine (it fills the blanks). B = `~/.claude/orchestrating/session-b.md` + spine §Tiers + §Invariants + §Thinking budget + §Swap. C = `~/.claude/orchestrating/session-c.md` + `~/.claude/orchestrating/efficiency.md` (skeleton) + `~/.claude/orchestrating/safeguards.md` §Loop safeguards (the 3-kill procedure it runs live) + the project copy's §Swap + §Model + §Invariants. D = `~/.claude/orchestrating/session-d.md` + `~/.claude/orchestrating/safeguards.md` + the project copy's §Swap (+ artifacts `depmap.md` + `progress.md` — fix-unit scoping + C's substitution/gap notes). Shared spine sections live in `.orchestrator/orchestrator.md` (the project copy, blanks filled).
 
 ## Artifacts — one home for all state
 
@@ -125,7 +125,7 @@ The three downstream session bodies + the efficiency/safeguards layer live in si
 - **Session B — Architecture** → `~/.claude/orchestrating/session-b.md`
 - **Session C — Execution (the lean core)** → `~/.claude/orchestrating/session-c.md`
 - **Session D — Review & land** → `~/.claude/orchestrating/session-d.md`
-- **Efficiency layer (§1–5, dispatch skeleton) → `~/.claude/orchestrating/efficiency.md` · Safeguards → `~/.claude/orchestrating/safeguards.md`**
+- **Efficiency layer (§1–4, dispatch skeleton) → `~/.claude/orchestrating/efficiency.md` · API-only §5 → `~/.claude/orchestrating/efficiency-api.md` · Safeguards → `~/.claude/orchestrating/safeguards.md`**
 
 ---
 

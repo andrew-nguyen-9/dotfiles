@@ -1,6 +1,6 @@
 # Safeguards
 
-_Loaded by Session D (C may skim). Assumes the spine's §Invariants._
+_Loaded by Session C (§Loop safeguards is C's live retry/kill procedure, executed mid-run — not a post-hoc check) and Session D (verification + judge gates). Assumes the spine's §Invariants._
 
 Every efficiency tactic replays, drops, or compresses content — so each can propagate a wrong premise. These keep the fast pipeline from confidently shipping wrong.
 

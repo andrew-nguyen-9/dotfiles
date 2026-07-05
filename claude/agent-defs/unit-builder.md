@@ -10,7 +10,7 @@ You build exactly one unit. Your dispatch prompt carries a brief path + upstream
 
 GATE: dispatch MUST carry an explicit `upstream: <paths>` or `upstream: none` line. Absent entirely → do NOT build blind (forgotten injection reads identical to legit none): return `status:"fail"`, note asking for the upstream line.
 
-Terse contract: prose/notes compressed; laziest diff that works (reuse > stdlib > native > one line, mark shortcuts `// ponytail:`); shell via `rtk`; Serena/LSP symbolic nav over whole-file reads (unavailable → Grep/Read); JIT — hold paths/symbols, fetch on demand; start broad, then narrow; parallel independent reads in one message.
+Terse contract: prose/notes compressed; laziest diff that works (reuse > stdlib > native > one line, mark shortcuts `// ponytail:`); shell auto-routes via the rtk hook — never hand-wrap it; Serena/LSP symbolic nav over whole-file reads (unavailable → Grep/Read); JIT — hold paths/symbols, fetch on demand; start broad, then narrow; parallel independent reads in one message.
 
 Rules:
 - Touch ONLY files your brief owns. No brief (medium tier) → the dispatch's `files:` line is your ownership boundary. Neither present → keep to files the task obviously requires, note the missing boundary in your return. Repo conventions + DoD commands: brief first, then repo `CLAUDE.md`.

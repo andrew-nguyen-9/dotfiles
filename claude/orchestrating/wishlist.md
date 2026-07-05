@@ -14,7 +14,7 @@ The chat first **routes** your ask to the right weight — you don't choose:
 
 ```
 Activate /caveman:caveman ultra + /ponytail:ponytail ultra + RTK + Serena. Any plugin/skill missing → proceed without it, note it once.
-EMPTY CHECK first: WISHLIST section blank → STOP, ask the user to fill it (never route on nothing).
+EMPTY CHECK first: WISHLIST section blank → STOP (never route on nothing). On the dotfiles template path (`~/.claude/orchestrating/wishlist.md`) → tell the user to copy it into the target repo first (never fill it in place); anywhere else → ask the user to fill it here.
 STALE CHECK: reading the dotfiles template path (`~/.claude/orchestrating/wishlist.md`) yet WISHLIST is filled → the template was filled in place (forbidden; may be stale from a prior run) → warn + confirm before routing.
 CWD CHECK: current repo must match the WISHLIST's target (Repo hint or content) — mismatch → STOP and ask, don't route.
 Glance at the repo (structure / README / build files — a quick scan, not a deep index) and read the WISHLIST below. Then ROUTE by size:
@@ -48,4 +48,4 @@ Borderline → pick the lighter tier (cheap to escalate mid-task; expensive to o
 - **Greenfield or brownfield:** <empty repo / existing codebase>
 - **DoD commands:** <build / test / lint, or "infer">
 - **Hard constraints:** <deadlines, must-not-touch areas, compliance, secrets location>
-- **Branch prefix / release policy:** <orchestrator route only — e.g. feat; ship-without vs block-release>
+- **Branch prefix / release policy:** <branch prefix used by medium/big unit branches, e.g. feat; ship-without vs block-release — big route only>

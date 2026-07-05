@@ -1,14 +1,14 @@
 # Efficiency layer
 
-_Loaded by Session C (skeleton); A/B may skim. Assumes the spine's §Invariants. **Agents never read this file** — the dispatch skeleton below is pasted verbatim into each dispatch instead. Safeguards → safeguards.md (Session D). API-only layer (§5 + semantic/plan caching) → efficiency-api.md (SDK/API builds only)._
+_Loaded by Session C (skeleton); A/B may skim. Assumes the spine's §Invariants. **Agents never read this file** — the dispatch skeleton below is pasted verbatim into each dispatch instead. Safeguards (loop-retry/kill, verification) → safeguards.md (Sessions C + D). API-only layer (§5 + semantic/plan caching) → efficiency-api.md (SDK/API builds only)._
 
-Accuracy bar: every tactic drops **transcript bulk, never meaning**. This section is for the SESSIONS (A–D). Agents never read this file — a by-path ref would make all 15 load the whole thing (~100k tok/run). Instead every dispatch opens with the **dispatch skeleton**, byte-identical across a wave (cached once, ~free for agents 2..N), then only `[brief path + upstream .done.md paths]` varies after it:
+Accuracy bar: every tactic drops **transcript bulk, never meaning**. This section is for the SESSIONS (A–D). Agents never read this file — a by-path ref would make all 15 load the whole thing (~20k+ tok/run at this file's current size). Instead every dispatch opens with the **dispatch skeleton**, byte-identical across a wave (cached once, ~free for agents 2..N), then only `[brief path + upstream .done.md paths]` varies after it:
 
 **Agent-def types (unit-builder / integration-agent / blind-judge) skip the skeleton** — their def IS the contract; their dispatch is two lines (see the catalog category file). The skeleton below is for **non-def types only** (general-purpose, plugin specialists):
 
 ```
 You are <agent-type> for one unit. Terse contract: prose/notes caveman-compressed;
-laziest diff that works (reuse > stdlib > native > one line); shell via rtk; Serena/LSP
+laziest diff that works (reuse > stdlib > native > one line); shell auto-routes via the rtk hook — never hand-wrap it; Serena/LSP
 symbolic nav over whole-file reads (unavailable → Grep/Read); JIT — hold paths/symbols,
 fetch on demand; start broad, then narrow; parallel independent reads in one message.
 Never spawn subagents — you are the leaf; nested fan-out breaks the return contract.
@@ -29,7 +29,7 @@ RETURN ONLY: {"id","status","branch","PR":null,"note":"≤2 lines"} — no dumps
 | Memory tool | `.done.md` + briefs = the store; state in files outside the window | +39% w/ editing | none — files are source of truth |
 | Shared base-prompt cache | the dispatch skeleton above, byte-identical per wave; only `[brief path + upstream .done.md paths]` varies after it | one write serves the whole fan-out (~90% off the prefix for agents 2..N) | none — vary nothing before the breakpoint |
 
-**Token-efficient tool use** — on by default in Claude 4 (~14% output, up to 70%). Keep **consistent across cacheable requests** (selective use breaks caching); incompatible with `disable_parallel_tool_use`.
+**Token-efficient tool use** — on by default since Claude 4 (~14% output, up to 70%). Keep **consistent across cacheable requests** (selective use breaks caching); incompatible with `disable_parallel_tool_use`.
 
 ## §2 Retrieval & nav (load less)
 

@@ -149,7 +149,7 @@ Better, once per machine: `git config --global core.excludesFile ~/.gitignore_gl
 ## Tool recipes
 
 - **Survey:** `rtk git status`, `git ls-files | head -50`, serena `list_dir` / `get_symbols_overview` — never whole-file reads.
-- **Ref-check before code delete/move:** serena `find_referencing_symbols` (zero refs required) or grep imports. Docs: grep the old path/filename for links.
+- **Ref-check before code delete/move:** serena `find_referencing_symbols` (zero refs required) or grep imports, **plus grep the bare filename repo-wide** (shell `source`/`.`, Makefile/CI/settings.json refs are invisible to symbol tools). Docs: grep the old path/filename for links.
 - **Untrack:** `git rm -r --cached -q <path>`. **Move/rename:** `git mv` (keeps history).
 - **Branch prune:** `git branch --merged main | grep -v ' main'` → `git branch -d` each (never `-D`).
 - **Docs-refresh ground truth:** serena `get_symbols_overview`, `package.json` scripts, `pyproject.toml`, build files — patch docs to match reality, not memory.
