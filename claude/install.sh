@@ -34,8 +34,8 @@ echo "Setting up Claude Code dotfiles..."
 
 mkdir -p "$CLAUDE_DIR"
 
-# Symlink config files + the orchestrating/ + cleaning/ + hooks/ folders
-for file in settings.json CLAUDE.md RTK.md orchestrating cleaning hooks; do
+# Symlink config files + the orchestrating/ + cleaning/ + hooks/ + design-guidelines/ folders
+for file in settings.json CLAUDE.md RTK.md orchestrating cleaning hooks design-guidelines; do
   link_into "$DOTFILES_DIR/$file" "$CLAUDE_DIR/$file" "$file"
 done
 
