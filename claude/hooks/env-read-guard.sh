@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PreToolUse (Read + Bash) — blocks reading .env / .envrc secrets files. GLOBAL
+# PreToolUse (Read + Grep + Bash) — blocks reading .env / .envrc secrets files. GLOBAL
 # (no .orchestrator gate): secrets never belong in a model context window.
 # Allows any *.env* / *.envrc* whose name carries example / template / sample.
 # Fires on EVERY Read and Bash call — false positives on normal files are
@@ -18,10 +18,13 @@ deny() {
 # quotes and separators all break into their own tokens; the anchored regex then
 # matches only a real basename component (so `development.environment`, `foo.env`
 # and `.environment` never match).
+# The example/template/sample allow-out is anchored to the BASENAME component
+# ([^/]*marker[^/]*$) — else a marker anywhere in the PATH (e.g.
+# /home/sampleuser/.env, examples/../.env) would wrongly allow a real secrets file.
 scan_secret() {
   printf '%s' "$1" | tr -c 'A-Za-z0-9_./-' '\n' \
     | grep -E '(^|/)\.env(rc)?(\.[A-Za-z0-9_.-]+)?$' \
-    | grep -qvE 'example|template|sample'
+    | grep -qvE '(^|/)[^/]*(example|template|sample)[^/]*$'
 }
 
 # jq missing OR JSON unparseable → coarse fallback over raw stdin. Never a plain
