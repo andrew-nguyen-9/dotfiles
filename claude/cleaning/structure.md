@@ -24,7 +24,7 @@ docs/
   design/             # design system, UX
 ```
 
-- Core files numbered kebab; add `05+` only if genuinely core. Small one-off notes (SPOTIFY.md, DNS-CAA.md style) merge into `04-operations.md`. `01-overview.md` is **optional** — README covers it until it outgrows elevator-pitch size. `research/`, `design/`, `decisions/` created on first artifact, never empty.
+- Core files numbered kebab; add `05+` only if genuinely core. Small one-off notes (SPOTIFY.md, DNS-CAA.md style) merge into `04-operations.md`. `01-overview.md` is **optional** — README covers it until it outgrows elevator-pitch size; human-facing only, the pipeline never reads it (A step 0.5 reads 02/03/04/decisions only). `research/`, `design/`, `decisions/` created on first artifact, never empty.
 - **One live version.** No `docs/v1|v2|v3`, no `docs/archive/` — superseded content lives in git history.
 - `superpowers/`, `.orchestrator/`, tool scaffolding: never inside `docs/`.
 
@@ -35,9 +35,11 @@ docs/
 ```markdown
 ## Stack → CLAUDE.md  # pointer only, don't dup the one-line stack
 ## Map              # modules, entry points, data flow — the brief path-ref target
-## Ownership zones  # dir → purpose + natural unit seams; B's depmap raw material,
-                    # updated from each cycle's depmap at harvest
-## Test layout      # tests dir, run-one cmd, fixtures
+## Ownership zones  # zone lines lead with the glob: `<glob> — purpose — seam note`;
+                    # lossless round-trip w/ depmap's files-owned col (B seeds from it,
+                    # harvest copies back down)
+## Test layout      # tests dir, run-one cmd, fixtures; monorepo: per-package DoD table
+                    # here (briefs' `dod:` copies from it; CLAUDE.md DoD stays repo-level)
 ## Conventions      # patterns agents follow: error handling, API shape, naming
 ## Gotchas          # dated lines: `YYYY-MM-DD <path/symbol>: <trap>` — cap ~20,
                     # oldest-out; docs-refresh DROPS lines whose path/symbol is gone
@@ -49,7 +51,7 @@ docs/
 
 ## CLAUDE.md — per-repo spec (≤20 lines HARD cap; auto-loads every session, each line is forever-cost)
 
-The one file every session AND subagent gets free — the highest-leverage context slot. Durable orchestrator blanks live here (Session A reads first, patches after; filled blank = skipped scoping question). **This file is the single GATE 1 source**: orchestrator dispatch prompts say "DoD per repo CLAUDE.md" and never duplicate the commands; C's GATE 1 = grep THIS file for unfilled `<…>` tokens + presence of the DoD/Secrets/Branches lines (minimal template lacks Branches — Session A adds it at big-tier start). Cap enforcement: cleaning docs-refresh compresses past 20 lines.
+The one file every session AND subagent gets free — the highest-leverage context slot. Durable orchestrator blanks live here (Session A reads first, patches after; filled blank = skipped scoping question). **This file is the single GATE 1 source**: orchestrator dispatch prompts say "DoD per repo CLAUDE.md" and never duplicate the commands; C's GATE 1 = grep THIS file for unfilled `<…>` tokens + presence of the DoD/Secrets/Branches lines (minimal template lacks Branches — Session A adds it at big-tier start). Cap enforcement: cleaning docs-refresh compresses past 20 lines. `Secrets: none` is a valid FILLED value — a secret-less repo writes it literally (leaving the `<…>` token unfilled hard-fails orchestrator GATE 1).
 
 **Minimal** (minimal-tier repo, no docs/ — 5–6 lines):
 
@@ -75,6 +77,9 @@ The one file every session AND subagent gets free — the highest-leverage conte
 ## Harvest table — run BEFORE deleting `.orchestrator/` (cleaning lite step 3)
 
 `.orchestrator/` is gitignored but still on disk — harvest reads it before the delete pass. Every row names its **consumer** — a harvest destination nothing reads is ritual, not memory. Destination file missing → create it minimal from the templates above (this graduation is content-driven, not the preemptive-creation §Tiers forbids — never skip the harvest because the file doesn't exist).
+
+- **`<cycle>` slug** = `YYYY-MM-DD` (the land date); append a short spec-title slug (`YYYY-MM-DD-<slug>`) only when two cycles land the same day.
+- **Graduation is half-done until the pointer moves.** Creating a docs/ destination (first harvest into `docs/02` or `docs/04`) does NOT repoint CLAUDE.md — patch the repo-root CLAUDE.md pointer lines too: `Map:` → `docs/02-architecture.md` **only when §Map actually has content** (a gotchas-only first harvest keeps the README `Map:` pointer — an empty §Map target is a regression), and always add `Ops/env:` → `docs/04-operations.md`, per §CLAUDE.md full template. A destination nothing points to is orphaned.
 
 | Artifact | → Destination | Trigger | Consumer (next cycle) |
 |---|---|---|---|
@@ -127,6 +132,7 @@ Better, once per machine: `git config --global core.excludesFile ~/.gitignore_gl
 |---------|--------|
 | `.DS_Store`, `*.tsbuildinfo`, committed build/coverage dirs | delete + gitignore |
 | `.orchestrator/` after the cycle landed | delete + gitignore |
+| `.orchestrator.stale-<date>/` dirs (Session A "just proceed" overrides) | harvest per §Harvest table, then delete |
 | scratch/debug: `tmp.*`, `test2.*`, `*-old.*`, `*-backup.*`, `*.bak`, one-off debug scripts | delete |
 | `plan.md` / `NOTES.md` / `TODO.md` / session logs whose content shipped or died | delete (git keeps it) |
 | stray `handoff.md` / `progress.md` / `prd.json` outside `.orchestrator/` | delete after landed |

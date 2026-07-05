@@ -4,6 +4,8 @@ Document reviewers. **Cheapest error window in the pipeline**: a flaw caught in 
 
 **Machinery note:** `compound-engineering:ce-doc-review` skill selects and runs these personas itself — prefer it over hand-picking.
 
+**Cross-ref:** spec-flow gap / edge-case analysis (`ce-spec-flow-analyzer`) lives in [plan/](../plan/README.md), not here — a Session D judging a spec pulls it from there; don't add a duplicate row.
+
 ## Agents
 
 | Agent | Source | Use when / (not:) | Tools | Effort | Cost | Returns | Tier |

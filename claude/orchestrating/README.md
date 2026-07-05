@@ -4,8 +4,7 @@ A pick-the-right-weight system for turning a wishlist into shipped work. You wri
 
 ## Start
 
-Fill `wishlist.md`, then in a **fresh Claude Code chat in your target repo**: paste it, or type
-`Read ~/.claude/orchestrating/wishlist.md and run it`.
+Copy `wishlist.md` into your target repo (`cp ~/.claude/orchestrating/wishlist.md ./wishlist.md`) and fill it there — or paste the template into a fresh chat and fill it inline. **Don't fill the dotfiles template in place** (it's your symlinked dotfiles). Then in a **fresh Claude Code chat in your target repo**: `Read ./wishlist.md and run it` (or paste the filled template).
 The router sizes the ask and routes — you don't pick.
 
 ## The ladder
@@ -24,13 +23,13 @@ Always safe to start lighter; escalate on discovery. Borderline → lighter tier
 
 - `wishlist.md` — entry point + router (the file you edit)
 - `lite.md` / `medium.md` / `orchestrator.md` — the three strategies
-- `.orchestrator/` — runtime state, **big tier only**, created in the *target repo* (spec, briefs, notes, handoff)
+- `.orchestrator/` — runtime state, **big tier only**, created in the *target repo* (spec, briefs, notes, handoff); `state.md` = lifecycle marker (running|parked|abandoned|landed)
 - `~/.claude/agents-docs/` — sibling system: the **agents catalog** (who to dispatch, by pipeline function). B picks each unit's `agent`; C uses its role snippets; D + cleaning keep it current. Load category files JIT, never the whole thing.
 - `~/.claude/cleaning/` — sibling system: post-cycle repo reset + docs refresh (every tier's land step prints its kickoff)
 
 ## Shared discipline (every tier)
 
-`/caveman:caveman ultra` + `/ponytail:ponytail ultra` + RTK + Serena/LSP (unavailable → Grep/Read); **think ∝ blast radius**; **DoD gate** (build + test + lint green before "done"); diff edits over rewrites; dedicated search tools; no AI attribution. Output styles (`explanatory`/`learning`) are **user config a session can't switch** — dotfiles settings.json keeps both plugins `false`; don't re-enable.
+`/caveman:caveman ultra` + `/ponytail:ponytail ultra` + RTK + Serena/LSP (unavailable → Grep/Read); **think ∝ blast radius**; **DoD gate** (build + test + lint green before "done"); diff edits over rewrites; dedicated search tools; no AI attribution. Output-style plugins (`explanatory`/`learning`) inject their style prompt **regardless of enable flags** — the control is **uninstall** (`claude plugin uninstall`), not settings flags; keep them uninstalled (see PLUGINS.md).
 
 ## Fresh machine
 

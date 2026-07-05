@@ -16,7 +16,7 @@ All ce-* rows are compound-eng = per-project enable (global-`false`): enable `co
 
 ## Fallback
 
-`/security-review` skill (core — full branch security review) → `general-purpose` briefed: "changed files at trust boundaries only; OWASP top-10 lens; findings w/ severity + fix, no praise."
+`/security-review` **(skill, not a dispatchable agent type)** → `general-purpose` **(agent)** briefed: "changed files at trust boundaries only; OWASP top-10 lens; findings w/ severity + fix, no praise." For a prd.json `agent:` pick use the **first AGENT entry** (`general-purpose` here) — `/security-review` is a skill, in-session for lite/medium only, never a dispatch target.
 
 ## Efficiency notes
 

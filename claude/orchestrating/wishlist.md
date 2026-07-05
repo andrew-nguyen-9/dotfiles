@@ -14,7 +14,9 @@ The chat first **routes** your ask to the right weight — you don't choose:
 
 ```
 Activate /caveman:caveman ultra + /ponytail:ponytail ultra + RTK + Serena. Any plugin/skill missing → proceed without it, note it once.
-CWD CHECK first: current repo must match the WISHLIST's target (Repo hint or content) — mismatch → STOP and ask, don't route.
+EMPTY CHECK first: WISHLIST section blank → STOP, ask the user to fill it (never route on nothing).
+STALE CHECK: reading the dotfiles template path (`~/.claude/orchestrating/wishlist.md`) yet WISHLIST is filled → the template was filled in place (forbidden; may be stale from a prior run) → warn + confirm before routing.
+CWD CHECK: current repo must match the WISHLIST's target (Repo hint or content) — mismatch → STOP and ask, don't route.
 Glance at the repo (structure / README / build files — a quick scan, not a deep index) and read the WISHLIST below. Then ROUTE by size:
 
 - LITE — single feature / bugfix / refactor, one sequential pass (incl. research-only and docs-only asks — skip build-shaped steps)
@@ -24,7 +26,7 @@ Glance at the repo (structure / README / build files — a quick scan, not a dee
 - BIG — many genuinely independent epics, shared scaffolding, multi-day, worth ~15× fan-out
     → Read ~/.claude/orchestrating/orchestrator.md and run Session A — Intake.
 
-MEDIUM↔BIG gate: >6 independent units OR multi-day OR shared scaffolding → BIG; else MEDIUM (borderline stays MEDIUM).
+MEDIUM↔BIG gate: count wishlist items/epics (the countable proxy pre-decomposition) — >6 independent units OR multi-day (>1 calendar day of sessions) OR shared scaffolding → BIG; else MEDIUM. Hard criteria fire only on a confident count; an estimate within ±1 of the line = borderline = MEDIUM.
 
 State the chosen route + a one-line why before starting — the line MUST name the detected repo root + project identity as evidence (e.g. "LITE in ~/code/acme (acme-api, per package.json)"), so a wrong-repo run is visible even when the Repo hint says "current directory".
 Borderline → pick the lighter tier (cheap to escalate mid-task; expensive to over-build).
