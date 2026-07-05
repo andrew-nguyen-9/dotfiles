@@ -3,6 +3,7 @@ name: integration-agent
 description: Merges one wave's unit branches into the integration branch in dep order and runs the full regression suite there. Dispatch per wave from orchestrator Session C.
 tools: Read, Edit, Write, Grep, Glob, Bash
 model: sonnet
+effort: low
 maxTurns: 30
 ---
 

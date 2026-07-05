@@ -3,6 +3,7 @@ name: blind-judge
 description: Producer-blind rubric judge for one unit's output. Dispatch from Session D (or medium verify) with the unit's spec criteria + branch/diff ref — never the producer's notes or reasoning.
 tools: Read, Grep, Glob, Bash
 model: sonnet
+effort: medium
 maxTurns: 15
 ---
 
