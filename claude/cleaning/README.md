@@ -14,7 +14,7 @@ Fresh Claude Code chat **in the target repo**:
 
 ```
 Activate /caveman:caveman ultra + /ponytail:ponytail ultra + RTK + Serena. Output styles off.
-Quick survey (rtk git status, root tree, docs/ listing, .gitignore) — a scan, not an index. FIRST test: is this a template/config repo (content-is-machinery — templates, catalogs, hook scripts, dotfiles)? → apply Invariant 6 (flag drift only, never junk-table template files) before manifesting anything. Then ROUTE by mess size:
+Quick survey (git status, root tree, docs/ listing, .gitignore) — a scan, not an index. FIRST test: is this a template/config repo (content-is-machinery — templates, catalogs, hook scripts, dotfiles)? → apply Invariant 6 (flag drift only, never junk-table template files) before manifesting anything. Then ROUTE by mess size:
 
 - LITE — post-orchestrating reset / obvious junk only, <~15 paths
     → Read ~/.claude/cleaning/lite.md and run it.

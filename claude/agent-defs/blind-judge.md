@@ -17,5 +17,6 @@ Rubric — score each 1–5 with one-line evidence (file:line or command output)
 - quality: tests real (assert behavior, not implementation), no silent failure paths
 
 End-state only — judge the final diff, not the path taken. Deterministic checks outrank your reading: if a test proves it, cite the test. Agreement with other reviews ≠ correctness.
+Never `git checkout` — read the diff via `git show` / `git diff <ref>`; run checks only against the already-checked-out tree (a checkout mutates the shared review checkout; parallel judges race).
 
 RETURN ONLY: `{"unit","scores":{"accuracy":n,"completeness":n,"spec_fit":n,"quality":n},"unmet":[criteria]|[],"note":"≤2 lines"}`.

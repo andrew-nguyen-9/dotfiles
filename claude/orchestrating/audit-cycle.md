@@ -26,7 +26,7 @@ Dedupe, drop NITs, verify every P0/P1 against the actual text, build a fix manif
 
 ## Fix (Opus)
 
-One builder per file set, parallel. Briefs carry exact line anchors + "match the file's terse style, minimal diffs, no commits". Then cross-verify in the main window: grep every cross-file contract the fixes touched (header formats, pointers, refs to new files) — builders drift on shared conventions; patch residue inline.
+One builder per file set, parallel. Briefs carry exact line anchors + "match the file's terse style, minimal diffs, no commits". Then cross-verify in the main window: grep every cross-file contract the fixes touched (header formats, pointers, refs to new files) — builders drift on shared conventions; patch residue inline. Shell fixes: reuse `hooks/lib/orch-common.sh` functions first; extract a NEW shared function only when a pattern repeats ≥3× AND extraction shrinks total lines; never trivial wrappers.
 
 ## Land
 

@@ -84,10 +84,10 @@ The one file every session AND subagent gets free — the highest-leverage conte
 | Artifact | → Destination | Trigger | Consumer (next cycle) |
 |---|---|---|---|
 | `spec.md` blocked / ship-without epics | `docs/03-roadmap.md` bullets | any epic unmet at land | A step 0.5 reads roadmap into scoping |
-| `*.done.md` `decided:` lines | `docs/decisions/YYYY-MM-DD-<cycle>.md` (ONE file per cycle) | any non-obvious decision | A step 0.5 skims the latest file |
+| `*.done.md` `decided:` lines | `docs/decisions/YYYY-MM-DD-<cycle>.md` (ONE file per cycle) | any non-obvious decision | A step 0.5 reads every file since the last land |
 | `*.done.md` `gotchas:` lines | `docs/02-architecture.md` §Gotchas (dated) | any gotcha | every brief that path-refs 02 |
 | `depmap.md` unit seams that worked | `docs/02-architecture.md` §Ownership zones | seams changed | A step 0.5 (reads 02) |
-| wave-1 cost actuals — the `cost:` header line Session C appends to `progress.md` at wave-1 calibration (session-c.md §Pre-flight Calibrate) — + process lessons (3×-stuck units, re-dispatch causes) | copy into 2-line footer of the cycle's decisions file: `cost:` / `process:` | every cycle | A step 0.5 |
+| wave-1 cost actuals — the `cost:` line Session C appends to `progress.md` at wave-1 calibration (session-c.md §Pre-flight Calibrate) — + process lessons (3×-stuck units, re-dispatch causes) | copy into 2-line footer of the cycle's decisions file: `cost:` / `process:` | every cycle | A step 0.5 |
 | `blockers.md` env/infra/secrets facts | `docs/04-operations.md` §Ops notes | new ops fact | A step 0.5 (reads 04) |
 | `blockers.md` unticked boxes at land (pending USER actions) | `docs/03-roadmap.md` bullet (or `04` §Ops notes if env/infra) | any box unticked at land | A step 0.5 — else the pending post-launch action dies with `.orchestrator/` |
 | briefs, depmap, progress, handoff, rest of spec | delete — git history | always | — |
@@ -141,6 +141,7 @@ Better, once per machine: `git config --global core.excludesFile ~/.gitignore_gl
 | `.serena/` (serena `activate_project` scaffolding in worktrees) | delete + gitignore |
 | stray `handoff.md` / `progress.md` / `prd.json` outside `.orchestrator/` | delete after landed |
 | `wishlist.md` at repo root after its route landed | delete (template lives in dotfiles) |
+| `stale/<unit>` branches (medium-escalation renames) whose unit later shipped | verify shipped vs `decisions/`/roadmap → manifest for `git branch -d`; unshipped → list with age, don't touch (report-only when unsure, like branch-prune) |
 | `FILE_INDEX.md` / `REPO_MAP.md` manual indexes | delete (drift by design; serena + README cover it) |
 | `docs/vN/`, `docs/archive/` | collapse — latest live, rest to git history (deep tier) |
 | `02 §Gotchas` lines w/ dead path/symbol refs | delete at docs-refresh (fixed or stale) |
@@ -148,7 +149,7 @@ Better, once per machine: `git config --global core.excludesFile ~/.gitignore_gl
 
 ## Tool recipes
 
-- **Survey:** `rtk git status`, `git ls-files | head -50`, serena `list_dir` / `get_symbols_overview` — never whole-file reads.
+- **Survey:** `git status`, `git ls-files | head -50`, serena `list_dir` / `get_symbols_overview` — never whole-file reads.
 - **Ref-check before code delete/move:** serena `find_referencing_symbols` (zero refs required) or grep imports, **plus grep the bare filename repo-wide** (shell `source`/`.`, Makefile/CI/settings.json refs are invisible to symbol tools). Docs: grep the old path/filename for links.
 - **Untrack:** `git rm -r --cached -q <path>`. **Move/rename:** `git mv` (keeps history).
 - **Branch prune:** `git branch --merged main | grep -v ' main'` → `git branch -d` each (never `-D`).
