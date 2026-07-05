@@ -6,66 +6,42 @@ CLAUDE_DIR="$HOME/.claude"
 
 warn() { echo "  WARNING: $*" >&2; }
 
+# link_into <source> <target> <label>: idempotently point <target> at <source>
+# as a symlink, printing <label>-prefixed status. 5 cases: correct symlink →
+# skip; wrong symlink → re-link; broken symlink → re-link; existing file/dir →
+# back up to .bak then link; absent → link.
+link_into() {
+  local source="$1" target="$2" label="$3"
+  if [ -L "$target" ] && [ -e "$target" ]; then
+    if [ "$(readlink "$target")" = "$source" ]; then
+      echo "  $label: symlink already exists, skipping"
+      return 0
+    fi
+    echo "  $label: symlink points elsewhere, re-linking"
+    rm -f "$target"
+  elif [ -L "$target" ]; then
+    echo "  $label: broken symlink, re-linking"
+    rm -f "$target"
+  elif [ -e "$target" ]; then
+    echo "  $label: backing up existing to $target.bak"
+    mv "$target" "$target.bak"
+  fi
+  ln -s "$source" "$target"
+  echo "  $label: symlinked"
+}
+
 echo "Setting up Claude Code dotfiles..."
 
 mkdir -p "$CLAUDE_DIR"
 
 # Symlink config files + the orchestrating/ + cleaning/ + hooks/ folders
 for file in settings.json CLAUDE.md RTK.md orchestrating cleaning hooks; do
-  target="$CLAUDE_DIR/$file"
-  source="$DOTFILES_DIR/$file"
-  if [ -L "$target" ] && [ -e "$target" ]; then
-    if [ "$(readlink "$target")" = "$source" ]; then
-      echo "  $file: symlink already exists, skipping"
-    else
-      echo "  $file: symlink points elsewhere, re-linking"
-      rm -f "$target"
-      ln -s "$source" "$target"
-      echo "  $file: symlinked"
-    fi
-  elif [ -L "$target" ]; then
-    echo "  $file: broken symlink, re-linking"
-    rm -f "$target"
-    ln -s "$source" "$target"
-    echo "  $file: symlinked"
-  elif [ -e "$target" ]; then
-    echo "  $file: backing up existing to $target.bak"
-    mv "$target" "$target.bak"
-    ln -s "$source" "$target"
-    echo "  $file: symlinked"
-  else
-    ln -s "$source" "$target"
-    echo "  $file: symlinked"
-  fi
+  link_into "$DOTFILES_DIR/$file" "$CLAUDE_DIR/$file" "$file"
 done
 
 # Symlink the agents catalog to a NON-colliding name:
 # ~/.claude/agents/ is Claude Code's live agent-definition dir; these are docs.
-target="$CLAUDE_DIR/agents-docs"
-source="$DOTFILES_DIR/agents"
-if [ -L "$target" ] && [ -e "$target" ]; then
-  if [ "$(readlink "$target")" = "$source" ]; then
-    echo "  agents-docs: symlink already exists, skipping"
-  else
-    echo "  agents-docs: symlink points elsewhere, re-linking"
-    rm -f "$target"
-    ln -s "$source" "$target"
-    echo "  agents-docs: symlinked"
-  fi
-elif [ -L "$target" ]; then
-  echo "  agents-docs: broken symlink, re-linking"
-  rm -f "$target"
-  ln -s "$source" "$target"
-  echo "  agents-docs: symlinked"
-elif [ -e "$target" ]; then
-  echo "  agents-docs: backing up existing to $target.bak"
-  mv "$target" "$target.bak"
-  ln -s "$source" "$target"
-  echo "  agents-docs: symlinked"
-else
-  ln -s "$source" "$target"
-  echo "  agents-docs: symlinked"
-fi
+link_into "$DOTFILES_DIR/agents" "$CLAUDE_DIR/agents-docs" "agents-docs"
 
 # Symlink real agent defs (unit-builder, integration-agent, blind-judge)
 # into ~/.claude/agents/ — the LIVE agent-definition dir (file-level links;
@@ -74,30 +50,7 @@ mkdir -p "$CLAUDE_DIR/agents"
 for def in "$DOTFILES_DIR"/agent-defs/*.md; do
   [ -e "$def" ] || continue  # empty dir: glob stays literal — don't link '*.md'
   name="$(basename "$def")"
-  target="$CLAUDE_DIR/agents/$name"
-  if [ -L "$target" ] && [ -e "$target" ]; then
-    if [ "$(readlink "$target")" = "$def" ]; then
-      echo "  agents/$name: symlink already exists, skipping"
-    else
-      echo "  agents/$name: symlink points elsewhere, re-linking"
-      rm -f "$target"
-      ln -s "$def" "$target"
-      echo "  agents/$name: symlinked"
-    fi
-  elif [ -L "$target" ]; then
-    echo "  agents/$name: broken symlink, re-linking"
-    rm -f "$target"
-    ln -s "$def" "$target"
-    echo "  agents/$name: symlinked"
-  elif [ -e "$target" ]; then
-    echo "  agents/$name: exists (not a symlink), backing up to $target.bak"
-    mv "$target" "$target.bak"
-    ln -s "$def" "$target"
-    echo "  agents/$name: symlinked"
-  else
-    ln -s "$def" "$target"
-    echo "  agents/$name: symlinked"
-  fi
+  link_into "$def" "$CLAUDE_DIR/agents/$name" "agents/$name"
 done
 
 # Network installs below must not abort the whole script under `set -e`:

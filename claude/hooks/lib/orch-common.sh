@@ -59,16 +59,19 @@ orch_find_dir() {
 # orch_gate_open <orch-dir>: succeeds (0) when the hook should stay ARMED,
 # fails (1) when state.md explicitly says non-running — caller exits 0 on
 # failure. Lifecycle gate: dormant ONLY on an explicit non-running state.md;
-# armed otherwise. Signal = first NON-blank line after BOM strip; an
-# empty/blank/0-byte file stays ARMED (same as a missing file), so a
-# truncated/racing write can't silently disarm. Tolerant match: -iE accepts
-# case and missing-space variants (state:running, State: running).
-# jq-less/fail-open: missing/unreadable state.md keeps it active.
+# armed otherwise. Signal = the FIRST `state:` line anywhere in the file
+# (case-insensitive, optional leading whitespace) after BOM strip — decoration
+# lines (markdown comments, headings) before it are skipped, so they can't
+# silently disarm. NO `state:` line anywhere (empty/blank/0-byte/decoration-only
+# file) stays ARMED (same as a missing file), so a truncated/racing write can't
+# silently disarm. Tolerant match: -iE accepts case and missing-space variants
+# (state:running, State: running). jq-less/fail-open: missing/unreadable
+# state.md keeps it active.
 orch_gate_open() {
   local state first
   state="$1/state.md"
   [ -f "$state" ] || return 0
-  first=$(LC_ALL=C tr -d '\357\273\277' < "$state" | awk 'NF{print;exit}')
+  first=$(LC_ALL=C tr -d '\357\273\277' < "$state" | grep -i -m1 '^[[:space:]]*state:')
   [ -n "$first" ] || return 0
   printf '%s' "$first" | grep -qiE '^[[:space:]]*state:[[:space:]]*running'
 }

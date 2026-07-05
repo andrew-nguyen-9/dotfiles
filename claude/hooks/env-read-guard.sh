@@ -9,6 +9,8 @@
 # THREAT MODEL: this is a seatbelt against ACCIDENTAL secret ingestion, not
 # containment of a deliberately evasive model — constructed-path / symlink /
 # interpreter-indirection classes are out of scope by design.
+# KNOWN FP: a bare `.env` token inside a quoted string / heredoc / commit message
+# also denies (mention≠read) — reword the command to avoid the literal token.
 set -u
 input=$(cat)
 
@@ -49,7 +51,7 @@ case "$tool" in
     file=$(printf '%s' "$input" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
     base=$(basename "$file")
     case "$base" in
-      .env|.env.*|.envrc|.envrc.*|*.env|*.env.*)
+      .env|.env.*|.envrc|.envrc.*|*.env|*.env.*|*.envrc|*.envrc.*)
         case "$base" in
           *example*|*template*|*sample*) exit 0 ;;
           *) deny "$file" ;;
