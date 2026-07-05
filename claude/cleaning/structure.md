@@ -79,7 +79,7 @@ The one file every session AND subagent gets free — the highest-leverage conte
 `.orchestrator/` is gitignored but still on disk — harvest reads it before the delete pass. Every row names its **consumer** — a harvest destination nothing reads is ritual, not memory. Destination file missing → create it minimal from the templates above (this graduation is content-driven, not the preemptive-creation §Tiers forbids — never skip the harvest because the file doesn't exist).
 
 - **`<cycle>` slug** = `YYYY-MM-DD` (the land date); append a short spec-title slug (`YYYY-MM-DD-<slug>`) only when two cycles land the same day.
-- **Graduation is half-done until the pointer moves.** Creating a docs/ destination (first harvest into `docs/02` or `docs/04`) does NOT repoint CLAUDE.md — patch the repo-root CLAUDE.md pointer lines too: `Map:` → `docs/02-architecture.md` **only when §Map actually has content** (a gotchas-only first harvest keeps the README `Map:` pointer — an empty §Map target is a regression), and always add `Ops/env:` → `docs/04-operations.md`, per §CLAUDE.md full template. A destination nothing points to is orphaned.
+- **Graduation is half-done until the pointer moves.** Creating a docs/ destination (first harvest into `docs/02` or `docs/04`) does NOT repoint CLAUDE.md — patch the repo-root CLAUDE.md pointer lines too: `Map:` → `docs/02-architecture.md` **only when §Map actually has content** (a gotchas-only first harvest keeps the README `Map:` pointer — an empty §Map target is a regression), and add `Ops/env:` → `docs/04-operations.md` **only when `docs/04-operations.md` actually exists** (a dangling pointer trips next cycle's GATE 1 `test -f`), per §CLAUDE.md full template. A destination nothing points to is orphaned.
 
 | Artifact | → Destination | Trigger | Consumer (next cycle) |
 |---|---|---|---|
@@ -87,7 +87,7 @@ The one file every session AND subagent gets free — the highest-leverage conte
 | `*.done.md` `decided:` lines | `docs/decisions/YYYY-MM-DD-<cycle>.md` (ONE file per cycle) | any non-obvious decision | A step 0.5 skims the latest file |
 | `*.done.md` `gotchas:` lines | `docs/02-architecture.md` §Gotchas (dated) | any gotcha | every brief that path-refs 02 |
 | `depmap.md` unit seams that worked | `docs/02-architecture.md` §Ownership zones | seams changed | A step 0.5 (reads 02) |
-| wave-1 cost actuals (`ccusage` delta vs 15× prior) + process lessons (3×-stuck units, re-dispatch causes) | 2-line footer of the cycle's decisions file: `cost:` / `process:` | every cycle | A step 0.5 |
+| wave-1 cost actuals — the `cost:` header line Session C appends to `progress.md` at wave-1 calibration (session-c.md §Pre-flight Calibrate) — + process lessons (3×-stuck units, re-dispatch causes) | copy into 2-line footer of the cycle's decisions file: `cost:` / `process:` | every cycle | A step 0.5 |
 | `blockers.md` env/infra/secrets facts | `docs/04-operations.md` §Ops notes | new ops fact | A step 0.5 (reads 04) |
 | briefs, depmap, progress, handoff, rest of spec | delete — git history | always | — |
 
@@ -111,6 +111,8 @@ The one file every session AND subagent gets free — the highest-leverage conte
 *.log
 *.tsbuildinfo
 .orchestrator/
+.orchestrator.stale-*/
+.serena/
 .next/
 dist/
 coverage/
@@ -134,7 +136,8 @@ Better, once per machine: `git config --global core.excludesFile ~/.gitignore_gl
 | `.orchestrator/` after the cycle landed | delete + gitignore |
 | `.orchestrator.stale-<date>/` dirs (Session A "just proceed" overrides) | harvest per §Harvest table, then delete |
 | scratch/debug: `tmp.*`, `test2.*`, `*-old.*`, `*-backup.*`, `*.bak`, one-off debug scripts | delete |
-| `plan.md` / `NOTES.md` / `TODO.md` / session logs whose content shipped or died | delete (git keeps it) |
+| `plan.md` / `NOTES.md` / `TODO.md` / session logs whose content shipped or died | delete (git keeps it) — but an escalation `plan.md` with todo/in-flight units is LIVE, keep it; uncommitted files are NOT in git history, so never delete — flag instead |
+| `.serena/` (serena `activate_project` scaffolding in worktrees) | delete + gitignore |
 | stray `handoff.md` / `progress.md` / `prd.json` outside `.orchestrator/` | delete after landed |
 | `wishlist.md` at repo root after its route landed | delete (template lives in dotfiles) |
 | `FILE_INDEX.md` / `REPO_MAP.md` manual indexes | delete (drift by design; serena + README cover it) |

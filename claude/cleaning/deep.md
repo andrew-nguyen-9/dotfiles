@@ -10,7 +10,7 @@ Repo drifted far from `structure.md`: versioned docs (`docs/v1|v2|v3`, `docs/arc
 
 1. **Reset first.** `lite.md` steps 1–2 (preflight, gitignore).
 2. **Survey agent.** Dispatch ONE read-only Explore agent: full census vs `structure.md` — docs mapping old→new, duplicate files across versions (diff, don't assume), junk hits, naming drift, loose files, stray flags. Returns manifest candidates + a dupe/overlap report — never file dumps into this chat.
-3. **Manifest → ONE approval.** Full migration plan:
+3. **Manifest → ONE approval.** Carry step-1's gate exclusions (parked/live-run keeps: `.orchestrator/`, unit branches) into the manifest as an explicit keep-list — they live only in lite's RESUME prose and get lost by the time the manifest executes. Full migration plan:
    - **docs template mapping** — every old path → its `NN-kebab` / folder target
    - **version collapse** — latest version survives as the live doc; older-only unique content merges in; the rest dies to git history. `docs/archive/`, `docs/vN/`, leaked `superpowers/`/scaffolding folders — gone.
    - **moves / renames / deletes** — as `medium.md` step 3

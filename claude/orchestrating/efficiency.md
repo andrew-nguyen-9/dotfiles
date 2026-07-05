@@ -24,7 +24,7 @@ RETURN ONLY: {"id","status","branch","PR":null,"note":"≤2 lines"} — no dumps
 | Feature | Do | Save | Risk |
 |---------|-----|------|------|
 | Prompt caching | cache `[system][spec][brief]`, order stable→volatile (live status last/uncached); 5-min TTL, 1-hr for long fan-outs | ~90% on hits | none — byte-identical replay |
-| Context editing | **API/SDK builds only** — CC sessions can't set `clear_tool_uses_20250919`; in-CLI equivalent = subagent isolation + files + auto-compaction | ~84% on 100-turn evals | low — **write `.done.md` before results age out** |
+| Context editing | CC CLI now natively clears older tool outputs first, then summarizes, at the context limit; the API `clear_tool_uses_20250919` knob stays API/SDK-only | ~84% on 100-turn evals | low — **write `.done.md` before results age out** |
 | Memory tool | `.done.md` + briefs = the store; state in files outside the window | +39% w/ editing | none — files are source of truth |
 | Shared base-prompt cache | the dispatch skeleton above, byte-identical per wave; only `[brief path + upstream .done.md paths]` varies after it | one write serves the whole fan-out (~90% off the prefix for agents 2..N) | none — vary nothing before the breakpoint |
 

@@ -19,7 +19,7 @@ STALE CHECK: reading the dotfiles template path (`~/.claude/orchestrating/wishli
 CWD CHECK: current repo must match the WISHLIST's target (Repo hint or content) — mismatch → STOP and ask, don't route.
 Glance at the repo (structure / README / build files — a quick scan, not a deep index) and read the WISHLIST below. Then ROUTE by size:
 
-- LITE — single feature / bugfix / refactor, one sequential pass (incl. research-only and docs-only asks — skip build-shaped steps)
+- LITE — single feature / bugfix / refactor, one sequential pass (incl. single-topic research/docs asks — skip build-shaped steps; multi-topic research sweeps route by unit count like everything else)
     → Read ~/.claude/orchestrating/lite.md and run it.
 - MEDIUM — a handful of units (~2-6) with some deps/structure, fits ~one session, benefits from a plan + maybe 2-4 parallel build agents
     → Read ~/.claude/orchestrating/medium.md and run it.
