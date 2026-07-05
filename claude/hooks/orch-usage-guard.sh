@@ -60,10 +60,14 @@ derived=$(printf '%s' "$blocks" | jq '[.blocks[] | select(.isGap != true and .is
 # (e.g. "garbage") OR a zero (0, 00, …) must NOT silently disable the guard —
 # warn once and fall back to the max-completed-block logic. Zero would otherwise
 # pass the digit check then die at `-gt 0` → guard silently inactive.
+# A leading-zero value (0100, 0108) is a base-10 count, but bare `$(( ))` reads
+# it as OCTAL — 0100→64 (guard trips 6.4% low) and 0108→invalid-octal arith
+# error + `set -u` exit (guard dies). Force base-10 with 10#; the previous arm
+# already filtered non-digits, so 10# here only ever sees pure digit strings.
 if [ -n "${ORCH_TOKEN_LIMIT:-}" ]; then
   case "$ORCH_TOKEN_LIMIT" in
     *[!0-9]* | "") echo "BUDGET GUARD: ORCH_TOKEN_LIMIT='$ORCH_TOKEN_LIMIT' is not a positive integer — ignoring it, using derived ceiling." >&2; limit="$derived" ;;
-    *[!0]*) limit="$ORCH_TOKEN_LIMIT" ;;
+    *[!0]*) limit=$((10#$ORCH_TOKEN_LIMIT)) ;;
     *) echo "BUDGET GUARD: ORCH_TOKEN_LIMIT='$ORCH_TOKEN_LIMIT' is not a positive integer — ignoring it, using derived ceiling." >&2; limit="$derived" ;;
   esac
 else

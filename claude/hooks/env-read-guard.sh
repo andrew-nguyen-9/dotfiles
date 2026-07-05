@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
-# PreToolUse (Read + Grep + Bash) — blocks reading .env / .envrc secrets files. GLOBAL
+# PreToolUse (Read + Grep + Bash) — blocks reading secrets files: dotfiles
+# (.env / .env.<x> / .envrc / .envrc.<x>) AND dotless *.env basenames
+# (prod.env, local.env — the docker-compose `env_file:` pattern). GLOBAL
 # (no .orchestrator gate): secrets never belong in a model context window.
-# Allows any *.env* / *.envrc* whose name carries example / template / sample.
+# Allows any such name that carries example / template / sample.
 # Fires on EVERY Read and Bash call — false positives on normal files are
 # unacceptable, so matching is per-token and basename-anchored.
+# THREAT MODEL: this is a seatbelt against ACCIDENTAL secret ingestion, not
+# containment of a deliberately evasive model — constructed-path / symlink /
+# interpreter-indirection classes are out of scope by design.
 set -u
 input=$(cat)
 
@@ -13,17 +18,19 @@ deny() {
 }
 
 # scan_secret <text>: succeeds (0) when the text contains a bare .env-ish token
-# — .env, .env.<x>, .envrc, .envrc.<x> — that is NOT an example/template/sample.
+# — .env, .env.<x>, .envrc, .envrc.<x>, OR a dotless *.env / *.env.<x> basename
+# (prod.env, local.env) — that is NOT an example/template/sample.
 # tr splits on every non-path char, so verbs, redirects (`< .env`), `=`, `:`,
 # quotes and separators all break into their own tokens; the anchored regex then
-# matches only a real basename component (so `development.environment`, `foo.env`
-# and `.environment` never match).
+# matches only a real basename component. The prefix `[A-Za-z0-9_.-]*` is
+# optional (empty still matches bare `.env`), so `prod.env` matches but
+# `development.environment` (no `.env` boundary — trailing `ironment`) does NOT.
 # The example/template/sample allow-out is anchored to the BASENAME component
 # ([^/]*marker[^/]*$) — else a marker anywhere in the PATH (e.g.
 # /home/sampleuser/.env, examples/../.env) would wrongly allow a real secrets file.
 scan_secret() {
   printf '%s' "$1" | tr -c 'A-Za-z0-9_./-' '\n' \
-    | grep -E '(^|/)\.env(rc)?(\.[A-Za-z0-9_.-]+)?$' \
+    | grep -E '(^|/)[A-Za-z0-9_.-]*\.env(rc)?(\.[A-Za-z0-9_.-]+)?$' \
     | grep -qvE '(^|/)[^/]*(example|template|sample)[^/]*$'
 }
 
@@ -42,7 +49,7 @@ case "$tool" in
     file=$(printf '%s' "$input" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
     base=$(basename "$file")
     case "$base" in
-      .env|.env.*|.envrc|.envrc.*)
+      .env|.env.*|.envrc|.envrc.*|*.env|*.env.*)
         case "$base" in
           *example*|*template*|*sample*) exit 0 ;;
           *) deny "$file" ;;
