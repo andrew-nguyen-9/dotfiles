@@ -89,6 +89,7 @@ The one file every session AND subagent gets free — the highest-leverage conte
 | `depmap.md` unit seams that worked | `docs/02-architecture.md` §Ownership zones | seams changed | A step 0.5 (reads 02) |
 | wave-1 cost actuals — the `cost:` header line Session C appends to `progress.md` at wave-1 calibration (session-c.md §Pre-flight Calibrate) — + process lessons (3×-stuck units, re-dispatch causes) | copy into 2-line footer of the cycle's decisions file: `cost:` / `process:` | every cycle | A step 0.5 |
 | `blockers.md` env/infra/secrets facts | `docs/04-operations.md` §Ops notes | new ops fact | A step 0.5 (reads 04) |
+| `blockers.md` unticked boxes at land (pending USER actions) | `docs/03-roadmap.md` bullet (or `04` §Ops notes if env/infra) | any box unticked at land | A step 0.5 — else the pending post-launch action dies with `.orchestrator/` |
 | briefs, depmap, progress, handoff, rest of spec | delete — git history | always | — |
 
 ## Naming

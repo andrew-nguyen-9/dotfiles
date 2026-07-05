@@ -26,7 +26,7 @@ Glance at the repo (structure / README / build files — a quick scan, not a dee
 - BIG — many genuinely independent epics, shared scaffolding, multi-day, worth ~15× fan-out
     → Read ~/.claude/orchestrating/orchestrator.md and run Session A — Intake.
 
-MEDIUM↔BIG gate: count wishlist items/epics (the countable proxy pre-decomposition) — >6 independent units OR multi-day (>1 calendar day of sessions) OR shared scaffolding → BIG; else MEDIUM. Hard criteria fire only on a confident count; an estimate within ±1 of the line = borderline = MEDIUM.
+MEDIUM↔BIG gate: count wishlist items/epics (the countable proxy pre-decomposition), but size items — don't just count: an item that is itself an epic ("rewrite the frontend", "port to X") counts as >1 unit — >6 independent units OR multi-day (>1 calendar day of sessions) OR shared scaffolding → BIG; else MEDIUM. Hard criteria fire only on a confident count; an estimate within ±1 of the line = borderline = MEDIUM.
 
 State the chosen route + a one-line why before starting — the line MUST name the detected repo root + project identity as evidence (e.g. "LITE in ~/code/acme (acme-api, per package.json)"), so a wrong-repo run is visible even when the Repo hint says "current directory".
 Borderline → pick the lighter tier (cheap to escalate mid-task; expensive to over-build).
