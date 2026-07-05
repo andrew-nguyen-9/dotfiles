@@ -2,6 +2,8 @@
 
 Visual verification and iteration. **Heaviest agents in the catalog** — vision + browser tooling; dispatch only when the unit is genuinely visual.
 
+**Design knowledge (JIT):** every design/UI brief loads `~/.claude/design-guidelines/INDEX.md` FIRST, then ONLY the docs its task tables route to (project-shape row first, domain-question fallback) — never bulk-load the directory. Applies to ce-* rows and the Fallback floor alike.
+
 ## Agents
 
 | Agent | Source | Use when / (not:) | Tools | Effort | Cost | Returns | Tier |
