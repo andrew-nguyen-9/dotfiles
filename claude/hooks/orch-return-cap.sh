@@ -13,18 +13,35 @@ dir=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 # .orchestrator lives in the MAIN worktree; a subagent's cwd may be a linked
 # git-worktree that lacks it — fall back to the common dir's parent. git
 # absent/failing → fail-open (exit 0), unchanged from before.
-if [ ! -d "$dir/.orchestrator" ]; then
+orch_dir="$dir/.orchestrator"
+if [ ! -d "$orch_dir" ]; then
   common=$(git -C "$dir" rev-parse --git-common-dir 2>/dev/null) || exit 0
   [ -n "$common" ] || exit 0
   case "$common" in /*) ;; *) common="$dir/$common" ;; esac
-  [ -d "$(dirname "$common")/.orchestrator" ] || exit 0
+  orch_dir="$(dirname "$common")/.orchestrator"
+  [ -d "$orch_dir" ] || exit 0
 fi
 
-# ponytail: 4000-char ceiling, not 2 lines — leaves room for legit review findings
+# Lifecycle gate: dormant unless state.md is absent (legacy dir) or says running.
+# Tolerant match: LC_ALL=C tr strips a leading UTF-8 BOM, then -iE accepts case
+# and missing-space variants (state:running, State: running) — a stray byte or
+# casing must not silently disarm the guard mid-run.
+# jq-less/fail-open: a missing/unreadable state.md keeps the hook active as before.
+if [ -f "$orch_dir/state.md" ] && ! head -n1 "$orch_dir/state.md" | LC_ALL=C tr -d '\357\273\277' | grep -qiE '^[[:space:]]*state:[[:space:]]*running'; then
+  exit 0
+fi
+
+# ponytail: 4000-char ceiling, not 2 lines — leaves room for legit review findings.
+# Tail-preserving: keep first ~3200 + marker + last ~800 chars so the trailing
+# {"id","status",...} contract JSON agents append LAST survives truncation.
 printf '%s' "$input" | jq -c '
   (.tool_response | if type == "string" then . else tojson end) as $out
-  | if ($out | length) > 4000 then
+  | ($out | length) as $len
+  | if $len > 4000 then
       {hookSpecificOutput: {hookEventName: "PostToolUse",
-        updatedToolOutput: (($out[0:4000]) + "\n[TRUNCATED by return-cap hook: return contract is <=2 lines — detail belongs in .done.md on disk]")}}
+        updatedToolOutput: (
+          ($out[0:3200])
+          + "\n…[truncated by return-cap hook: " + (($len - 4000) | tostring) + " chars dropped — return contract is <=2 lines; detail belongs in .done.md on disk]…\n"
+          + ($out[($len - 800):$len]))}}
     else empty end'
 exit 0

@@ -51,5 +51,15 @@ case "$tool" in
     cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty' 2>/dev/null)
     scan_secret "$cmd" && deny ".env target in: $cmd"
     ;;
+  Grep)
+    # Grep can dump .env contents when its path/glob targets a secrets file.
+    # Inspect path + glob (NOT pattern — the pattern is the search text, not a
+    # target). scan_secret allows any *example/template/sample* variant.
+    for field in path glob; do
+      val=$(printf '%s' "$input" | jq -r ".tool_input.$field // empty" 2>/dev/null)
+      [ -n "$val" ] || continue
+      scan_secret "$val" && deny ".env target in Grep $field: $val"
+    done
+    ;;
 esac
 exit 0

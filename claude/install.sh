@@ -15,7 +15,14 @@ for file in settings.json CLAUDE.md RTK.md orchestrating cleaning hooks; do
   target="$CLAUDE_DIR/$file"
   source="$DOTFILES_DIR/$file"
   if [ -L "$target" ] && [ -e "$target" ]; then
-    echo "  $file: symlink already exists, skipping"
+    if [ "$(readlink "$target")" = "$source" ]; then
+      echo "  $file: symlink already exists, skipping"
+    else
+      echo "  $file: symlink points elsewhere, re-linking"
+      rm -f "$target"
+      ln -s "$source" "$target"
+      echo "  $file: symlinked"
+    fi
   elif [ -L "$target" ]; then
     echo "  $file: broken symlink, re-linking"
     rm -f "$target"
@@ -37,7 +44,14 @@ done
 target="$CLAUDE_DIR/agents-docs"
 source="$DOTFILES_DIR/agents"
 if [ -L "$target" ] && [ -e "$target" ]; then
-  echo "  agents-docs: symlink already exists, skipping"
+  if [ "$(readlink "$target")" = "$source" ]; then
+    echo "  agents-docs: symlink already exists, skipping"
+  else
+    echo "  agents-docs: symlink points elsewhere, re-linking"
+    rm -f "$target"
+    ln -s "$source" "$target"
+    echo "  agents-docs: symlinked"
+  fi
 elif [ -L "$target" ]; then
   echo "  agents-docs: broken symlink, re-linking"
   rm -f "$target"
@@ -62,7 +76,14 @@ for def in "$DOTFILES_DIR"/agent-defs/*.md; do
   name="$(basename "$def")"
   target="$CLAUDE_DIR/agents/$name"
   if [ -L "$target" ] && [ -e "$target" ]; then
-    echo "  agents/$name: symlink already exists, skipping"
+    if [ "$(readlink "$target")" = "$def" ]; then
+      echo "  agents/$name: symlink already exists, skipping"
+    else
+      echo "  agents/$name: symlink points elsewhere, re-linking"
+      rm -f "$target"
+      ln -s "$def" "$target"
+      echo "  agents/$name: symlinked"
+    fi
   elif [ -L "$target" ]; then
     echo "  agents/$name: broken symlink, re-linking"
     rm -f "$target"
@@ -72,6 +93,7 @@ for def in "$DOTFILES_DIR"/agent-defs/*.md; do
     echo "  agents/$name: exists (not a symlink), backing up to $target.bak"
     mv "$target" "$target.bak"
     ln -s "$def" "$target"
+    echo "  agents/$name: symlinked"
   else
     ln -s "$def" "$target"
     echo "  agents/$name: symlinked"
@@ -111,11 +133,25 @@ fi
 # Source: https://github.com/rtk-ai/rtk
 if ! command -v rtk &>/dev/null; then
   echo "Installing rtk..."
-  if command -v brew &>/dev/null; then
-    brew install rtk || warn "rtk install failed — install manually (https://github.com/rtk-ai/rtk)."
-  else
+  # Upstream token-killer installer — also the brew fallback when the name
+  # collides with the "Rust Type Kit" formula.
+  rtk_upstream() {
     curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh \
       || warn "rtk install failed — install manually (https://github.com/rtk-ai/rtk)."
+  }
+  if command -v brew &>/dev/null; then
+    brew install rtk 2>/dev/null || true
+    # `brew install rtk` may pull the unrelated "Rust Type Kit" — verify the
+    # binary is the token-killer (its help/gain mentions token or proxy);
+    # wrong or missing → fall back to the upstream installer.
+    if rtk --help 2>&1 | grep -qiE 'token|proxy' || rtk gain 2>&1 | grep -qiE 'token|proxy'; then
+      echo "rtk: installed via brew"
+    else
+      warn "brew rtk missing or wrong formula (name collides with Rust Type Kit) — using upstream installer."
+      rtk_upstream
+    fi
+  else
+    rtk_upstream
   fi
 else
   echo "rtk: already installed ($(rtk --version 2>/dev/null))"
