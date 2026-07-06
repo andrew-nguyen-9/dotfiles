@@ -2,3 +2,4 @@
 .serena/
 *.log
 .orchestrator/
+.orchestrator.stale-*/
