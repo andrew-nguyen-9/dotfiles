@@ -46,7 +46,7 @@ platforms: <now / 12mo>
 feels-like: <adj, adj, adj> — never <adj, adj, adj>
 anchor: <the non-digital object/place/material>
 not-like: <products to not resemble>
-sliders: serious 2/5 · calm 4/5 · dense 3/5 · classic 2/5
+sliders: serious <n>/5 · calm <n>/5 · dense <n>/5 · classic <n>/5
 density: <comfortable|dense|airy>   motion: <purposeful|expressive|minimal>
 ambition: <1-5>   sacred: <list>
 
@@ -85,10 +85,11 @@ Naming: role-based (--color-surface, not --gray-100).
 | --color-accent | #… | #… | primary actions | surface ≥3:1 |
 …(full role set: ink/muted/surface/raised/line/accent/accent-ink/ok/warn/danger/focus)
 Derivation: <one line — seed + method + corpus rule used>.
+Extract repos add a `source key` column mapping each token to its mined origin (e.g. blue-600).
 
 ## Type
 faces: <display face> / <text face> — pairing rationale: <one line>
-scale: base 16px · ratio <1.2|1.25|1.333> → 13/16/20/25/31/39
+scale: base 16px · ratio <1.2|1.25|1.333> → <the computed steps for the chosen ratio, e.g. 1.25 → 13/16/20/25/31/39>
 weights: <400/600/…>   line-height: text 1.5 · display 1.15   measure: 45–75ch
 
 ## Space
@@ -99,6 +100,25 @@ radius: <none|4|8|…>px (+ where it bends)   shadows/borders: <the system's dep
 
 ## Breakpoints
 <the set + what reflows at each>
+```
+
+### design/UI-KIT.md
+
+```markdown
+# UI-KIT
+
+Specs use tokens only (values live in FOUNDATIONS). Format, states, a11y minimums
+per the creator's ui-kit.md; each full spec ≤10 lines.
+
+## Inventory
+| component | status | code |
+|-----------|--------|------|
+| buttons | live | src/components/Button.tsx |
+| <every core-tier row + Brief-triggered extended rows; statuses live/specced/planned> | | |
+
+## Specs
+### Button — live
+<per-component blocks for the specced set>
 ```
 
 ### design/VOICE.md
@@ -142,9 +162,15 @@ easing: <the signature curve(s)>   meaning: <what moves, why, reduced-motion beh
 ```markdown
 # DECISIONS — append-only
 
+challenge-by = decision date + one INDEX cadence interval, unless the decider sets longer.
+Tags in the decision cell: `wildcard:<FILE>` (challenge rotation memory), `trial`, `defaulted`.
+
 | date | decision | why | challenge-by |
 |------|----------|-----|--------------|
 | YYYY-MM-DD | chose direction "<name>"; rejected <A>, <B> | <one line> | YYYY-MM-DD |
+
+## Drift — shipped code vs system (Extract findings; append resolutions, never rewrite rows)
+| where | code says | system says | resolved |
 ```
 
 ### design/validate.sh
@@ -164,9 +190,9 @@ done
 grep -q '^## Floors' INDEX.md 2>/dev/null || say "INDEX.md lacks §Floors"
 grep -q '^## Brief'  INDEX.md 2>/dev/null || say "INDEX.md lacks §Brief"
 grep -q 'last-challenged:' INDEX.md 2>/dev/null || say "INDEX.md lacks last-challenged stamp"
-# tokens-only discipline: raw hex outside FOUNDATIONS is a leak
-leaks=$(grep -l '#[0-9a-fA-F]\{6\}' UI-KIT.md VOICE.md PATTERNS.md 2>/dev/null || true)
-[ -z "$leaks" ] || say "raw hex outside FOUNDATIONS: $leaks"
+# tokens-only discipline: raw color values outside FOUNDATIONS are a leak
+leaks=$(grep -lE '#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(' UI-KIT.md VOICE.md PATTERNS.md 2>/dev/null || true)
+[ -z "$leaks" ] || say "raw color outside FOUNDATIONS: $leaks"
 exit $fail
 ```
 

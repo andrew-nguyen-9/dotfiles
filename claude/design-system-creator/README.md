@@ -13,19 +13,22 @@ Fresh Claude Code chat **in the target repo**:
 **INSTRUCTIONS TO CLAUDE — do not edit this block:**
 
 ```
-Activate /caveman:caveman ultra + /ponytail:ponytail ultra + RTK. Output styles off.
+Activate /caveman:caveman ultra + /ponytail:ponytail ultra if available; proceed without missing ones,
+note it once. Never compress AskUserQuestion text — interview options carry consequences.
 DETECT: test -f design/INDEX.md at the target repo root (fallback: docs/design/INDEX.md).
+PRESENT → also read its §Cadence: last-challenged older than the cadence interval = overdue.
 Then ROUTE by state + ask:
 
 - ABSENT, repo has no UI code        → SCRATCH  — read ~/.claude/design-system-creator/modes.md §Scratch
 - ABSENT, repo has UI code/screens   → EXTRACT  — read ~/.claude/design-system-creator/modes.md §Extract
-- PRESENT, bounded ask (new component, token tweak, new platform) → UPDATE — modes.md §Update
-- PRESENT, direction change (rebrand, pivot, "feels wrong/stale") → REVAMP — modes.md §Revamp
-- PRESENT, no build ask / "challenge it" / challenge cadence due  → CHALLENGE — read challenge.md
+- PRESENT, bounded ask (new component, token tweak, new platform) → UPDATE — read ~/.claude/design-system-creator/modes.md §Update
+- PRESENT, direction change (rebrand, pivot, "feels wrong/stale") → REVAMP — read ~/.claude/design-system-creator/modes.md §Revamp
+- PRESENT, no build ask / "challenge it" / cadence overdue        → CHALLENGE — read ~/.claude/design-system-creator/challenge.md
 
 State mode + one-line why naming the repo root + the evidence (INDEX present/absent, UI code found).
-Ambiguous update↔revamp → UPDATE (cheap to escalate mid-run). Never route on an empty ask + absent INDEX
-without confirming the user wants a design system at all.
+Ambiguous update↔revamp → UPDATE (cheap to escalate mid-run). Deliberately invoking this file IS
+consent to build — but INDEX absent + zero product context to mine or ask from (empty repo, no
+description) → get P0 answers before routing, don't invent a product.
 ```
 
 ---

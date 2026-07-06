@@ -8,7 +8,7 @@ Code EVERY fix with Opus builders. `/caveman:caveman ultra`; `/ponytail:ponytail
 ## Setup (main window, before fan-out)
 
 - Read the orchestrator-audit memory (see MEMORY.md index): prior fixes + deferred user-decisions. Everything listed there is COVERED — scenarios must break new ground; never re-apply what the user deferred.
-- Read all of `orchestrating/*`, `cleaning/*`, `agent-defs/*`, `hooks/*.sh` (~1k lines) + git diff since the last audit commit — recently-changed text gets the heaviest scenario coverage.
+- Read all of `orchestrating/*`, `cleaning/*`, `design-system-creator/*`, `agent-defs/*`, `hooks/*.sh` (~1.5k lines) + git diff since the last audit commit — recently-changed text gets the heaviest scenario coverage.
 
 ## Fan-out (parallel Fable forks, strict output contracts)
 

@@ -10,11 +10,11 @@ A design system that is only written decays into a template: safe, dated, increa
 
 ## The pass
 
-1. **Load** `design/INDEX.md` + `DECISIONS.md` only. Ambition level (P4.1) and sacred list (P4.2) scope everything below; ambition 2 = refinement-only pass (skip generator classes marked ≥3).
+1. **Load** `design/INDEX.md` + `DECISIONS.md` first; JIT-load each North Star file a candidate target lives in, and each corpus doc a generator or gate names, at the step that uses it — start light, never bulk-load. The Brief's ambition and sacred list scope everything below; ambition 2 = refinement-only pass (skip generator classes marked ≥3). Any DECISIONS trial past its date is a **mandatory target** (slot 0) before the three below.
 2. **Pick 3 targets:**
    - the decision with the oldest overdue `challenge-by` date,
-   - the weakest differentiator — the token/component/pattern most likely to appear verbatim in any generated product (judged against ANTI_HOMOGENIZATION),
-   - one wildcard, rotating by file so every North Star file is hit over a cycle of passes: FOUNDATIONS → UI-KIT → VOICE → PATTERNS.
+   - the weakest differentiator — the token/component/pattern most likely to appear verbatim in any generated product (load ANTI_HOMOGENIZATION + the candidate's file to judge),
+   - one wildcard, rotating FOUNDATIONS → UI-KIT → VOICE → PATTERNS: the file after the last `wildcard:<FILE>`-tagged DECISIONS entry (none → FOUNDATIONS). Tag this pass's entry the same way — DECISIONS is the rotation's memory.
    Sacred elements are skipped even when they match.
 3. **Generate 2 alternatives per target**, each grounded in a corpus doc loaded JIT for it:
 
@@ -29,12 +29,12 @@ A design system that is only written decays into a template: safe, dated, increa
    | Adaptive behavior (interface changes itself) | GENERATIVE_AND_ADAPTIVE_UI | 5 |
    | Mathematical re-derivation (grid/scale from a better constant) | MATHEMATICAL_DESIGN | 3 |
 
-   Alternatives must be concrete (new hex, named face, ms + easing — never "consider a bolder palette") and must strengthen the P1.2 anchor object, not just differ.
+   Alternatives must be concrete (new hex, named face, ms + easing — never "consider a bolder palette") and must strengthen the Brief's `anchor:` object, not just differ.
 4. **Gate — auto-reject before the user sees anything:**
    - any §Floors breach (contrast, target size, reduced-motion, focus visibility),
-   - pattern recognizability broken (a control users can no longer identify as itself — PATTERN_LANGUAGE),
-   - change budget: a single pass may alter ≤20% of FOUNDATIONS token lines — identity drift comes from many small daring moves, not one rebrand-by-stealth (that's Revamp, which the user initiates).
-5. **Present** survivors as one manifest — `target | current | proposed | why stronger | risk` — via `AskUserQuestion` per target: adopt / trial / reject. Trial = adopted with `trial until <date + one cadence>` in DECISIONS; next pass keeps or reverts it by evidence (usage, feedback, your own re-judgment), never by default.
+   - pattern recognizability broken (a control users can no longer identify as itself — load PATTERN_LANGUAGE to judge),
+   - change budget: a single pass may alter ≤20% of the table rows (`grep -c '^|'`) in any one North Star file — identity drift comes from many small daring moves, not one rebrand-by-stealth (that's Revamp, which the user initiates).
+5. **Present** survivors as one manifest — `target | current | proposed | why stronger | risk` — via `AskUserQuestion` per target: adopt / trial / reject. These answers ARE the approval (README invariant 4's one gate); step 6 executes them without re-asking. Trial = adopted with `challenge-by = <date + one cadence>` and a `trial` tag in DECISIONS — step 1's mandatory-target rule forces the next pass to keep or revert it on its merits (how it sits in the shipped product, user feedback if any, your own re-judgment against the Brief), never by default.
 6. **Write** adopted changes through the standard manifest gate, append DECISIONS lines (rejections too — one line, so the next pass doesn't re-pitch them), stamp INDEX `last-challenged: <date>`, run `design/validate.sh`.
 
 ## Guarantees

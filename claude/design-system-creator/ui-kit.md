@@ -19,7 +19,7 @@ One block per component in `design/UI-KIT.md`:
 
 ```markdown
 ### Button — live
-anatomy: container + label (+ leading icon). paddings 12×20px (md), radius --radius, gap 8px
+anatomy: container + label (+ leading icon). padding 12×24px (md; both on the space scale), radius --radius, gap 8px
 variants: primary (--color-accent) · secondary (outline --color-line) · ghost · destructive (--color-danger)
 sizes: sm 32px · md 40px · lg 48px height; touch min 44px hit area regardless of visual size
 states: default / hover / active / focus (--color-focus ring 2px) / disabled (no hover, cursor default) / loading (spinner replaces label, width locked)
@@ -31,7 +31,7 @@ code: <path to the component in this repo, or "planned">
 Rules:
 
 - **States are the spec.** Every interactive component declares all seven (default/hover/active/focus/disabled/loading/error) or names which don't apply and why. Unstated states are where inconsistency breeds.
-- **Tokens only.** A spec references `--color-*`/`--radius`/spacing steps — a raw hex or px value not in FOUNDATIONS is a validator-caught leak.
+- **Tokens only.** A spec references `--color-*`/`--radius`/spacing steps — a raw color value is a validator-caught leak; px values must sit on the FOUNDATIONS space scale (review-enforced, the validator only catches colors).
 - **A11y line is mandatory** per component: role, labeling rule, contrast note, target size. Inherits §Floors; may tighten, never loosen.
 - **Content line** hooks VOICE: casing, length cap, tone pointer — so writers and builders read the same contract.
 - ≤10 lines per component. The cap forces the kit to stay a reference, not documentation sprawl.
@@ -46,7 +46,7 @@ When the target repo should carry runnable previews: `design/ui-kit/<component>/
 
 Worth building when the repo has UI review needs or non-dev stakeholders; skip for API/CLI products.
 
-## Claude Design sync (optional)
+## Claude Design sync (optional — requires Claude Design tooling in the session; absent → skip, note once)
 
 With a claude.ai login, the live kit can mirror into a Claude Design project so the system is browsable outside the repo:
 

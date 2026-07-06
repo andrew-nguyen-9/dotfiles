@@ -5,8 +5,9 @@ What to ask, in what order, and what never to ask. The interview is the system's
 ## Rules
 
 - **Mine before asking.** Auto-answer from the repo first: `package.json` / lockfiles (stack, framework), tailwind/theme config + CSS custom properties (existing tokens), asset folders (logo, fonts), README/marketing copy (voice), deployed URL or screenshots if reachable. A question the repo answers is never asked.
-- **Batch.** `AskUserQuestion`, ≤4 questions per call. Round budget: Scratch ≤3 rounds, Extract ≤2, Revamp ≤2, Update ≤1. Overflow questions → take the recommended default and note it in `DECISIONS.md` as `defaulted`.
-- **Recommended default first** in every option list, derived from mined evidence — never from generic taste.
+- **Batch.** `AskUserQuestion`, ≤4 questions per call. Round budget: Scratch ≤5 rounds, Extract ≤3, Revamp ≤3, Update ≤1. A **confirm-round** (Extract/Revamp presenting mined or existing values for correction) counts as ONE question however many rows its table carries — put the table in the question text, options = "all correct / corrections below". Cut order when over budget: fold P2.5–P2.6 and P3.2–P3.4 into confirm-tables first, then default P3, then P4 — **never P1 or P2.4**.
+- **Identity is never defaulted.** P1 questions are free-text with no mineable evidence in Scratch — they are always asked; the overflow/default rule applies to P2–P4 only. P2.4 (accessibility bar, a permanent floor) is likewise always asked.
+- **Recommended default first** in every option list, derived from mined evidence — never from generic taste. Never compress question or option text for chat-brevity modes: options carry consequences, and the user must read them.
 - **Options carry consequences**, not adjectives: "AAA — body text 7:1, restricts mid-tone palettes" beats "high accessibility".
 - **Record verbatim-compact.** Answers land in `design/INDEX.md` §Brief as `key: value` lines (see `north-star.md`). The Brief is the contract; do not paraphrase away constraints.
 - **Contradictions surface immediately.** "Playful" + "enterprise procurement buyers" → name the tension in one line and ask which wins where (marketing surfaces vs product surfaces is the usual split).
@@ -46,7 +47,7 @@ What to ask, in what order, and what never to ask. The interview is the system's
 
 | # | Ask | Typical options | Feeds |
 |---|-----|-----------------|-------|
-| 3.1 | First 8 components you need working? | pick from `ui-kit.md` inventory | UI-KIT build order |
+| 3.1 | First 8 components to spec? | pick from `ui-kit.md` inventory, buildable rows only (token-pointer rows — text/color/effects styles — are always in, don't count toward 8). Extract default: the 8 most inconsistent per census | UI-KIT build order |
 | 3.2 | Content voice: formality, jargon, humor? | sliders 1–5 + banned-words list | VOICE |
 | 3.3 | Data visualization needed? | none · basic charts · analytics-core | whether FOUNDATIONS gets a viz palette |
 | 3.4 | Error/empty/loading tone? | reassuring · matter-of-fact · playful | VOICE microcopy patterns |
@@ -64,7 +65,7 @@ What to ask, in what order, and what never to ask. The interview is the system's
 | Mode | P0 | P1 | P2 | P3 | P4 |
 |------|----|----|----|----|----|
 | Scratch | ask holes | full | full | full | full |
-| Extract | mine | full | confirm mined | confirm mined | full |
+| Extract | mine + ask holes (0.2/0.3/0.4 are unmineable) | full | confirm mined | confirm mined | full |
 | Update | — | — | delta only | delta only | — |
 | Revamp | confirm | full | full | keep unless asked | confirm |
 
