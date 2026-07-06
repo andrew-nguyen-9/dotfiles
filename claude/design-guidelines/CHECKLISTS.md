@@ -33,7 +33,7 @@ Pre-ship audit gates. Load at review time — feature-complete, design review, o
 
 ### Accessibility checklist
 
-- Text contrast ≥4.5:1; ≥3:1 for large text (≥24px or ≥19px bold) and for essential non-text UI (borders, icons, focus rings) — WCAG 2.2 AA. [E]
+- Text contrast ≥4.5:1; ≥3:1 for large text (≥24px or ≥18.7px bold) and for essential non-text UI (borders, icons, focus rings) — WCAG 2.2 AA. [E]
 - All functionality operable by keyboard alone: tab order follows visual order, no traps, visible focus indicator ≥3:1 against adjacent colors. [E]
 - Touch/pointer targets ≥44×44px (24×24 absolute WCAG minimum) with ≥8px spacing — motor-precision floor for tremor, gloves, transit use. [E]
 - Nothing conveyed by color alone: every color signal doubled by icon, text, weight, or pattern (~8% of men have color-vision deficiency; see [[COLOR_SYSTEMS]]). [E]
@@ -54,7 +54,7 @@ Pre-ship audit gates. Load at review time — feature-complete, design review, o
 
 ### Performance checklist
 
-- Interaction feedback within 100ms (perceived-instant ceiling); flows keep pace at 1s; anything >10s needs progress + escape hatch (Nielsen/Card thresholds). [E]
+- Interaction feedback within 100ms (perceived-instant ceiling); flows keep pace at 1s; visible progress past 1s; >10s becomes backgroundable with an escape hatch (Nielsen/Card thresholds). [E]
 - First meaningful content <2s on the median target device/network — not the dev machine; test throttled. [E]
 - Every wait >300ms shows state: skeletons for structure-known loads, spinner + label otherwise, determinate progress bar when duration is estimable. Uncertainty, not duration, drives abandonment — see [[PERFORMANCE_PERCEPTION]]. [E]
 - Layout is stable during load: no content shifts after first paint (CLS <0.1); late-arriving elements reserve their space. Shifts cause mis-taps and read as jank. [E]

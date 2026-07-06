@@ -26,7 +26,7 @@ Root doc of the guideline system: the value hierarchy every other doc serves, th
 
 ### Simplicity
 
-- Simplicity is measured, not felt: count interactive elements, choices, and visual groups per screen. Choices per decision point ≤ 5±2 before chunking or staging is mandatory (working-memory span, Miller/Cowan); each added option measurably slows choice (Hick's Law: T = b·log2(n+1)). [E]
+- Simplicity is measured, not felt: count interactive elements, choices, and visual groups per screen. Choices per decision point ≤ 4 before chunking or staging is mandatory (working-memory span, Cowan); each added option measurably slows choice (Hick's Law: T = b·log2(n+1)). [E]
 - Remove before you shrink, shrink before you hide, hide before you nest. Rationale: removal cuts cognitive load to zero; hiding merely defers it and adds a discovery cost paid by every new user. [H]
 - Simplify the task, not just the screen: fewer steps beats prettier steps. A flow change that removes one screen outranks any visual polish on the screens that remain. [H]
 - Tesler's Law bound: total task complexity has a floor — you can move complexity between user and system but not delete it. Push complexity toward the system when the cost is one-time engineering; leave it with the user only when their control is the point (expert tools). [E]

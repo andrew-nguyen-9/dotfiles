@@ -20,7 +20,7 @@ Decides how a design survives translation, script change, reading-direction flip
 
 ### Text and expansion
 
-- Reserve expansion room by source-string length: <10 chars → plan +100–200%; 11–20 → +80–100%; 21–30 → +60–80%; 31–50 → +40–60%; >70 → +30%. German and Finnish routinely hit these bounds; truncation is a layout bug, not a translation bug. [E]
+- Reserve expansion room by source-string length: <10 chars → plan +100–200%; 11–20 → +80–100%; 21–30 → +60–80%; 31–50 → +40–60%; 51–70 → +30–40%; >70 → +30%. German and Finnish routinely hit these bounds; truncation is a layout bug, not a translation bug. [E]
 - Never hardcode text in images; never concatenate translated fragments into sentences (grammar order varies — "You have {n} items" must be one translatable string with placeholder, pluralization handled per locale: Arabic has 6 plural forms, Japanese 1). [E]
 - Line-height minimums rise with script complexity: Latin 1.4×; CJK 1.5–1.7× (dense glyphs need air); Thai, Devanagari, Arabic 1.6–1.8× (stacked diacritics and ascenders clip at Latin metrics). Test with real strings, not lorem ipsum. [E]
 - CJK has no italic and bolding small glyphs fills counters: emphasize via weight change ≥2 steps, color, or surrounding space — not slant. Minimum comfortable body size: ~12px Latin ≈ 14px CJK ≈ 15px Thai/Arabic at equal reading distance. [E]

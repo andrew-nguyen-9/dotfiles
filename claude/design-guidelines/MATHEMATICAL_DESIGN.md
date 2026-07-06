@@ -20,7 +20,7 @@ Mathematical structures behind interfaces that feel coherent instead of arbitrar
 ### Graphs and networks
 
 - Model the product as a directed graph (screens = nodes, actions = edges) before styling anything. Keep graph diameter ≤4 for core tasks: any key screen reachable in ≤4 clicks from entry, else restructure the graph — do not paper over depth with shortcuts. [H]
-- Cap out-degree per screen at 7±2 primary edges (distinct navigational choices); beyond that, chunk edges into labeled groups so the perceived out-degree drops back under the cap (working-memory limit, Miller/Cowan). [E]
+- Cap out-degree per screen at ≤7 primary edges (distinct navigational choices); beyond that, chunk edges into labeled groups so the perceived out-degree drops back under the cap (choice-scan cost, Hick's law). [E]
 - Rank screens by betweenness centrality (how many task paths cross them); the top node after entry is your hub — give it the largest information scent and fastest load. If centrality is flat, the IA lacks a spine ([[INFORMATION_ARCHITECTURE]]). [H]
 - Eliminate orphan nodes (in-degree 0 aside from deep links) and dead ends (out-degree 0 without an explicit terminal state like "order complete"). Every non-terminal screen carries ≥1 forward edge. [E]
 - For rendered network diagrams: force-directed layout for ≤100 nodes; above that switch encoding (adjacency matrix, edge bundling, aggregation) — hairballs past ~100 nodes have near-zero read accuracy ([[DATA_VISUALIZATION]]). [E]
@@ -62,7 +62,7 @@ Mathematical structures behind interfaces that feel coherent instead of arbitrar
 
 | Situation | Do |
 |---|---|
-| IA feels tangled | Draw the screen graph; check diameter ≤4, out-degree ≤7±2, kill orphans/dead-ends |
+| IA feels tangled | Draw the screen graph; check diameter ≤4, out-degree ≤7, kill orphans/dead-ends |
 | View feels static/sterile | Add 1 symmetry break at the emphasis point; or reintroduce 1/f variation on non-semantic decoration |
 | View feels chaotic | Count distinct sizes/hues/alignments against the entropy budget; merge values until within it |
 | Sizes feel arbitrary | Rebuild from one modular scale; ratio by density (1.2 dense → 1.618 editorial); steps ≥15% apart |

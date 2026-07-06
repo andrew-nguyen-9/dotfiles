@@ -40,7 +40,7 @@ Borrow structure from biology when a design must scale, self-organize, or adapt 
 ### Structural efficiency
 
 - Route material and visual weight along load paths only. Model attention/data "stress" and thicken elements (borders, contrast, size) where it concentrates, thin them elsewhere — the tensegrity/bone principle. Uniform weight wastes the budget and flattens hierarchy. [E]
-- Prefer hexagonal tiling when packing equal cells (dashboards, tile maps, avatars): hexagons give the least perimeter per unit area of any regular tessellation, so they need the least dividing chrome and pack ~15% more cells than squares in the same visual budget. [E]
+- Prefer hexagonal tiling when packing equal cells (dashboards, tile maps, avatars): hexagons give the least perimeter per unit area of any regular tessellation, so they need the least dividing chrome and fit ~15% more circular content than a square grid. [E]
 - Use tension-compression balance for stability with minimal mass: a few high-contrast anchors (compression) held by many light connectors (tension). Over-building every element is the design equivalent of dead weight. [H]
 - Let form follow the force gradient: curves should tighten where "force" is high and relax where low (river meanders, stress-line fairings). Constant-radius curves read mechanical; variable-radius reads grown. [H]
 

@@ -24,7 +24,7 @@ Decides how content is structured, labeled, navigated, searched, and progressive
 - Cap top-level navigation at 5–9 labeled categories; beyond 9, introduce a second organizing dimension (audience, task, facet) instead of a tenth sibling. [H]
 - Categories must be mutually exclusive at the same level or explicitly poly-hierarchical (item listed in both places). If >20% of items plausibly fit 2+ siblings, the scheme is ambiguous — re-sort or add facets. [H]
 - Use exact organization schemes (alphabetical, chronological, geographical) only when users know the item's name/date/place in advance; otherwise use ambiguous schemes (topic, task, audience) — exact schemes have zero scent for exploratory tasks. [E]
-- Validate structure with open card sorting (15+ participants for stable clusters, Tullis & Wood 2004) before build, and tree testing after: target ≥70% first-attempt success on top tasks; first click predicts task outcome (~87% success when first click is right vs ~46% when wrong, Bailey/first-click studies). [E]
+- Validate structure with open card sorting (20–30 participants for stable clusters, Tullis & Wood 2004) before build, and tree testing after: target ≥70% first-attempt success on top tasks; first click predicts task outcome (~87% success when first click is right vs ~46% when wrong, Bailey/first-click studies). [E]
 
 ### Navigation systems
 

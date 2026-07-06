@@ -42,7 +42,7 @@ Decides which reusable interaction, navigation, attention, and information patte
 - F-pattern is a symptom, not a target: users F-scan when layout gives no hierarchy (Nielsen eye-tracking, 2006). Strong headings, front-loaded first words, and meaningful subheads convert F-scanning into layer-cake scanning — design for the latter. [E]
 - Banner blindness generalizes: anything shaped like an ad (top/right placement, high saturation, animation, isolation from content flow) is unconsciously filtered — including your own promos and system notices. Put critical messages in the content flow, styled as content. [E]
 - Motion is the strongest attention magnet (peripheral vision evolved for it) — budget one autonomous motion per view; simultaneous movers cancel each other and read as noise. Details in [[MOTION_AND_SPATIAL_BEHAVIOR]]. [E]
-- Interruption patterns, escalating cost: inline hint < badge < toast < banner < modal. Match level to (relevance to current task × urgency). Modal is a last resort — it taxes task resumption (interrupted tasks take ~2× subjective effort to resume; Mark et al.). Never modal for information the user can't act on. [E]
+- Interruption patterns, escalating cost: inline hint < badge < toast < banner < modal. Match level to (relevance to current task × urgency). Modal is a last resort — it taxes task resumption (interrupted tasks take measurably higher stress and effort to resume; Mark et al.). Never modal for information the user can't act on. [E]
 - Attention is a commons: every element that claims salience devalues every other claim. Enforce a per-view salience budget — if a new element must "pop", something else must be demoted first. [H]
 
 ### Information patterns

@@ -34,7 +34,7 @@ Decides when and how an interface may change itself: context-aware behavior, per
 
 - Offer density as 2–3 discrete named tiers (e.g., compact / comfortable), not a continuous slider: comfortable ≥44px row height and touch targets (48px on Android guidance), compact ≥32px rows for pointer-only contexts. Discrete tiers stay testable and communicable; sliders create untested intermediate states. [E]
 - Auto-select density only from device signals (pointer type, viewport, input modality), never from inferred user preference; let users override per the control rules above. Coarse-pointer detection is reliable; taste inference is not. [H]
-- Density changes scale spacing and type together via the modular scale — line-height ≥1.3 even in compact — never by clipping padding alone; per [[LAYOUT_MATHEMATICS]], broken rhythm reads as a bug, not a mode. [H]
+- Density changes scale spacing and type together via the modular scale — line-height ≥1.3 on non-body UI rows even in compact (body text keeps the ≥1.4 floor) — never by clipping padding alone; per [[LAYOUT_MATHEMATICS]], broken rhythm reads as a bug, not a mode. [H]
 
 ### Generative (model-composed) UI
 

@@ -13,7 +13,7 @@ Decides visual, cognitive, and motor accessibility thresholds, screen-reader and
 - Cognitive load is an accessibility axis: working memory holds roughly 4 chunks (Cowan 2001), and stress, ADHD, dyslexia, or age shrink the effective budget. Interfaces that demand memorization, parse-heavy prose, or time pressure exclude as concretely as low contrast does. [E]
 - The assistive-technology experience is a parallel product surface: a screen-reader user navigates by headings, landmarks, and accessible names — a semantic outline, not the pixel layout. If the semantic layer is unstructured, the product is unstructured for them, regardless of visual polish. [E]
 - Motion is physiological, not just aesthetic: parallax, zoom, and large-field movement trigger vestibular disorders (nausea, vertigo, migraine) in a meaningful minority. Honoring a reduced-motion preference is a safety behavior, like a food allergy label. [E]
-- Inclusion outperforms retrofit economically: fixing an accessibility fault post-release costs multiples of designing it out (defect-cost escalation is one of software engineering's most replicated findings), and remediation typically produces the bolted-on, incoherent UI that accessible-first design avoids. [E]
+- Inclusion outperforms retrofit economically: fixing an accessibility fault post-release tends to cost multiples of designing it out (defect-cost escalation is a widely cited, if contested, pattern), and remediation typically produces the bolted-on, incoherent UI that accessible-first design avoids. [H]
 - "Solve for one, extend to many" (inclusive design's core move) generates originality: designing a flow for a blind or one-handed user first strips decorative dependency and yields interaction models competitors ignore. [H]
 
 ## Rules
@@ -44,7 +44,7 @@ Decides visual, cognitive, and motor accessibility thresholds, screen-reader and
 
 ### Motion and vestibular
 
-- Respect the OS reduced-motion preference: replace parallax, zoom, auto-playing background video, and large translations with opacity/color cuts ≤100ms. Reduced ≠ removed — keep micro-feedback (≤100ms, small extent) that carries state. [E]
+- Respect the OS reduced-motion preference: replace parallax, zoom, auto-playing background video, and large translations with opacity/color cuts ≤150ms. Reduced ≠ removed — keep micro-feedback (≤100ms, small extent) that carries state. [E]
 - No content flashing >3 times/second (photosensitive-seizure threshold); auto-moving content lasting >5s gets a pause/stop control. [E]
 - Cap decorative motion by default: transitions ≥500ms or moving >½ the viewport need functional justification, not taste. See [[MOTION_AND_SPATIAL_BEHAVIOR]] for the motion grammar this constrains. [H]
 

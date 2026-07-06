@@ -11,7 +11,7 @@ Decides how an interface motivates, rewards, builds trust, and applies friction:
 - Losses weigh roughly 2× gains (loss-aversion coefficient λ ≈ 2.25, Tversky & Kahneman 1992). Framing the same state as "protect what you have" outpulls "gain something new" — and equally amplifies harm when used to trap. [E]
 - Curiosity is an information gap: it peaks when a person knows enough to know what they're missing (Loewenstein 1994). Zero context produces indifference; full disclosure kills the itch. Reveal partially, never fully, never nothing. [E]
 - Motivation rises with proximity to a goal (goal-gradient effect, Hull 1932): effort accelerates as the end nears, and perceived head starts work as well as real ones (endowed progress, Nunes & Drèze 2006: 34% vs 19% completion for identical remaining effort). [E]
-- Interrupted or incomplete tasks are remembered better than completed ones (Zeigarnik effect) — visible unfinished state is itself a return prompt. [E]
+- Interrupted or incomplete tasks may be remembered better than completed ones (Zeigarnik effect; replications are inconsistent) — visible unfinished state can itself act as a return prompt. [H]
 - Memory of an experience is dominated by its most intense moment and its ending (peak-end rule, Kahneman et al. 1993), not its average or duration. Engineer one peak and the exit; the middle is forgiven. [E]
 - Trust is the product of three perceptions — competence (it works), reliability (it works every time), and benevolence (it works for me, not on me). One visible act against the user's interest resets all three; trust accrues linearly and collapses exponentially. [H]
 - Small acts of investment (customizing, saving, contributing) increase commitment via consistency bias and the endowment effect — people value what they've shaped and stay consistent with what they've done (Cialdini). Investment is the strongest retention lever that isn't a trap. [E]
@@ -48,7 +48,7 @@ Decides how an interface motivates, rewards, builds trust, and applies friction:
 - Match friction to consequence: irreversible/destructive → typed confirmation or 2-step; reversible → act immediately + undo (5–10 s window). Undo beats confirm: confirmation dialogs habituate within days, undo never does. [E]
 - Add deliberate friction (one interstitial pause, ~1 s) before actions users regret at scale — rage-posts, huge sends, big purchases; a single "are you sure you read this?" prompt reduced unread article shares measurably (Twitter 2020, ~40% more opens before RT). [E]
 - Remove every friction step that serves only the operator: cancellation, unsubscribe, and data export must cost ≤ the effort of the corresponding signup (symmetric-effort rule; codified in FTC click-to-cancel). Asymmetry is sludge and is increasingly illegal. [E]
-- Defaults are decisions: whatever ships pre-selected, most users keep (defaults shift outcomes by tens of percentage points — organ-donation consent >85% opt-out vs <20% opt-in, Johnson & Goldstein 2003). Default to the option a fully informed user would pick, never the one that pays best. [E]
+- Defaults are decisions: whatever ships pre-selected, most users keep (defaults shift outcomes by tens of percentage points — organ-donation consent >85% opt-out vs <30% opt-in, Johnson & Goldstein 2003). Default to the option a fully informed user would pick, never the one that pays best. [E]
 
 ### Behavioral patterns — bans
 

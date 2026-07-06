@@ -29,7 +29,7 @@ Decides grid construction, spacing scales, proportion systems, hierarchy sizing,
 
 - Build every size ramp as `size(n) = base × ratio^n`. Pick base = body size (16px default) and one ratio per product. [E]
 - Ratio selection by contrast need: 1.125–1.2 (dense UI, dashboards, ≥6 usable steps), 1.25–1.333 (marketing/editorial, strong hierarchy in 4–5 steps), 1.414–1.618 (posters/heroes, 3 steps max before sizes explode). [H]
-- Spacing scale: geometric or doubling ramp from the 4px base — 4, 8, 12, 16, 24, 32, 48, 64, 96. Cap the palette at ≤10 values; if a design "needs" an in-between value, the grouping logic is wrong, not the scale. [H]
+- Spacing scale: a 4px-base ramp with ~1.33–1.5× alternating steps — 4, 8, 12, 16, 24, 32, 48, 64, 96. Cap the palette at ≤10 values; if a design "needs" an in-between value, the grouping logic is wrong, not the scale. [H]
 - Adjacent hierarchy levels must differ by ≥15% in size OR by a second channel (weight ≥200 units, color ΔL ≥20); differences under Weber threshold (~10%) read as sloppy sameness, not hierarchy. [E]
 
 ### Proportion systems — φ and alternatives
@@ -56,7 +56,7 @@ Decides grid construction, spacing scales, proportion systems, hierarchy sizing,
 - Information density = meaningful data points / viewport area. Dashboards target high density with small multiples (see [[DATA_VISUALIZATION]]); marketing pages target low density: 1 idea per viewport-height. [H]
 - Whitespace ratio: 30–50% of a content region as empty space for reading interfaces; <20% reads as cramped (comprehension drops), >60% reads as empty unless deliberate luxury positioning. [H]
 - Grouping gap ratio: between-group spacing ≥2× within-group spacing (e.g. 24px between cards, ≤12px inside). Below 1.5× the Gestalt proximity signal collapses and borders/boxes must compensate — prefer fixing the ratio over adding chrome. [E]
-- Element budget: ≤7 top-level regions per view (working-memory bound ~4±1 chunks, with layout regions chunking further); each region internally holds ≤5 peer items before it needs its own subdivision. [E]
+- Element budget: ≤7 top-level regions per view (choice-scan cost rises with option count, Hick's law); each region internally holds ≤5 peer items before it needs its own subdivision. [E]
 
 ### Rhythm and spatial balance
 

@@ -20,7 +20,7 @@ Rules for the small interactive moments — feedback, hover, loading, success/fa
 
 - ≤100ms: respond to every input within 100ms or the action feels ignored (Nielsen/Miller response-time limits). The response may be trivial — pressed state, ripple, cursor change — but it must be visible. [E]
 - 100ms–1s: show a state change but no progress indicator; the user's flow of thought survives ~1s uninterrupted. A spinner here is noise. [E]
-- >1s: show an indeterminate indicator (spinner/skeleton); >10s (or variable/network-bound): show determinate progress + what's happening, and expect users to task-switch — design for return. [E]
+- >1s indeterminate indicator; ~3s switch to determinate progress + what's happening; >10s (or variable/network-bound) expect task-switch — design for return. [E]
 - Touch feedback (pressed state) appears on touch-down, not touch-up: it confirms registration ~70–100ms earlier and lets the user slide off to cancel. [E]
 - Debounce the trigger, not the feedback: disable re-submission within 500ms of a tap but show pressed state instantly; double-fire prevention must never delay acknowledgment. [H]
 
@@ -35,7 +35,7 @@ Rules for the small interactive moments — feedback, hover, loading, success/fa
 
 - Under ~1s expected wait: show nothing extra. A spinner that flashes for 200ms makes the app feel slower and jitterier than silence. If load may straddle the threshold, delay the spinner's appearance by 300–500ms. [E]
 - 1–10s: prefer skeleton screens over spinners — they shift attention to the arriving content and lower perceived duration; spinners focus attention on the wait itself. Skeletons must match the real layout (mismatched skeletons feel like a bait-and-switch). [E]
-- >10s or determinate work: progress bar with steadily advancing motion; bars that accelerate toward the end and never stall are perceived as faster (Harrison et al., CHI 2010). Never let a bar sit at 99%; reserve the last 10% for the actual final step. [E]
+- >10s or determinate work: progress bar with steadily advancing motion; bars that accelerate toward the end and never stall are perceived as faster (Harrison et al., UIST 2007). Never let a bar sit at 99%; reserve the last 10% for the actual final step. [E]
 - Label long waits with the current operation ("Encrypting…", "Uploading 3 of 7") — knowing the cause of a wait measurably raises tolerance versus an unexplained spinner. [E]
 - Use optimistic UI for high-success, low-cost actions (like, rename, reorder): commit visually at once, reconcile in background, and design the rollback state (undo toast) for the <1% failure. Never optimistic for payments or destructive actions. [H]
 - One loading indicator per user action. Six skeleton regions pulsing independently reads as system chaos; group them under a single rhythm. [H]

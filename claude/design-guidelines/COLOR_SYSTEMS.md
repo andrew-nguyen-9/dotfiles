@@ -6,7 +6,7 @@ Decides how color is specified, generated, adapted, and judged: perceptual color
 
 ## Principles
 
-- Work in a perceptually uniform space (OKLCH/OKLab), not HSL/HSB. In OKLCH, equal lightness (L) steps look equal and hue stays stable while L or chroma (C) changes; HSL "lightness" is a lie — HSL yellow at L 50% has ~3× the luminance of HSL blue at L 50%, so HSL-derived ramps produce uneven, muddy scales. [E]
+- Work in a perceptually uniform space (OKLCH/OKLab), not HSL/HSB. In OKLCH, equal lightness (L) steps look equal and hue stays stable while L or chroma (C) changes; HSL "lightness" is a lie — HSL yellow at L 50% has ~13× the luminance (≈3× the perceived lightness L*) of HSL blue at L 50%, so HSL-derived ramps produce uneven, muddy scales. [E]
 - Color is judged relative, never absolute: simultaneous contrast (Chevreul; Albers) shifts a swatch's perceived hue, lightness, and chroma toward the opposite of its surround. A color approved in isolation is unapproved — evaluate only in final context at final size. [E]
 - Perceived brightness ≠ measured luminance: the Helmholtz–Kohlrausch effect makes high-chroma colors look brighter than their luminance predicts, which is why saturated accents can pass a contrast formula yet still glare, or look fine yet fail. Formulas gate; eyes confirm. [E]
 - Small areas need more chroma, large areas less (area effect): a hue chosen from a 1 cm swatch will overwhelm as a full-bleed background. Choose backgrounds at scale, accents at scale. [E]
@@ -22,7 +22,7 @@ Decides how color is specified, generated, adapted, and judged: perceptual color
 
 - Author all palette definitions in OKLCH (`oklch(L C H)`), gamut-map to sRGB for output; treat hex as a compile target, never a source of truth. Display-P3 covers ~25% more colors than sRGB — define chroma at the P3 ceiling only with an sRGB fallback token. [E]
 - Three token layers: primitive (`blue-600`) → semantic (`surface`, `text-primary`, `accent`, `danger`) → component (`button-bg`). Components reference semantic only. Why: themes (dark, brand, high-contrast) swap one layer instead of touching every component. [E]
-- Brand-color reproduction tolerance: ΔE2000 ≤ 2 across surfaces (JND ≈ 2.3); ΔE2000 > 5 reads as a different color to non-experts. [E]
+- Brand-color reproduction tolerance: ΔE2000 ≤ 2 across surfaces (ΔE2000 JND ≈ 1; 2.3 is the older ΔE*ab figure); ΔE2000 > 5 reads as a different color to non-experts. [E]
 
 ### Palette generation (mathematical)
 
@@ -35,7 +35,7 @@ Decides how color is specified, generated, adapted, and judged: perceptual color
 
 ### Contrast systems
 
-- WCAG 2.x floors: 4.5:1 body text; 3:1 for large text (≥24px, or ≥18.66px bold) and for UI component boundaries/focus indicators. These are legal-baseline gates, not quality targets. [E]
+- WCAG 2.x floors: 4.5:1 body text; 3:1 for large text (≥24px, or ≥18.7px bold) and for UI component boundaries/focus indicators. These are legal-baseline gates, not quality targets. [E]
 - Prefer APCA (WCAG 3 candidate) for design decisions: Lc ≥ 90 preferred body, Lc ≥ 75 minimum body, Lc ≥ 60 large/bold, Lc ≥ 45 non-text UI. APCA is polarity-aware (dark-on-light ≠ light-on-dark), which WCAG 2.x ratio math ignores — it misgrades dark-mode pairs in both directions. Ship compliance on WCAG 2.x, design on APCA. [E]
 - Never encode state (error/success/warning/info) by hue alone: pair every hue shift with ΔL ≥ 0.2 (OKLCH) or an icon/label. Red–green pairs at equal lightness are the canonical CVD failure. [E]
 - Test every palette under deuteranopia + protanopia simulation and in grayscale; if the grayscale render loses a distinction users need, the palette fails regardless of contrast ratios. [E]

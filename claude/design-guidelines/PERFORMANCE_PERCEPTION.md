@@ -35,7 +35,7 @@ Decides how waiting is experienced: perceived vs actual speed, which waiting-sta
 
 ### Progress indication
 
-- Determinate progress must be monotonic: never move backwards, never sit at 100%. If estimation is uncertain, map real progress onto a curve that accelerates toward the end — end-accelerating bars are perceived as faster than linear ones at identical duration (Harrison et al., CHI 2007), and a fast finish is what peak-end memory stores. [E]
+- Determinate progress must be monotonic: never move backwards, never sit at 100%. If estimation is uncertain, map real progress onto a curve that accelerates toward the end — end-accelerating bars are perceived as faster than linear ones at identical duration (Harrison et al., UIST 2007), and a fast finish is what peak-end memory stores. [E]
 - Never let a bar stall >2s without a state change; on stall, switch to explanatory text ("still working — large file") rather than freezing. A frozen bar is read as a crash within ~3s. [H]
 - For multi-stage waits, show stage labels ("uploading → processing → done"): explanation converts unexplained wait to explained wait, and stage transitions provide the change-events retrospective time estimates are built from — more events, shorter remembered wait. [E]
 - Time estimates: show only when accuracy is within ±30%; round up and finish early. "About 1 minute" that ends at 40s beats "30 seconds" that ends at 45s — the anchor, not the duration, sets the verdict. [E]

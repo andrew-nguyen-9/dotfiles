@@ -24,7 +24,7 @@ How human vision, attention, memory, emotion, and decision machinery actually pr
 ### Gestalt and grouping
 
 - Space between groups ≥ 2× space within groups; grouping reads instantly at 3:1. If you need a divider line or box, your spacing ratio failed first — fix spacing before adding ink. [E]
-- Related controls within ~8° visual angle (~80–120px at desktop distance) group by proximity; a label must sit closer to its own field than to the neighboring field, minimum 2:1 ratio. [E]
+- Related controls within ~2–3° visual angle (~80–120px at desktop distance) group by proximity; a label must sit closer to its own field than to the neighboring field, minimum 2:1 ratio. [E]
 - Use similarity (same hue, shape, or size) to bind items across distance when proximity is impossible — max one similarity channel per grouping role, or groupings contradict each other. [E]
 - Common region (background card, band) overrides proximity — use it only when spacing alone cannot separate, because every enclosure adds one boundary the eye must parse. [E]
 - Exploit closure: an interrupted grid or a card cut by the viewport edge implies continuation and invites scroll; fully-contained compositions above the fold read as "page complete" and suppress scrolling. [E]
@@ -35,7 +35,7 @@ How human vision, attention, memory, emotion, and decision machinery actually pr
 - Front-load meaning: the first 11 characters of a heading or link carry most of its scan value (users fixate ~2 words per line while skimming). "Pricing — Teams" beats "Learn more about our team pricing". [E]
 - One primary focal point per view; make it win on ≥2 preattentive channels (e.g., size + saturation). Every additional competing salient element measurably dilutes fixation share on the primary. [E]
 - Faces and high-contrast figures capture fixation involuntarily within ~200ms; a photographed gaze cues attention in its look direction. Point depicted gaze at the CTA, never off-canvas. [E]
-- Motion in periphery preempts everything — reserve it for genuinely interruptive events. Autoplaying or looping decoration adjacent to reading content degrades comprehension; anything animating >3s or looping needs a pause control. [E]
+- Motion in periphery preempts everything — reserve it for genuinely interruptive events. Autoplaying or looping decoration adjacent to reading content degrades comprehension; anything animating >5s (WCAG 2.2.2) or looping needs a pause control. [E]
 - Banner blindness: users suppress regions that look like ads (right rail, top strip, boxed high-saturation graphics). Never style critical content in ad geometry or ad palette. [E]
 
 ### Cognitive load and memory

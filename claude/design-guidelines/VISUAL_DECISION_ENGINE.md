@@ -63,7 +63,7 @@ The arbitration layer for every visual decision: decision trees per domain (colo
 
 - Target size ≥44×44px touch / ≥24×24px pointer, with ≥8px between adjacent targets; smaller targets shift errors onto the user (Fitts's law: acquisition time rises as targets shrink). [E]
 - Feedback latency: acknowledge input <100ms (perceived-instant threshold) even if completion takes longer; >1s shows progress; >10s must be cancelable and survive navigation. [E]
-- Destructive actions: prefer undo (30s window) over confirmation dialogs; confirmations habituate within a handful of exposures and stop preventing errors, while undo preserves flow and actually recovers mistakes. Reserve confirmation for irreversible + rare actions. [E]
+- Destructive actions: prefer undo (5–10s window) over confirmation dialogs; confirmations habituate within a handful of exposures and stop preventing errors, while undo preserves flow and actually recovers mistakes. Reserve confirmation for irreversible + rare actions. [E]
 - Detail patterns and reward mechanics → [[MICROINTERACTIONS]] and [[INTERACTION_PSYCHOLOGY]]. [H]
 
 ### Tradeoff scoring (within-stratum ties only)
