@@ -26,6 +26,7 @@ Always safe to start lighter; escalate on discovery. Borderline → lighter tier
 - `.orchestrator/` — runtime state, **big tier only**, created in the *target repo* (spec, briefs, notes, handoff); `state.md` = lifecycle marker (running|parked|abandoned|landed)
 - `~/.claude/agents-docs/` — sibling system: the **agents catalog** (who to dispatch, by pipeline function). B picks each unit's `agent`; C uses its role snippets; D + cleaning keep it current. Load category files JIT, never the whole thing.
 - `~/.claude/cleaning/` — sibling system: post-cycle repo reset + docs refresh (every tier's land step prints its kickoff)
+- `~/.claude/design-system-creator/` — sibling system: builds a repo's design North Star (`design/INDEX.md` + tokens/kit/voice/patterns). Every tier: UI/UX/copy-touching unit → load the target repo's `design/INDEX.md` per its load map before designing; UI-heavy wishlist with no North Star → suggest its kickoff first.
 
 ## Shared discipline (every tier)
 

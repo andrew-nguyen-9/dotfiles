@@ -14,6 +14,8 @@ cd dotfiles/claude && ./install.sh
 | `claude/` | Claude Code config: `settings.json`, `CLAUDE.md`, `RTK.md`, `install.sh` |
 | `claude/orchestrating/` | Multi-agent orchestration system — wishlist router + lite/medium/big strategies (see its `README.md`) |
 | `claude/cleaning/` | Post-cycle repo reset + docs refresh system (see its `README.md`) |
+| `claude/design-system-creator/` | Builds a repo's design North Star — `design/` folder: tokens, UI kit, voice, patterns (see its `README.md`) |
+| `claude/design-guidelines/` | Generic design corpus — validated guideline docs, JIT-routed via its `INDEX.md` |
 | `claude/agents/` | Agents catalog — cross-repo subagent docs, symlinked to `~/.claude/agents-docs/` (see its `README.md`) |
 | `claude/agent-defs/` | Live agent definitions (unit-builder, integration-agent, blind-judge), symlinked into `~/.claude/agents/` |
 | `claude/hooks/` | Enforcement hooks (budget guard, return cap, read cap, secrets guard), symlinked to `~/.claude/hooks/` |

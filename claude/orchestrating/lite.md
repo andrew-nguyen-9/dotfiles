@@ -10,7 +10,7 @@ For asks not worth the 4-session orchestrator (`orchestrator.md`): **one chat, o
 
 ## Flow — scale each step to the ask; skip what's overkill
 
-1. **Understand first.** Trace the real path with Serena `get_symbols_overview` / LSP broad→narrow (`documentSymbol` → `hover` → `definition` → `references`), not whole-file reads. Brownfield: read before you write. Bug = find the **root cause, not the symptom** — grep every caller of the function you're about to touch; fix once where they route through.
+1. **Understand first.** Trace the real path with Serena `get_symbols_overview` / LSP broad→narrow (`documentSymbol` → `hover` → `definition` → `references`), not whole-file reads. Brownfield: read before you write. Bug = find the **root cause, not the symptom** — grep every caller of the function you're about to touch; fix once where they route through. UI/UX/copy-touching ask: repo has `design/INDEX.md` (design North Star) → load it + the role file its map names before designing anything; UI-heavy ask without one → suggest `Read ~/.claude/design-system-creator/README.md and run it` first (don't improvise a system inline).
 2. **Scope.** Ask only if genuinely ambiguous — one batched round of multiple-choice (AskUserQuestion); else state your assumption and proceed.
 3. **Brainstorm** only if creative / multiple valid approaches (`superpowers:brainstorming`); skip for mechanical work.
 4. **Think ∝ blast radius.** `ultrathink` the one load-bearing design decision; none on mechanical edits.
