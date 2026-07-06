@@ -30,10 +30,14 @@ deny() {
 # The example/template/sample allow-out is anchored to the BASENAME component
 # ([^/]*marker[^/]*$) — else a marker anywhere in the PATH (e.g.
 # /home/sampleuser/.env, examples/../.env) would wrongly allow a real secrets file.
+# Matching is case-INSENSITIVE (`-i`): on a case-insensitive FS (macOS APFS
+# default, Windows) `cat .EnV` / `cat PROD.ENV` reads the real secrets file, so
+# a case variant is an ACCIDENTAL bypass (in scope), not evasion. The allow-out
+# is `-i` too so EXAMPLE.env stays allowed.
 scan_secret() {
   printf '%s' "$1" | tr -c 'A-Za-z0-9_./-' '\n' \
-    | grep -E '(^|/)[A-Za-z0-9_.-]*\.env(rc)?(\.[A-Za-z0-9_.-]+)?$' \
-    | grep -qvE '(^|/)[^/]*(example|template|sample)[^/]*$'
+    | grep -iE '(^|/)[A-Za-z0-9_.-]*\.env(rc)?(\.[A-Za-z0-9_.-]+)?$' \
+    | grep -qivE '(^|/)[^/]*(example|template|sample)[^/]*$'
 }
 
 # jq missing OR JSON unparseable → coarse fallback over raw stdin. Never a plain
@@ -50,9 +54,12 @@ case "$tool" in
   Read)
     file=$(printf '%s' "$input" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
     base=$(basename "$file")
-    case "$base" in
+    # lowercase for matching: a case-insensitive FS reads `.EnV`/`PROD.ENV` as the
+    # real secrets file, so match case-insensitively (accidental-casing bypass).
+    lc=$(printf '%s' "$base" | tr '[:upper:]' '[:lower:]')
+    case "$lc" in
       .env|.env.*|.envrc|.envrc.*|*.env|*.env.*|*.envrc|*.envrc.*)
-        case "$base" in
+        case "$lc" in
           *example*|*template*|*sample*) exit 0 ;;
           *) deny "$file" ;;
         esac
