@@ -55,8 +55,10 @@ check_doc() {
     grep -Eq '\[(E|H)\]' "$f" || err "$b: no [E]/[H] evidence tags"
 
     awk -v doc="$b" '
-        /^## / { insec = ($0 == "## Principles" || $0 == "## Rules") }
-        insec && /^- / && $0 !~ /\[[EH]\][[:space:]]*$/ {
+        /^[ \t]*(```|~~~)/ { fence = !fence; next }
+        fence { next }
+        /^## / { insec = ($0 ~ /^## (Principles|Rules)[ \t]*$/) }
+        insec && /^-[ \t]/ && $0 !~ /\[[EH]\][[:space:]]*$/ {
             printf "FAIL: %s:%d untagged bullet in Principles/Rules (must end with [E] or [H])\n", doc, NR
             bad = 1
         }
@@ -65,7 +67,7 @@ check_doc() {
 
     # Refs inside fenced code blocks or inline `code spans` are syntax
     # examples, not refs — strip them before extraction.
-    refs="$(awk '/^```/ { fence = !fence; next } !fence' "$f" \
+    refs="$(awk '/^[ \t]*(```|~~~)/ { fence = !fence; next } !fence' "$f" \
         | sed 's/`[^`]*`//g' \
         | grep -o '\[\[[A-Za-z0-9_]*\]\]' | sed 's/^\[\[//; s/\]\]$//' | sort -u)"
     for r in $refs; do
