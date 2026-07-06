@@ -63,11 +63,14 @@ ambition: <1-5>   sacred: <list>
 | UI build | INDEX + FOUNDATIONS + UI-KIT |
 | UX / flows | INDEX + PATTERNS |
 | copy | INDEX + VOICE |
+| data viz | INDEX + FOUNDATIONS (+ corpus DATA_VISUALIZATION) |
 | review | INDEX + corpus CHECKLISTS |
+| challenge | INDEX + DECISIONS |
 
 ## Cadence
 challenge: <each release|monthly|quarterly|manual>   last-challenged: YYYY-MM-DD
 ```
+Overdue semantics (siblings + Challenge read this): `monthly`/`quarterly` = overdue when `today − last-challenged` exceeds the interval; **`each release` = flag at every orchestrating/cleaning land step regardless of age** (no date math); **`manual` = never auto-overdue**. Build modes (Scratch/Extract/Revamp) stamp `last-challenged:` = the build date (Challenge is not the only stamper — an unstamped fresh system reads as perpetually overdue).
 
 ### design/FOUNDATIONS.md
 
@@ -113,8 +116,8 @@ per the creator's ui-kit.md; each full spec ≤10 lines.
 ## Inventory
 | component | status | code |
 |-----------|--------|------|
-| buttons | live | src/components/Button.tsx |
-| <every core-tier row + Brief-triggered extended rows; statuses live/specced/planned> | | |
+| buttons | specced | planned |
+| <every core-tier row + Brief-triggered extended rows; statuses live/specced/planned — `live`+code path only when the component is already built (Extract), never on a greenfield Scratch> | | |
 
 ## Specs
 ### Button — live
@@ -153,7 +156,7 @@ confirmations/CTAs: <verb style, person, length caps>
 <selection, editing, saving, undo — the recurring verbs and their contracts>
 
 ## Motion
-durations: micro 100–150ms · transition 200–300ms · spatial 300–500ms
+durations: micro 100–150ms · transition 200–300ms · spatial 300–500ms · reduced-motion ≤150ms crossfade (the §Floors variant)
 easing: <the signature curve(s)>   meaning: <what moves, why, reduced-motion behavior>
 ```
 
@@ -162,7 +165,7 @@ easing: <the signature curve(s)>   meaning: <what moves, why, reduced-motion beh
 ```markdown
 # DECISIONS — append-only
 
-challenge-by = decision date + one INDEX cadence interval, unless the decider sets longer.
+challenge-by = decision date + one INDEX cadence interval, unless the decider sets longer (cadence `each release` → `next release`; `manual` → `manual` — neither is a duration).
 Tags in the decision cell: `wildcard:<FILE>` (challenge rotation memory), `trial`, `defaulted`.
 
 | date | decision | why | challenge-by |
@@ -190,7 +193,9 @@ done
 grep -q '^## Floors' INDEX.md 2>/dev/null || say "INDEX.md lacks §Floors"
 grep -q '^## Brief'  INDEX.md 2>/dev/null || say "INDEX.md lacks §Brief"
 grep -q 'last-challenged:' INDEX.md 2>/dev/null || say "INDEX.md lacks last-challenged stamp"
-# tokens-only discipline: raw color values outside FOUNDATIONS are a leak
+# tokens-only discipline: raw color values outside FOUNDATIONS are a leak.
+# KNOWN FP: a hex-shaped word/ref (#cafe, #decaf, #123456 issue ref) also trips it —
+# reword the prose or move the value into a FOUNDATIONS token.
 leaks=$(grep -lE '#[0-9a-fA-F]{3,8}\b|rgba?\(|hsla?\(' UI-KIT.md VOICE.md PATTERNS.md 2>/dev/null || true)
 [ -z "$leaks" ] || say "raw color outside FOUNDATIONS: $leaks"
 exit $fail
@@ -198,6 +203,6 @@ exit $fail
 
 ## Placement notes
 
-- Folder goes at the target repo root as `design/` (repos with a `docs/` convention may use `docs/design/` — INDEX location decides, detection in `README.md` covers both).
+- Folder goes at the target repo root as `design/` — **canonical, single location** (`design/` is source-adjacent, not docs; a single root home is what lets every sibling system — lite/medium/big/cleaning — find it with one literal `design/INDEX.md` test instead of each carrying a `docs/design/` fallback). A repo whose convention forbids root dirs symlinks `design/` → its docs tree; the North Star's own path stays `design/`.
 - If the target repo has a CLAUDE.md, add one line to it: `Design: design/INDEX.md is the North Star — load per its map before any UI/UX/copy work.` That line is what makes the system findable by sessions that never heard of this creator.
 - Optional live kit (`design/ui-kit/` preview HTML + Claude Design sync): see `ui-kit.md`.

@@ -10,7 +10,8 @@ What to ask, in what order, and what never to ask. The interview is the system's
 - **Recommended default first** in every option list, derived from mined evidence — never from generic taste. Never compress question or option text for chat-brevity modes: options carry consequences, and the user must read them.
 - **Options carry consequences**, not adjectives: "AAA — body text 7:1, restricts mid-tone palettes" beats "high accessibility".
 - **Record verbatim-compact.** Answers land in `design/INDEX.md` §Brief as `key: value` lines (see `north-star.md`). The Brief is the contract; do not paraphrase away constraints.
-- **Contradictions surface immediately.** "Playful" + "enterprise procurement buyers" → name the tension in one line and ask which wins where (marketing surfaces vs product surfaces is the usual split).
+- **Contradictions surface immediately.** "Playful" + "enterprise procurement buyers" → name the tension in one line and ask which wins where (marketing surfaces vs product surfaces is the usual split). **Record a split answer** in the Brief with a surface qualifier, not by paraphrasing one away: `feels-like: playful (marketing) / precise (product)`.
+- **A defaulted answer is logged.** A P2–P4 question resolved by the recommended default (overflow cut-order, or the user deferring) → one `DECISIONS.md` line tagged `defaulted`, so Challenge can find the weakly-held decisions later. P1 + P2.4 are never defaulted, so never carry the tag.
 
 ## Phases
 

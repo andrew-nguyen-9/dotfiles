@@ -15,15 +15,17 @@ Fresh Claude Code chat **in the target repo**:
 ```
 Activate /caveman:caveman ultra + /ponytail:ponytail ultra if available; proceed without missing ones,
 note it once. Never compress AskUserQuestion text — interview options carry consequences.
-DETECT: test -f design/INDEX.md at the target repo root (fallback: docs/design/INDEX.md).
-PRESENT → also read its §Cadence: last-challenged older than the cadence interval = overdue.
+DETECT: test -f design/INDEX.md at the target repo root (canonical single location — see north-star.md Placement; a repo that forbids root dirs symlinks design/ → its docs tree, so this test still resolves).
+PRESENT → also read its §Cadence: overdue = last-challenged older than the interval (monthly/quarterly); `each release` = always flag at land steps; `manual` = never auto-overdue.
 Then ROUTE by state + ask:
 
 - ABSENT, repo has no UI code        → SCRATCH  — read ~/.claude/design-system-creator/modes.md §Scratch
 - ABSENT, repo has UI code/screens   → EXTRACT  — read ~/.claude/design-system-creator/modes.md §Extract
 - PRESENT, bounded ask (new component, token tweak, new platform) → UPDATE — read ~/.claude/design-system-creator/modes.md §Update
 - PRESENT, direction change (rebrand, pivot, "feels wrong/stale") → REVAMP — read ~/.claude/design-system-creator/modes.md §Revamp
-- PRESENT, no build ask / "challenge it" / cadence overdue        → CHALLENGE — read ~/.claude/design-system-creator/challenge.md
+- PRESENT, no build ask / "challenge it"                          → CHALLENGE — read ~/.claude/design-system-creator/challenge.md
+
+A build ask (UPDATE/REVAMP) wins even when the cadence is overdue — run the ask, add a one-line "challenge overdue" flag to the handoff; a bare overdue with no build ask is the only trigger that routes straight to CHALLENGE.
 
 State mode + one-line why naming the repo root + the evidence (INDEX present/absent, UI code found).
 Ambiguous update↔revamp → UPDATE (cheap to escalate mid-run). Deliberately invoking this file IS

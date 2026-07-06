@@ -16,7 +16,7 @@ DoD: repo CLAUDE.md commands green before done (brief dod: overrides). Branch
 <prefix>/<unit> off the dispatch's base: line (default integration; explicitly:
 checkout -b <prefix>/<unit> <base>); commit -q; no AI attribution. Secrets: location per CLAUDE.md, never committed.
 Verify upstream .done.md claims (symbols exist) before building on them.
-Write .orchestrator/<unit>.done.md (≤15 lines: shipped:/verified:/decided:/gotchas:/branch: — colon-anchored headers, non-empty bodies (nothing → `none`)).
+Write <unit>.done.md into the MAIN checkout's existing .orchestrator/ (≤15 lines: shipped:/verified:/decided:/gotchas:/branch: — colon-anchored headers, non-empty bodies (nothing → `none`)). You run in a linked worktree where .orchestrator/ is gitignored and ABSENT — never create it here (that silently arms the orch hooks in your worktree); resolve the main checkout via `dirname "$(git rev-parse --git-common-dir)"`, else the `worktree list` entry that has a .orchestrator/. All miss → put the note in your RETURN instead + flag it.
 RETURN ONLY: {"id","status","branch","PR":null,"note":"≤2 lines"} — no dumps, no build output.
 ```
 

@@ -32,11 +32,11 @@ All four build modes run the same spine; each section below states only its delt
 
 - Bounded: one new component, a token adjustment, a new platform target. One delta question max (`interview.md` round budget); no re-interview.
 - Edit only the files the delta touches + append one DECISIONS line. Blast radius check: token changes list every UI-KIT spec consuming that token in the manifest.
-- Floors and Brief are read-only in this mode — an update that wants to move either is a Revamp; say so and stop.
+- Floors and Brief are read-only in this mode — an update that wants to move either is a Revamp; say so, get user go, and re-route to §Revamp in the same run (rounds already spent count toward Revamp's budget). Same continuation as §Escalation below — don't terminate the session.
 
 ## §Revamp
 
-- Direction change with continuity: re-run P1–P2 (P0 confirm only), keep §Floors (they may tighten, never loosen) and the component inventory.
+- Direction change with continuity: re-run P1–P2 (P0 confirm only), keep §Floors (they may tighten, never loosen) and the component inventory. **P2.4 is re-asked as a confirm-round offering only the current bar or tighter** (never the generic AA default — that would loosen an AAA floor, which Invariant 3 forbids over Invariant 1's "answers outrank taste"); a user who explicitly demands a looser floor owns it via a DECISIONS entry, it is not a defaultable pick.
 - Full spine including step 4 directions — but each direction preview also shows the delta from the current system (old→new palette and type, side by side).
 - Ship a migration map in the manifest: `old token → new token | affected specs` for every changed foundation. UI-KIT specs re-point to new tokens in the same pass — a revamp that leaves dangling tokens is red.
 - DECISIONS entry names what the revamp rejected from the old system and why; version line in INDEX bumps (`v2 — YYYY-MM-DD — <one-line reason>`).

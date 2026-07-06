@@ -9,7 +9,7 @@ The single source of truth every cleaning tier cleans *toward*. Repos migrate in
 
 ## Root whitelist
 
-Repo root holds ONLY: `README.md`, `CLAUDE.md`, `AGENTS.md`, `LICENSE(.md)`, `CHANGELOG.md`, config/manifests (`package.json`, `pyproject.toml`, `tsconfig.json`, `next.config.*`, `wrangler.jsonc`, `.gitignore`, lockfiles, …), and top-level source dirs. Any other `.md` → `docs/`. Loose scripts → `scripts/`. Loose tests → the tests dir.
+Repo root holds ONLY: `README.md`, `CLAUDE.md`, `AGENTS.md`, `LICENSE(.md)`, `CHANGELOG.md`, config/manifests (`package.json`, `pyproject.toml`, `tsconfig.json`, `next.config.*`, `wrangler.jsonc`, `.gitignore`, lockfiles, …), the `design/` North Star folder (canonical root home — never moved into `docs/`; sibling systems find it by a literal `design/INDEX.md` test), and top-level source dirs. Any other `.md` → `docs/`. Loose scripts → `scripts/`. Loose tests → the tests dir. **AI-tool instruction files read by path convention (`GEMINI.md`, `.cursorrules`, `.windsurfrules`, and the like) are root-only like `CLAUDE.md`/`AGENTS.md` — flag, never move: a ref-check finds no in-repo links to them (the tool reads them by fixed path), so a move breaks the tool silently** (the docs-side analog of the shell-`source` blind spot).
 
 ## docs/ template
 
@@ -152,7 +152,7 @@ Better, once per machine: `git config --global core.excludesFile ~/.gitignore_gl
 - **Survey:** `git status`, `git ls-files | head -50`, serena `list_dir` / `get_symbols_overview` — never whole-file reads.
 - **Ref-check before code delete/move:** serena `find_referencing_symbols` (zero refs required) or grep imports, **plus grep the bare filename repo-wide** (shell `source`/`.`, Makefile/CI/settings.json refs are invisible to symbol tools). Docs: grep the old path/filename for links.
 - **Untrack:** `git rm -r --cached -q <path>`. **Move/rename:** `git mv` (keeps history).
-- **Branch prune:** `git branch --merged main | grep -v ' main'` → `git branch -d` each (never `-D`).
+- **Branch prune:** `git branch --merged main | grep -vE '^[*+]? *main$'` → `git branch -d` each (never `-D`; anchored so `main-backup`/`feat/main-nav` aren't skipped as false "main" matches).
 - **Docs-refresh ground truth:** serena `get_symbols_overview`, `package.json` scripts, `pyproject.toml`, build files — patch docs to match reality, not memory.
 - **Dead code / unused deps (deep, report-only):** serena `find_referencing_symbols` per suspect export; `knip`/`depcheck` (JS), `deptry` (py) *only if already installed* — cleaning never adds tooling.
 - **Stale check:** `git log -1 --format=%cs -- <path>` + `git log --oneline -3 -- <path>`.
