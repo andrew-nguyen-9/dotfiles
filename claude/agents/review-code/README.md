@@ -63,3 +63,6 @@ ce-* personas missing → `pr-review-toolkit` set → `cavecrew-reviewer` → `g
 ## Lessons
 
 <!-- dated one-liners appended by cycles; cleaning consolidates into rows -->
+
+- 2026-07-05 blind-judge@medium: 34 dispatches (26 doc units + 3 infra + 2 panels), ~13k tok each, zero disagreements with deterministic gates; heterogeneous panel lenses (shell/adversarial) on the foundation unit surfaced 3 latent validator edge cases no single judge caught — panel-for-load-bearing earns its cost.
+- 2026-07-05 parallel judge fan-out (8–10/batch) hit the 5h session cap mid-batch; judges are stateless one-shot dispatches, so relaunching after reset cost nothing — same prompts, no lost state.
