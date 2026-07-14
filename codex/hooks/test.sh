@@ -76,6 +76,9 @@ EOF
   contains "$marker" 'hook claude'
   command_seen=$(jq -sr '[.[] | select(.type == "item.completed" and .item.type == "command_execution")]|length' "$stream")
   [ "$command_seen" -ge 1 ] || fail "Codex did not run shell command"
+  if ! "$real_rtk" gain >/dev/null 2>&1; then
+    echo "RTK tracking unavailable; runtime invocation passed, savings remain unmeasured." >&2
+  fi
   echo "RTK runtime smoke: PASS ($real_rtk invoked by Codex Bash hook)"
 }
 

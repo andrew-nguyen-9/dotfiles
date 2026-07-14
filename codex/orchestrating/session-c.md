@@ -19,7 +19,7 @@ Read `depmap.md`, `progress.md`, the ready briefs, and `safeguards.md`. Do not r
 2. Spawn only independent units. The root agent retains git, shared files, and integration. If the active surface cannot select a custom profile, paste the role contract from `efficiency.md` into the dispatch prompt.
 3. As results arrive, verify the claimed files and checks. A return is evidence to inspect, not proof by itself.
 4. Record exact `codex exec --json` usage with `usage-budget.sh record`; interactive transcript paths are best-effort because their format is unstable. Write or validate `.orchestrator/<unit>.done.md` with non-empty `shipped`, `verified`, `decided`, and `gotchas` lines.
-5. Run the combined repository DoD once per wave before unlocking dependents. Do not duplicate the same integration-agent and root check.
+5. Run the combined repository DoD once per wave before unlocking dependents. Do not duplicate integration verification between the integration agent and root.
 6. Update `progress.md` and reconcile downstream briefs against upstream decisions.
 
 ## Recovery
