@@ -6,23 +6,24 @@ Read `depmap.md`, `progress.md`, the ready briefs, and `safeguards.md`. Do not r
 
 - Confirm `.orchestrator/state.md` says `running`.
 - Confirm the current tree matches the recorded green base.
-- Re-check that the ready wave has no file overlap.
+- Run `bash $HOME/.codex/orchestrating/validate-plan.sh .orchestrator`; stop instead of spinning on a no-ready state.
+- Re-check that the ready wave has no file overlap, including new-file overlap.
 - Confirm delegation is authorized by the user or applicable instructions.
 
 ## Wave loop
 
 1. Mark ready units `active` in `progress.md`.
-2. Spawn only independent units. The root agent retains git, shared files, and integration.
+2. Spawn only independent units. The root agent retains git, shared files, and integration. If the active surface cannot select a custom profile, paste the role contract from `efficiency.md` into the dispatch prompt.
 3. As results arrive, verify the claimed files and checks. A return is evidence to inspect, not proof by itself.
 4. Write or validate `.orchestrator/<unit>.done.md` with non-empty `shipped`, `verified`, `decided`, and `gotchas` lines.
-5. Run the combined repository DoD before unlocking dependents.
+5. Run the combined repository DoD once per wave before unlocking dependents. Do not duplicate the same integration-agent and root check.
 6. Update `progress.md` and reconcile downstream briefs against upstream decisions.
 
 ## Recovery
 
 - Running but drifting: use `send_message` with one precise correction.
 - Idle or stopped with useful context: use `followup_task` once.
-- Genuinely hung: use `interrupt_agent`, record the failure signature, then split or absorb the unit.
+- Genuinely hung: use `interrupt_agent`, record the attempt and failure signature, then split or absorb the unit.
 - After three equivalent failures, stop retrying. Mark the unit blocked and write `handoff.md` with the required user decision or external state change.
 
 ## Handoff
