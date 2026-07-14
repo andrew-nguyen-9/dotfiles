@@ -1,0 +1,47 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^Bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v rtk >/dev/null && rtk hook claude || exit 0"
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.codex/hooks/env-read-guard.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "^(Read|Grep)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.codex/hooks/env-read-guard.sh",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.codex/hooks/orch-read-cap.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^(Task|Agent|SendMessage|spawn_agent|followup_task)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.codex/hooks/orch-return-cap.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

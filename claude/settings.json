@@ -1,5 +1,4 @@
 {
-  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -153,5 +152,6 @@
   },
   "outputStyle": "default",
   "skipWorkflowUsageWarning": true,
-  "theme": "dark"
+  "theme": "dark",
+  "effortLevel": "high"
 }
