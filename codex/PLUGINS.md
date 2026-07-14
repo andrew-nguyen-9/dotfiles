@@ -4,6 +4,8 @@ Codex stores installed marketplaces and plugin enablement in `~/.codex/config.to
 
 Use the Codex plugin UI or CLI to install and enable plugins. Keep broadly useful core plugins enabled globally; enable large or stack-specific plugins only where they earn their standing context cost.
 
+Orchestrated work follows [`orchestrating/plugin-policy.md`](orchestrating/plugin-policy.md): reuse installed Caveman/Ponytail, keep large wrappers parked, scope MCP tools per repository, inspect hook hashes on upgrade, and require paired evidence before expanding global context. Do not install duplicates or create an orchestration plugin while native docs, agents, hooks, Bash, and `jq` cover the workflow.
+
 This repository manages the durable pieces that are safe to share across machines:
 
 - global instructions (`AGENTS.md` and `RTK.md`)
