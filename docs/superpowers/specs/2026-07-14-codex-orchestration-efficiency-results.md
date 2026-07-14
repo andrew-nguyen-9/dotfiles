@@ -44,6 +44,7 @@ Among successful Terra primary pairs, candidate input was 3,865 tokens higher (1
 Passed after the combined wave:
 
 - `bash codex/orchestrating/validate-plan.sh --self-test`
+- `bash codex/orchestrating/benchmark/run.sh --self-test`
 - `bash codex/hooks/test.sh`
 - `bash codex/hooks/test.sh --runtime`
 - `bash codex/verify.sh --installed`

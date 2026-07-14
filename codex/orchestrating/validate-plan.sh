@@ -6,7 +6,7 @@ ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]}")" rev-parse --show-toplevel)"
 fail() { echo "FAIL: $*" >&2; return 1; }
 
 validate_plan() {
-  local dir="${1:?orchestrator directory required}" prd="$1/prd.json" unit brief ref path
+  local dir="${1:?orchestrator directory required}" prd="$1/prd.json" unit brief ref path symbol target
   command -v jq >/dev/null 2>&1 || { fail "jq missing"; return 1; }
   [ -s "$prd" ] || { fail "$prd missing"; return 1; }
   [ -s "$dir/depmap.md" ] || { fail "$dir/depmap.md missing"; return 1; }
@@ -62,10 +62,14 @@ validate_plan() {
   while IFS= read -r ref; do
     [ -n "$ref" ] || continue
     path="${ref%%::*}"
+    symbol=""
+    [ "$path" = "$ref" ] || symbol="${ref#*::}"
     case "$path" in
-      /*) [ -e "$path" ] || { fail "upstream missing: $ref"; return 1; } ;;
-      *) [ -e "$ROOT/$path" ] || { fail "upstream missing: $ref"; return 1; } ;;
+      /*) target="$path" ;;
+      *) target="$ROOT/$path" ;;
     esac
+    [ -e "$target" ] || { fail "upstream missing: $ref"; return 1; }
+    [ -z "$symbol" ] || grep -Fq -- "$symbol" "$target" || { fail "upstream symbol missing: $ref"; return 1; }
   done < <(jq -r '
     . as $p |
     def status($id): $p.units[] | select(.id == $id) | .status;
@@ -124,6 +128,10 @@ EOF
   jq '.units[1].check="true" | .units[1].upstream=["missing/file.sh::run"]' "$tmp/prd.json" > "$tmp/case.json"
   mv "$tmp/case.json" "$tmp/prd.json"
   ! validate_plan "$tmp" >/dev/null 2>&1 || fail "missing upstream accepted"
+
+  jq '.units[1].upstream=["README.md::__no_such_upstream_symbol__"]' "$tmp/prd.json" > "$tmp/case.json"
+  mv "$tmp/case.json" "$tmp/prd.json"
+  ! validate_plan "$tmp" >/dev/null 2>&1 || fail "missing upstream symbol accepted"
 
   jq '.units[1].upstream=[] | .units[0].status="blocked" | .units[1].status="todo"' "$tmp/prd.json" > "$tmp/case.json"
   mv "$tmp/case.json" "$tmp/prd.json"

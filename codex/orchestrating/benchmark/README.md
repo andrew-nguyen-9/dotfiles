@@ -6,6 +6,7 @@
 
 ```sh
 bash codex/orchestrating/benchmark/run.sh validate
+bash codex/orchestrating/benchmark/run.sh --self-test
 bash codex/orchestrating/benchmark/run.sh simulate 3063f1a baseline
 bash codex/orchestrating/benchmark/run.sh simulate HEAD candidate
 bash codex/orchestrating/benchmark/run.sh live HEAD candidate gpt-5.6-terra all
