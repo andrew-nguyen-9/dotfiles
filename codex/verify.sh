@@ -37,6 +37,19 @@ rg -q 'Write commits and PRs as if authored directly by the user' "$ROOT/AGENTS.
 rg -q 'DoD: test `bash codex/verify.sh`' "$REPO_ROOT/AGENTS.md" || fail "root AGENTS.md does not use the Codex verification gate"
 rg -q 'Must-not-touch: codex/AGENTS.md, codex/RTK.md' "$REPO_ROOT/AGENTS.md" || fail "root AGENTS.md does not point at the Codex global sources"
 
+for tier in README.md lite.md medium.md orchestrator.md; do
+  rg -qi 'Caveman ultra' "$ROOT/orchestrating/$tier" || fail "$tier missing Caveman ultra"
+  rg -qi 'Ponytail ultra' "$ROOT/orchestrating/$tier" || fail "$tier missing Ponytail ultra"
+done
+
+for def in "$ROOT"/agent-defs/*.toml; do
+  rg -q '^model = "gpt-5.6-terra"$' "$def" || fail "$(basename "$def") is not Terra"
+  rg -q '^model_reasoning_effort = "medium"$' "$def" || fail "$(basename "$def") is not medium effort"
+  rg -qi 'Caveman ultra' "$def" || fail "$(basename "$def") missing Caveman ultra"
+  rg -qi 'Ponytail ultra' "$def" || fail "$(basename "$def") missing Ponytail ultra"
+done
+! rg -q 'gpt-5.6-sol' "$ROOT/agent-defs" || fail "Sol must not be a normal agent default"
+
 git_ident="$(git -C "$REPO_ROOT" var GIT_AUTHOR_IDENT 2>/dev/null || true)"
 if printf '%s' "$git_ident" | grep -qiE 'codex|chatgpt|openai|claude|anthropic|assistant'; then
   fail "git author identity contains an AI product, vendor, or assistant name"
