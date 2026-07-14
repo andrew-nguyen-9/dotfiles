@@ -13,12 +13,12 @@ need() { command -v "$1" >/dev/null 2>&1 || fail "missing $1"; }
 classify_tool_policy() {
   local stream="${1:?stream required}" hard="${2:-[]}"
   if jq -se 'any(.[]; .type == "item.completed" and .item.type == "command_execution" and (.item.command | test("(^|[;&|[:space:]])git[[:space:]]+(push|reset|clean|checkout|switch|branch|commit|merge|rebase|tag)([[:space:]]|$)")))' "$stream" >/dev/null; then
-    jq -cn --argjson h "$hard" '$h + ["unauthorized-git-action"] | unique'
-  elif jq -se 'any(.[]; .type == "item.completed" and (.item.type != "agent_message") and (.item.type != "reasoning"))' "$stream" >/dev/null; then
-    jq -cn --argjson h "$hard" '$h + ["unauthorized-external-action"] | unique'
-  else
-    printf '%s\n' "$hard"
+    hard=$(jq -cn --argjson h "$hard" '$h + ["unauthorized-git-action"] | unique')
   fi
+  if jq -se 'any(.[]; .type == "item.completed" and (.item.type != "agent_message") and (.item.type != "reasoning"))' "$stream" >/dev/null; then
+    hard=$(jq -cn --argjson h "$hard" '$h + ["unauthorized-external-action"] | unique')
+  fi
+  printf '%s\n' "$hard"
 }
 
 policy_self_test() {
@@ -31,7 +31,7 @@ policy_self_test() {
 
   printf '%s\n' '{"type":"item.completed","item":{"type":"command_execution","command":"git reset --hard HEAD"}}' > "$tmp"
   actual=$(classify_tool_policy "$tmp")
-  [ "$actual" = '["unauthorized-git-action"]' ] || fail "git mutation not rejected"
+  [ "$actual" = '["unauthorized-external-action","unauthorized-git-action"]' ] || fail "git mutation not rejected"
 
   printf '%s\n' '{"type":"item.completed","item":{"type":"command_execution","command":"curl https://example.invalid"}}' > "$tmp"
   actual=$(classify_tool_policy "$tmp")
@@ -40,6 +40,10 @@ policy_self_test() {
   printf '%s\n' '{"type":"item.completed","item":{"type":"command_execution","command":"printf fixture"}}' > "$tmp"
   actual=$(classify_tool_policy "$tmp")
   [ "$actual" = '["unauthorized-external-action"]' ] || fail "fixture tool use not rejected"
+
+  printf '%s\n' '{"type":"item.completed","item":{"type":"command_execution","command":"git reset --hard HEAD"}}' '{"type":"item.completed","item":{"type":"command_execution","command":"curl https://example.invalid"}}' > "$tmp"
+  actual=$(classify_tool_policy "$tmp")
+  [ "$actual" = '["unauthorized-external-action","unauthorized-git-action"]' ] || fail "multiple tool failures not retained"
   rm -f "$tmp"
   echo "Benchmark tool-policy self-test: PASS"
 }
