@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-07-14T21:48:26Z",
+  "results": 208,
+  "variants": [
+    { "variant": "baseline", "count": 80, "hard_pass_rate": 1, "mean_score": 39.25 },
+    { "variant": "candidate", "count": 80, "hard_pass_rate": 1, "mean_score": 100 },
+    { "variant": "baseline-terra", "count": 16, "hard_pass_rate": 1, "mean_score": 55.9375 },
+    { "variant": "candidate-terra", "count": 16, "hard_pass_rate": 1, "mean_score": 81.25 },
+    { "variant": "baseline-terra-repeat", "count": 4, "hard_pass_rate": 1, "mean_score": 61.25 },
+    { "variant": "candidate-terra-repeat", "count": 4, "hard_pass_rate": 1, "mean_score": 75 },
+    { "variant": "baseline-sol", "count": 4, "hard_pass_rate": 1, "mean_score": 50 },
+    { "variant": "candidate-sol", "count": 4, "hard_pass_rate": 1, "mean_score": 87.5 }
+  ],
+  "hard_failures": [],
+  "measurement_note": "Simulation has no token values. Live values come only from codex exec turn.completed usage.",
+  "conclusion": "Correctness and hard-pass rate improved without a hard failure. This run did not demonstrate token savings; do not claim them."
+}

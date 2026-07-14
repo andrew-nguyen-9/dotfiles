@@ -25,3 +25,5 @@ Exact live metrics come from `codex exec --json`: input, cached-input, output, a
 Hook configuration is not runtime proof. The trusted smoke in `codex/hooks/test.sh --runtime` inserts a marker shim ahead of the real RTK binary, lets Codex run one supported read-only command, and requires both RTK invocation and command execution.
 
 Candidate passes only with no new hard failure, no lower hard-pass rate overall or in coding/documentation, and no weighted-score regression. Keep short redacted excerpts only when a failing case needs evidence.
+
+Commit the normalized summary to `summary.json`. Keep raw JSONL, worktrees, and per-run output under `.orchestrator/benchmark/`. A higher score does not establish savings: compare exact usage only across successful pairs and record a token regression plainly.
