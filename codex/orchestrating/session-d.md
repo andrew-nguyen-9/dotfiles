@@ -1,6 +1,7 @@
 # Session D — judge and land
 
 1. Re-read acceptance criteria, `progress.md`, all `.done.md` files, and the final diff. Summarize reported quota, Measured task tokens, estimated next-unit cost, over/under-budget units, and uncertainty separately.
+   Propose a permanent routing change only after repeated successful evidence; a single estimate or quota snapshot is not evidence of token savings.
 2. Run the full DoD from a clean, combined tree.
 3. For material changes, dispatch `blind-judge` read-only with acceptance criteria and diff only: keep it producer-blind. Deterministic failing checks outrank a favorable narrative verdict.
 4. Fix any blocking issue, including completion claims with failing checks, and repeat the gate.

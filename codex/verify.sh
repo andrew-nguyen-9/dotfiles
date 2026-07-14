@@ -23,6 +23,7 @@ for script in "$ROOT/install.sh" "$ROOT/verify.sh" "$ROOT"/hooks/*.sh "$ROOT"/ho
 done
 
 jq -e . "$ROOT/hooks.json" >/dev/null || fail "invalid hooks.json"
+bash "$ROOT/hooks/test.sh"
 
 if rg -n '/Users/[[:alnum:]_.-]+/|/home/[[:alnum:]_.-]+/' "$ROOT" --glob '*.md' --glob '*.json' --glob '*.sh' --glob '*.toml' >/tmp/codex-portable-paths.$$; then
   cat /tmp/codex-portable-paths.$$
