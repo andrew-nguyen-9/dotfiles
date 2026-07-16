@@ -9,6 +9,7 @@ RUNTIME="$ROOT/.orchestrator/benchmark"
 
 fail() { echo "FAIL: $*" >&2; exit 1; }
 need() { command -v "$1" >/dev/null 2>&1 || fail "missing $1"; }
+resolve_ref() { git -C "$ROOT" rev-parse "${1:?ref required}^{commit}"; }
 
 build_live_prompt() {
   local arm="${1:?arm required}" scenario="${2:?scenario required}" path="${3:?path required}"
@@ -36,7 +37,7 @@ classify_tool_policy() {
 }
 
 policy_self_test() {
-  local tmp actual verbose compact verbose_lc compact_lc marker status
+  local tmp actual verbose compact verbose_lc compact_lc marker status resolved
   tmp=$(mktemp)
 
   printf '%s\n' '{"type":"item.completed","item":{"type":"agent_message","text":"ok"}}' > "$tmp"
@@ -71,6 +72,8 @@ policy_self_test() {
   status=0
   (build_live_prompt unknown case path needle excerpt >/dev/null 2>&1) || status=$?
   [ "$status" -ne 0 ] || fail "unknown prompt arm accepted"
+  resolved=$(resolve_ref HEAD)
+  [ "$resolved" = "$(git -C "$ROOT" rev-parse HEAD)" ] || fail "symbolic ref not resolved"
   rm -f "$tmp"
   echo "Benchmark tool-policy self-test: PASS"
 }
@@ -301,11 +304,12 @@ paired() {
 }
 
 compactness() {
-  local ref="${1:?ref required}" model="${2:-gpt-5.6-terra}"
+  local ref="${1:?ref required}" model="${2:-gpt-5.6-terra}" resolved
   local verbose="$RUNTIME/dispatch-verbose-$model-live.json"
   local compact="$RUNTIME/dispatch-compact-$model-live.json"
-  paired "$ref" "$ref" dispatch-verbose dispatch-compact "$model" all "" baseline verbose compact
-  jq -s --arg ref "$ref" --arg model "$model" '
+  resolved=$(resolve_ref "$ref")
+  paired "$resolved" "$resolved" dispatch-verbose dispatch-compact "$model" all "" baseline verbose compact
+  jq -s --arg ref "$resolved" --arg model "$model" '
     .[0] as $v | .[1] as $c |
     [$v[] as $x | $c[] | select(.id == $x.id) |
       select($x.hard_pass and .hard_pass and $x.scores.correctness == 45 and .scores.correctness == 45) |
