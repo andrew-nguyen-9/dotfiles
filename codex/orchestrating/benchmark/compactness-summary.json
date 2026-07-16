@@ -1,0 +1,29 @@
+{
+  "ref": "4786b3f26c43c9971583a4115b5c768b45c4704c",
+  "model": "gpt-5.6-terra",
+  "effort": "medium",
+  "cli_version": "codex-cli 0.144.4",
+  "scenario_pairs": 16,
+  "matched_successful_pairs": 8,
+  "verbose": {
+    "hard_passes": 16,
+    "mean_score": 78.125,
+    "input_tokens": 127737,
+    "output_tokens": 1204,
+    "reasoning_output_tokens": 258,
+    "total_tokens": 128941
+  },
+  "compact": {
+    "hard_passes": 16,
+    "mean_score": 78.125,
+    "input_tokens": 128009,
+    "output_tokens": 1526,
+    "reasoning_output_tokens": 411,
+    "total_tokens": 129535
+  },
+  "delta_tokens": 594,
+  "delta_percent": 0.4606758129687221,
+  "hard_failures": [],
+  "pass": false,
+  "measurement": "codex exec turn.completed usage; total excludes separately reported reasoning subset"
+}
