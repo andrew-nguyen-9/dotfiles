@@ -35,19 +35,23 @@ The user accepted the quality/safety-only rollout. This accepts the verified wor
 
 ## Dispatch compactness experiment
 
-Commit `4786b3f26c43c9971583a4115b5c768b45c4704c` ran the same 16 fixtures through verbose and compact prompt arms on `gpt-5.6-terra` at medium reasoning. Both arms used the same policy excerpt, schema, sandbox, commit, and alternating order.
+Commit `3e8044aa6d39df1bbeb35fbaa5a64709ad0d0756` ran the same 16 fixtures through the exact pre-experiment verbose control and a compact prompt arm on `gpt-5.6-terra` at medium reasoning. Both arms used the same policy excerpt, schema, sandbox, commit, and alternating order.
 
 | evidence | verbose | compact |
 | --- | ---: | ---: |
 | hard passes, all 16 | 16 | 16 |
-| mean score, all 16 | 78.125 | 78.125 |
-| matched successful pairs | 8 | 8 |
-| input tokens, matched pairs | 127,737 | 128,009 |
-| output tokens, matched pairs | 1,204 | 1,526 |
-| reasoning output, reported subset | 258 | 411 |
-| input + output | 128,941 | 129,535 |
+| mean score, all 16 | 81.25 | 78.125 |
+| matched successful pairs | 9 | 9 |
+| input tokens, matched pairs | 143,729 | 143,757 |
+| cached input | 104,448 | 104,960 |
+| uncached input | 39,281 | 38,797 |
+| output tokens, matched pairs | 1,196 | 1,638 |
+| reasoning output, reported subset | 176 | 533 |
+| input + output | 144,925 | 145,395 |
+| wall time | 58s | 70s |
+| tool calls / clarifications / file changes | 0 / 0 / 0 | 0 / 0 / 0 |
 
-The compact arm used 594 more tokens (+0.46%) among matched successful pairs. `diag-01` succeeded only under verbose wording; `config-01` succeeded only under compact wording. There were no hard failures, but only eight pairs succeeded in both arms. The experiment failed its predeclared gate, so `efficiency.md` retains the existing dispatch contract and no compactness savings are claimed.
+The compact arm used 470 more tokens (+0.32%) among matched successful pairs and scored 3.125 points lower overall. `config-01` succeeded only under verbose wording. There were no hard failures, but only nine pairs succeeded in both arms. The experiment failed its predeclared gate, so `efficiency.md` retains the existing dispatch contract and no compactness savings are claimed.
 
 ## RTK and quota evidence
 
