@@ -19,6 +19,10 @@ synthetic() {
   config="$home/.codex/config.toml"
   cat > "$config" <<'EOF'
 model_reasoning_effort = "medium"
+notify = [
+  "/tmp/existing-notifier",
+  "turn-ended",
+]
 
 [features]
 multi_agent = true
@@ -50,6 +54,7 @@ EOF
   contains "$config" '"--project", "keep-me"'
   contains "$config" 'SAFE_TEST_VALUE = "preserved"'
   contains "$config" "notify = [\"$home/.codex/notify.sh\"]"
+  not_contains "$config" 'existing-notifier'
   [ "$(grep -o -- '--enable-web-dashboard' "$config" | wc -l | tr -d ' ')" -eq 1 ] || fail "Serena enable flag duplicated"
   [ "$(grep -o -- '--open-web-dashboard' "$config" | wc -l | tr -d ' ')" -eq 1 ] || fail "Serena open flag duplicated"
 

@@ -30,6 +30,30 @@ def bounds(name):
 def assignment(line, key):
     return re.match(rf"^\s*{re.escape(key)}\s*=", line) is not None
 
+def value_end(start, limit):
+    rhs = lines[start].split("=", 1)[1].lstrip()
+    if not rhs.startswith("["):
+        return start + 1
+    end = start + 1
+    while True:
+        try:
+            return end if isinstance(ast.literal_eval(rhs), list) else start + 1
+        except (SyntaxError, ValueError):
+            if end >= limit:
+                return start + 1
+            rhs += lines[end]
+            end += 1
+
+def replace_assignment(key, start, end, value):
+    found = [i for i in range(start, end) if assignment(lines[i], key)]
+    if not found:
+        return False
+    spans = [(i, value_end(i, end)) for i in found]
+    for span_start, span_end in reversed(spans):
+        del lines[span_start:span_end]
+    lines.insert(found[0], f"{key} = {value}\n")
+    return True
+
 defaults = {
     "sandbox_mode": '"workspace-write"',
     "approval_policy": '"on-request"',
@@ -40,14 +64,9 @@ defaults = {
 root_end = next((i for i, line in enumerate(lines) if table(line) is not None), len(lines))
 missing = []
 for key, value in defaults.items():
-    found = [i for i in range(root_end) if assignment(lines[i], key)]
-    if found:
-        lines[found[0]] = f"{key} = {value}\n"
-        for i in reversed(found[1:]):
-            del lines[i]
-            root_end -= 1
-    else:
+    if not replace_assignment(key, 0, root_end, value):
         missing.append(f"{key} = {value}\n")
+    root_end = next((i for i, line in enumerate(lines) if table(line) is not None), len(lines))
 if missing:
     separator = ["\n"] if root_end < len(lines) else []
     lines[root_end:root_end] = missing + separator
@@ -55,13 +74,8 @@ if missing:
 tui = bounds("tui")
 if tui:
     start, end = tui
-    found = [i for i in range(start + 1, end) if assignment(lines[i], "notifications")]
     value = 'notifications = ["agent-turn-complete", "approval-requested"]\n'
-    if found:
-        lines[found[0]] = value
-        for i in reversed(found[1:]):
-            del lines[i]
-    else:
+    if not replace_assignment("notifications", start + 1, end, value.split("=", 1)[1].strip()):
         lines[end:end] = [value]
 else:
     if lines and lines[-1].strip():
