@@ -34,3 +34,12 @@ Read `depmap.md`, `progress.md`, the ready briefs, and `safeguards.md`. Do not r
 Before ending an incomplete task, write `handoff.md` with current branch/SHA, done units, active-agent dispositions, blocked units, next ready wave, commands to re-verify, and the exact resume kickoff. Leave `state.md` as `running` when continuation is expected.
 
 When all waves and the combined DoD are green, continue with `session-d.md`.
+
+## Cleared-chat kickoff
+
+Finish every Session C response with one copy-ready prompt as its final block:
+
+- Green waves and combined DoD: Session D kickoff naming the branch/state, `session-d.md`, acceptance criteria, `progress.md`, done notes, final diff, and full DoD command.
+- Incomplete, blocked, pending, or failed DoD: Session C resume kickoff naming the branch/state, `handoff.md`, `progress.md`, next ready or blocked unit, and exact re-verification command.
+
+Never emit a Session D kickoff before the combined DoD passes.

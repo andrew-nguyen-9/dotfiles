@@ -42,6 +42,10 @@ for tier in README.md lite.md medium.md orchestrator.md; do
   rg -qi 'Ponytail ultra' "$ROOT/orchestrating/$tier" || fail "$tier missing Ponytail ultra"
 done
 
+for session in orchestrator.md session-b.md session-c.md session-d.md; do
+  rg -q '^## Cleared-chat kickoff$' "$ROOT/orchestrating/$session" || fail "$session missing cleared-chat kickoff"
+done
+
 for def in "$ROOT"/agent-defs/*.toml; do
   rg -q '^model = "gpt-5.6-terra"$' "$def" || fail "$(basename "$def") is not Terra"
   rg -q '^model_reasoning_effort = "medium"$' "$def" || fail "$(basename "$def") is not medium effort"

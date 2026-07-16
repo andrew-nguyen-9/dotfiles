@@ -23,3 +23,25 @@ Start Caveman ultra and Ponytail ultra unless the user overrides them. Keep inte
 - Secrets stay out of context and out of git.
 - External writes, pushes, PRs, releases, and destructive cleanup need the authority recorded in `spec.md`.
 - Git artifacts contain no assistant attribution.
+
+## Cleared-chat kickoff
+
+After Session A and its green-base check succeed, finish the user-facing response with a copy-ready prompt as its final block. Substitute the recorded branch and state; include no stale run artifacts.
+
+```text
+Continue the active orchestration run on branch `<branch>` with state `<state>`.
+
+Read:
+- `$HOME/.codex/orchestrating/session-b.md`
+- `.orchestrator/state.md`
+- `.orchestrator/spec.md`
+- repository guidance and map
+
+Run Session B only. Write this run's dependency map, briefs, progress, and `prd.json`, then run:
+
+bash $HOME/.codex/orchestrating/validate-plan.sh .orchestrator
+
+When Session B is complete, finish with a copy-ready cleared-chat kickoff for Session C.
+```
+
+If intake or green-base verification failed, keep Session A active and emit a Session A resume prompt instead.

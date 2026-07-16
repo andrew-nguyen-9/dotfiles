@@ -9,3 +9,12 @@
 6. Land with the user's git identity and no AI attribution.
 7. Write `state.md` as `state: landed` only after the requested landing action succeeds. If the user declines, write `state: parked` and preserve a resume handoff.
 8. Run or offer `~/.codex/cleaning/README.md` after the cycle is safely landed or abandoned.
+
+## Cleared-chat kickoff
+
+Finish every Session D response with one copy-ready prompt as its final block:
+
+- `landed` or `abandoned`: cleanup kickoff, `Read $HOME/.codex/cleaning/README.md and run it.`
+- `parked` or `pending`: exact resume kickoff naming the branch/SHA, state, required authority or external change, handoff path, and re-verification command.
+
+Do not emit cleanup while work remains resumable.
