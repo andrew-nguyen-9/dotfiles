@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "command -v rtk >/dev/null && rtk hook claude || exit 0"
+            "command": "$HOME/.codex/hooks/rtk-compat.sh"
           },
           {
             "type": "command",

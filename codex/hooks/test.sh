@@ -11,7 +11,7 @@ contains() { grep -Fq "$2" "$1" || fail "$1 missing: $2"; }
 not_contains() { ! grep -Fq "$2" "$1" || fail "$1 unexpectedly contains: $2"; }
 
 synthetic() {
-  local project="$tmp/project" input status output history i estimate quota
+  local project="$tmp/project" input status output expected rtk_stub history i estimate quota
   mkdir -p "$project/.orchestrator"
   printf '%s\n' 'state: running' > "$project/.orchestrator/state.md"
   awk 'BEGIN { for (i=1; i<=601; i++) print i }' > "$project/large.txt"
@@ -33,7 +33,32 @@ synthetic() {
   contains "$tmp/return.json" 'systemMessage'
   not_contains "$tmp/return.json" 'updatedToolOutput'
 
-  jq -e '.hooks.PreToolUse[] | select(.matcher == "^Bash$") | .hooks[] | select(.command | contains("rtk hook claude"))' "$ROOT/hooks.json" >/dev/null || fail "RTK Bash hook missing"
+  mkdir -p "$tmp/rtk-bin"
+  rtk_stub="$tmp/rtk-bin/rtk"
+  cat > "$rtk_stub" <<'EOF'
+#!/bin/sh
+cat >/dev/null
+printf '%s\n' "$RTK_TEST_OUTPUT"
+EOF
+  chmod +x "$rtk_stub"
+  input=$(jq -cn '{tool_name:"Bash",tool_input:{command:"git status --short"}}')
+
+  expected='{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecisionReason":"RTK auto-rewrite","updatedInput":{"command":"rtk git status --short"}}}'
+  output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$expected" PATH="$tmp/rtk-bin:$PATH" bash "$ROOT/hooks/rtk-compat.sh")
+  [ "$(jq -r '.hookSpecificOutput.permissionDecision' <<<"$output")" = allow ] || fail "RTK rewrite missing allow decision"
+
+  expected='{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"allow","updatedInput":{"command":"rtk git status --short"}}}'
+  output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$expected" PATH="$tmp/rtk-bin:$PATH" bash "$ROOT/hooks/rtk-compat.sh")
+  [ "$(jq -cS . <<<"$output")" = "$(jq -cS . <<<"$expected")" ] || fail "RTK allow decision changed"
+
+  expected='{"systemMessage":"no rewrite"}'
+  output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$expected" PATH="$tmp/rtk-bin:$PATH" bash "$ROOT/hooks/rtk-compat.sh")
+  [ "$(jq -cS . <<<"$output")" = "$(jq -cS . <<<"$expected")" ] || fail "RTK passthrough changed"
+
+  output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$expected" PATH="$tmp/rtk-bin" /bin/bash "$ROOT/hooks/rtk-compat.sh")
+  [ -z "$output" ] || fail "RTK hook emitted output without jq"
+
+  jq -e '.hooks.PreToolUse[] | select(.matcher == "^Bash$") | .hooks[] | select(.command == "$HOME/.codex/hooks/rtk-compat.sh")' "$ROOT/hooks.json" >/dev/null || fail "RTK compatibility hook missing"
 
   history="$tmp/orchestrator"
   mkdir -p "$history"
