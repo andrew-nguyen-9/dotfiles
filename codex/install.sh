@@ -37,12 +37,16 @@ link_into() {
 echo "Setting up Codex dotfiles..."
 mkdir -p "$CODEX_DIR"
 
-for entry in AGENTS.md RTK.md PLUGINS.md hooks.json orchestrating cleaning hooks design-guidelines design-system-creator; do
+for entry in AGENTS.md RTK.md PLUGINS.md hooks.json orchestrating cleaning hooks design-guidelines design-system-creator notify.sh; do
   link_into "$DOTFILES_DIR/$entry" "$CODEX_DIR/$entry" "$entry"
 done
 
 # Documentation catalog: keep separate from Codex's live custom-agent folder.
 link_into "$DOTFILES_DIR/agents" "$CODEX_DIR/agents-docs" "agents-docs"
+
+# Install only the managed skill; preserve the user's skill directory and its other entries.
+mkdir -p "$CODEX_DIR/skills"
+link_into "$DOTFILES_DIR/skills/mcq" "$CODEX_DIR/skills/mcq" "skills/mcq"
 
 # Codex discovers standalone custom agent TOML files in ~/.codex/agents/.
 mkdir -p "$CODEX_DIR/agents"
@@ -69,7 +73,9 @@ else
   echo "rtk: already installed ($(rtk --version 2>/dev/null || true))"
 fi
 
+bash "$DOTFILES_DIR/configure.sh"
+
 echo ""
-echo "Codex runtime config.toml and plugin state were preserved."
+echo "Unrelated Codex config.toml values and plugin state were preserved."
 echo "Review and trust the linked hooks with /hooks after restarting Codex."
 echo "Run '$DOTFILES_DIR/verify.sh --installed' to verify the installation."

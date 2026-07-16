@@ -124,6 +124,15 @@ Plugins are configured in `claude/settings.json` (in the dotfiles repo). After c
 
 Verify all: `claude mcp list` → serena / github / vercel / xcodebuild all ✔ Connected.
 
+### Codex permissions and notifications
+
+Run `./codex/install.sh` after cloning. It preserves unrelated `~/.codex/config.toml` values while applying `workspace-write`, on-request approvals with auto-review, native CLI/TUI turn-complete and approval-requested alerts, and a macOS turn-complete notifier. If an existing Serena stdio entry is present, the installer keeps it stdio-owned and disables its dashboard/browser; it does not install Serena.
+
+- **Recommended:** in the desktop app, enable background turn notifications plus permission/question notifications, then allow the one-time macOS notification grant when prompted.
+- **Fallback:** use always-on desktop notifications only when background-only alerts are too easy to miss.
+
+The external CLI notifier currently receives only `agent-turn-complete`; approval alerts come from the TUI. Desktop app controls are separate, and IDE/VS Code does not promise matching TUI alert behavior.
+
 **Per-project MCP (not global — add inside the repo that uses it):**
 - **dbt** — for repos with dbt pipelines (trivia-generator, music-festival-analyzer). Adding globally = a server that fails every session with no project dir, so scope it to the repo:
   ```sh
@@ -208,6 +217,7 @@ for ext in andrepimenta.claude-code-chat anthropic.claude-code beardedbear.beard
 - [ ] `ls -la ~/.claude/*.md ~/.claude/settings.json` all show symlinks into dotfiles
 - [ ] `git -C ~/Documents/GitHub/dotfiles ls-files -v claude/settings.json` shows `S` (skip-worktree set); `git pull --rebase` doesn't error
 - [ ] `claude mcp list` → serena / github / vercel / xcodebuild all ✔ Connected (xcodebuild needs Xcode.app)
+- [ ] `bash codex/verify.sh --installed` → Codex links, config identity, permission matrix, notifier, and MCQ skill all pass
 - [ ] `git log --show-signature -1` → "Good signature"; new pushed commit shows Verified on GitHub
 - [ ] Karabiner remaps active; Rectangle shortcuts work; Hammerspoon loaded
 - [ ] VS Code: `code --list-extensions | wc -l` ≈ 40

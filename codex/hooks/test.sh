@@ -10,8 +10,35 @@ fail() { echo "FAIL: $*" >&2; exit 1; }
 contains() { grep -Fq "$2" "$1" || fail "$1 missing: $2"; }
 not_contains() { ! grep -Fq "$2" "$1" || fail "$1 unexpectedly contains: $2"; }
 
+permission_matrix() {
+  local input="$1" name payload expected output actual
+  while IFS='|' read -r name payload expected; do
+    [ -n "$name" ] || continue
+    output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$payload" PATH="$tmp/rtk-bin:$PATH" bash "$ROOT/hooks/rtk-compat.sh")
+    if [ "$expected" = EMPTY ]; then
+      [ -z "$output" ] || fail "$name emitted hook JSON"
+    else
+      actual=$(jq -cS . <<<"$output") || fail "$name emitted invalid JSON"
+      [ "$actual" = "$(jq -cS . <<<"$expected")" ] || fail "$name output mismatch"
+    fi
+  done <<'EOF'
+absent-decision|{"hookSpecificOutput":{"updatedInput":{"command":"rtk git status"}}}|{"hookSpecificOutput":{"permissionDecision":"allow","updatedInput":{"command":"rtk git status"}}}
+null-decision|{"hookSpecificOutput":{"permissionDecision":null,"updatedInput":{"command":"rtk git status"}}}|{"hookSpecificOutput":{"permissionDecision":"allow","updatedInput":{"command":"rtk git status"}}}
+explicit-allow|{"hookSpecificOutput":{"permissionDecision":"allow","updatedInput":{"command":"rtk git status"}}}|{"hookSpecificOutput":{"permissionDecision":"allow","updatedInput":{"command":"rtk git status"}}}
+explicit-deny|{"hookSpecificOutput":{"permissionDecision":"deny","updatedInput":{"command":"rtk git status"}}}|{"hookSpecificOutput":{"permissionDecision":"deny","updatedInput":{"command":"rtk git status"}}}
+missing-updated-input|{"hookSpecificOutput":{"permissionDecision":null}}|{"hookSpecificOutput":{"permissionDecision":null}}
+null-updated-input|{"hookSpecificOutput":{"updatedInput":null}}|{"hookSpecificOutput":{"updatedInput":null}}
+empty-updated-input|{"hookSpecificOutput":{"updatedInput":{}},"extra":true}|{"extra":true,"hookSpecificOutput":{"permissionDecision":"allow","updatedInput":{}}}
+passthrough-object|{"systemMessage":"no rewrite"}|{"systemMessage":"no rewrite"}
+passthrough-array|["unknown",1]|["unknown",1]
+passthrough-null|null|null
+malformed|{bad|EMPTY
+empty||EMPTY
+EOF
+}
+
 synthetic() {
-  local project="$tmp/project" input status output expected rtk_stub history i estimate quota
+  local project="$tmp/project" input status output rtk_stub history i estimate quota
   mkdir -p "$project/.orchestrator"
   printf '%s\n' 'state: running' > "$project/.orchestrator/state.md"
   awk 'BEGIN { for (i=1; i<=601; i++) print i }' > "$project/large.txt"
@@ -43,19 +70,9 @@ EOF
   chmod +x "$rtk_stub"
   input=$(jq -cn '{tool_name:"Bash",tool_input:{command:"git status --short"}}')
 
-  expected='{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecisionReason":"RTK auto-rewrite","updatedInput":{"command":"rtk git status --short"}}}'
-  output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$expected" PATH="$tmp/rtk-bin:$PATH" bash "$ROOT/hooks/rtk-compat.sh")
-  [ "$(jq -r '.hookSpecificOutput.permissionDecision' <<<"$output")" = allow ] || fail "RTK rewrite missing allow decision"
+  permission_matrix "$input"
 
-  expected='{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"allow","updatedInput":{"command":"rtk git status --short"}}}'
-  output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$expected" PATH="$tmp/rtk-bin:$PATH" bash "$ROOT/hooks/rtk-compat.sh")
-  [ "$(jq -cS . <<<"$output")" = "$(jq -cS . <<<"$expected")" ] || fail "RTK allow decision changed"
-
-  expected='{"systemMessage":"no rewrite"}'
-  output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$expected" PATH="$tmp/rtk-bin:$PATH" bash "$ROOT/hooks/rtk-compat.sh")
-  [ "$(jq -cS . <<<"$output")" = "$(jq -cS . <<<"$expected")" ] || fail "RTK passthrough changed"
-
-  output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$expected" PATH="$tmp/rtk-bin" /bin/bash "$ROOT/hooks/rtk-compat.sh")
+  output=$(printf '%s' "$input" | RTK_TEST_OUTPUT='{}' PATH="$tmp/rtk-bin" /bin/bash "$ROOT/hooks/rtk-compat.sh")
   [ -z "$output" ] || fail "RTK hook emitted output without jq"
 
   mkdir -p "$tmp/no-rtk"
@@ -80,7 +97,7 @@ EOF
   [ "$(jq -r '.source' <<<"$quota")" = reported ] || fail "quota source mislabeled"
   [ "$(jq -r '.action' <<<"$quota")" = checkpoint ] || fail "90 percent quota did not checkpoint"
   contains "$history/usage.jsonl" '"source":"measured"'
-  echo "Codex hook synthetic tests: PASS"
+  echo "Codex hook synthetic tests: PASS (permission_matrix: 12 cases)"
 }
 
 runtime() {
@@ -105,6 +122,10 @@ EOF
   contains "$marker" 'hook claude'
   command_seen=$(jq -sr '[.[] | select(.type == "item.completed" and .item.type == "command_execution")]|length' "$stream")
   [ "$command_seen" -ge 1 ] || fail "Codex did not run shell command"
+  ! grep -Eqi 'hook.*(updatedInput|permissionDecision).*(error|invalid)|invalid.*hook' "$stream" || fail "Codex reported a hook schema error"
+  if [ -n "${RTK_SMOKE_STREAM:-}" ]; then
+    cp "$stream" "$RTK_SMOKE_STREAM"
+  fi
   if ! "$real_rtk" gain >/dev/null 2>&1; then
     echo "RTK tracking unavailable; runtime invocation passed, savings remain unmeasured." >&2
   fi

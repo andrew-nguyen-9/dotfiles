@@ -12,5 +12,9 @@ This repository manages the durable pieces that are safe to share across machine
 - lifecycle hooks (`hooks.json` and `hooks/`)
 - workflow and design documentation
 - custom agent definitions (`agent-defs/*.toml`)
+- the explicit-MCQ skill (`skills/mcq/`) without replacing the user's skill directory
+- safe CLI defaults and the macOS turn-complete notifier, merged by `configure.sh`
 
 Authentication, runtime state, generated marketplaces, bundled-runtime paths, caches, and app-managed plugin entries stay local under `~/.codex/`.
+
+CLI/TUI notifications cover turn completion and approval requests. The external notifier receives only turn completion; desktop app notification settings and the one-time macOS grant remain user-controlled, and IDE/VS Code notification behavior is separate.

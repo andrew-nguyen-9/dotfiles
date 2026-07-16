@@ -8,7 +8,8 @@ input=$(cat)
 output=$(printf '%s' "$input" | rtk hook claude 2>/dev/null) || exit 0
 [ -n "$output" ] || exit 0
 patched=$(printf '%s' "$output" | jq -c '
-  if .hookSpecificOutput.updatedInput? != null
+  if type == "object"
+     and .hookSpecificOutput.updatedInput? != null
      and .hookSpecificOutput.permissionDecision? == null
   then .hookSpecificOutput.permissionDecision = "allow"
   else . end
