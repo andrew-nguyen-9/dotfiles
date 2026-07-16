@@ -10,6 +10,7 @@ bash codex/orchestrating/benchmark/run.sh --self-test
 bash codex/orchestrating/benchmark/run.sh simulate 3063f1a baseline
 bash codex/orchestrating/benchmark/run.sh simulate HEAD candidate
 bash codex/orchestrating/benchmark/run.sh live HEAD candidate gpt-5.6-terra all
+bash codex/orchestrating/benchmark/run.sh compactness HEAD gpt-5.6-terra
 bash codex/orchestrating/benchmark/run.sh summarize
 ```
 
@@ -26,5 +27,7 @@ Exact live metrics come from `codex exec --json`: input, cached-input, output, a
 Hook configuration is not runtime proof. The trusted smoke in `codex/hooks/test.sh --runtime` inserts a marker shim ahead of the real RTK binary, lets Codex run one supported read-only command, and requires both RTK invocation and command execution.
 
 Candidate passes only with no new hard failure, no lower hard-pass rate overall or in coding/documentation, and no weighted-score regression. Keep short redacted excerpts only when a failing case needs evidence.
+
+`compactness` runs the same 16 fixtures and commit through verbose and compact prompt arms on Terra medium, alternating order. It passes only with 16 matched successful pairs, no compact hard failure, no hard-pass or mean-score regression, and fewer measured input-plus-output tokens. Reasoning output is reported separately because it is a subset of output usage.
 
 Commit the normalized summary to `summary.json`. Keep raw JSONL, worktrees, and per-run output under `.orchestrator/benchmark/`. A higher score does not establish savings: compare exact usage only across successful pairs and record a token regression plainly.
