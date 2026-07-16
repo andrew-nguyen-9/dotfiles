@@ -51,6 +51,11 @@ for session in orchestrator.md session-b.md session-c.md session-d.md; do
   rg -q '^## Cleared-chat kickoff$' "$ROOT/orchestrating/$session" || fail "$session missing cleared-chat kickoff"
 done
 
+migration_invariant='Stateful config migrations require representative existing-state fixtures and authoritative-consumer validation.'
+for session in orchestrator.md session-b.md session-c.md session-d.md; do
+  rg -Fq "$migration_invariant" "$ROOT/orchestrating/$session" || fail "$session missing stateful config migration invariant"
+done
+
 for def in "$ROOT"/agent-defs/*.toml; do
   rg -q '^model = "gpt-5.6-terra"$' "$def" || fail "$(basename "$def") is not Terra"
   rg -q '^model_reasoning_effort = "medium"$' "$def" || fail "$(basename "$def") is not medium effort"
@@ -80,6 +85,7 @@ if $CHECK_INSTALLED; then
 
   config="$HOME/.codex/config.toml"
   [ -f "$config" ] || fail "$config is missing"
+  codex mcp list --json >/dev/null 2>&1 || fail "installed config is not accepted by Codex"
   grep -Fq 'sandbox_mode = "workspace-write"' "$config" || fail "installed config missing workspace-write default"
   grep -Fq 'approval_policy = "on-request"' "$config" || fail "installed config missing on-request default"
   grep -Fq 'approvals_reviewer = "auto_review"' "$config" || fail "installed config missing auto-review default"

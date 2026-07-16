@@ -9,6 +9,8 @@ Read `.orchestrator/spec.md`, repository guidance, and only the code/docs needed
 5. Seed `progress.md` with `unit | status | owner | evidence` and statuses `todo / active / done / blocked`; record green base, attempts, failure signatures, blockers, estimated/actual tokens, and verification.
 6. Write `prd.json` as the machine-checkable mirror of `depmap.md`, briefs, and `progress.md`; those human-readable files remain authoritative.
 
+Stateful config migrations require representative existing-state fixtures and authoritative-consumer validation.
+
 Gate: run `bash $HOME/.codex/orchestrating/validate-plan.sh .orchestrator`. A unit is not dispatchable unless the plan is acyclic, a ready unit exists, ownership is non-empty and disjoint, its brief names a runnable verification and note path, and upstream symbols exist. Then continue with `session-c.md`.
 
 ## Cleared-chat kickoff

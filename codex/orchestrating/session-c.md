@@ -22,6 +22,8 @@ Read `depmap.md`, `progress.md`, the ready briefs, and `safeguards.md`. Do not r
 5. Run the combined repository DoD once per wave before unlocking dependents. Do not duplicate integration verification between the integration agent and root.
 6. Update `progress.md` and reconcile downstream briefs against upstream decisions.
 
+Stateful config migrations require representative existing-state fixtures and authoritative-consumer validation.
+
 ## Recovery
 
 - Running but drifting: use `send_message` with one precise correction.

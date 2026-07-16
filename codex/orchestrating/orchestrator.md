@@ -19,6 +19,7 @@ Start Caveman ultra and Ponytail ultra unless the user overrides them. Keep inte
 - Each unit owns explicit files. Concurrent writers never overlap.
 - Subagents share the workspace; the root agent alone changes branches or writes git history.
 - Every unit has a runnable check. The combined DoD runs after every wave.
+- Stateful config migrations require representative existing-state fixtures and authoritative-consumer validation.
 - Record reported quota windows separately from measured task tokens and estimates.
 - Secrets stay out of context and out of git.
 - External writes, pushes, PRs, releases, and destructive cleanup need the authority recorded in `spec.md`.

@@ -10,6 +10,8 @@
 7. Write `state.md` as `state: landed` only after the requested landing action succeeds. If the user declines, write `state: parked` and preserve a resume handoff.
 8. Run or offer `~/.codex/cleaning/README.md` after the cycle is safely landed or abandoned.
 
+Stateful config migrations require representative existing-state fixtures and authoritative-consumer validation.
+
 ## Cleared-chat kickoff
 
 Finish every Session D response with one copy-ready prompt as its final block:
