@@ -58,6 +58,10 @@ EOF
   output=$(printf '%s' "$input" | RTK_TEST_OUTPUT="$expected" PATH="$tmp/rtk-bin" /bin/bash "$ROOT/hooks/rtk-compat.sh")
   [ -z "$output" ] || fail "RTK hook emitted output without jq"
 
+  mkdir -p "$tmp/no-rtk"
+  output=$(printf '%s' "$input" | PATH="$tmp/no-rtk" /bin/bash "$ROOT/hooks/rtk-compat.sh")
+  [ -z "$output" ] || fail "RTK hook emitted output without rtk"
+
   jq -e '.hooks.PreToolUse[] | select(.matcher == "^Bash$") | .hooks[] | select(.command == "$HOME/.codex/hooks/rtk-compat.sh")' "$ROOT/hooks.json" >/dev/null || fail "RTK compatibility hook missing"
 
   history="$tmp/orchestrator"
